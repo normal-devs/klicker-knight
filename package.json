@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "klicker-knight": "ts-node index.ts"
+  },
+  "devDependencies": {
+    "@tsconfig/node14": "^1.0.1",
+    "@types/node": "^16.11.11",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  }
+}
