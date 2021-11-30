@@ -17,5 +17,5 @@ jobs:
           node-version: '16.x'
       - name: Install
         run: npm ci
-      - name: CI
-        run: npm run klicker-knight
+      - name: Run App
+        run: npm run dev
