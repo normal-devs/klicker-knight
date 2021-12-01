@@ -7,5 +7,5 @@ The spearhead thrust into the untapped market of npm cli games
 ```bash
 npm install
 
-npm run klicker-knight
+npm run dev
 ```
