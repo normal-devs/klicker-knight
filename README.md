@@ -13,6 +13,7 @@ npm run dev
 ### Configuring Vscode Formatting
 
 - install eslint vscode extension
+- install markdownlint vscode extension
 - configure settings.json
 
 ```json

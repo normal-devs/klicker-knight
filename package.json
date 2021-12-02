@@ -4,6 +4,7 @@
   "scripts": {
     "clean": "rimraf lib",
     "dev": "node bin/run",
+    "lint:md": "markdownlint **/*.md --ignore node_modules",
     "lint:ts": "eslint --ext .ts,.js .",
     "prepack": "npm run clean && tsc -b",
     "test": "nyc --extension .ts mocha \"tests/**/*.test.ts\" ",
@@ -34,6 +35,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
+    "markdownlint-cli": "^0.30.0",
     "mocha": "^9.1.3",
     "nyc": "^15.1.0",
     "prettier": "^2.5.0",
