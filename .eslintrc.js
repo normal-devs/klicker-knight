@@ -9,6 +9,8 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
+    'import/prefer-default-export': 'off',
+    'import/no-default-export': 'error',
     'max-len': [
       'error',
       120,
