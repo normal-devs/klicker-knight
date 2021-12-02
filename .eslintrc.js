@@ -3,6 +3,7 @@ module.exports = {
     'airbnb-base',
     'airbnb-typescript/base',
     'plugin:prettier/recommended',
+    'plugin:mocha/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -29,5 +30,7 @@ module.exports = {
         ignoreTrailingComments: true,
       },
     ],
+    'mocha/no-exclusive-tests': 'error',
+    'mocha/no-mocha-arrows': 'off',
   },
 };

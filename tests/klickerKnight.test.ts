@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import { KlickerKnight } from '../src/klickerKnight';
 
 describe('klicker-knight', () => {
+  // eslint-disable-next-line mocha/no-setup-in-describe
   test
     .stdout()
     .do(() => KlickerKnight.run([]))
