@@ -1,3 +1,3 @@
-import {KlickerKnight} from './klickerKnight';
+import { KlickerKnight } from './klickerKnight';
 
 export = KlickerKnight;
