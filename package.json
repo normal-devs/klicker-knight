@@ -6,6 +6,7 @@
     "dev": "node bin/run",
     "lint:md": "markdownlint **/*.md --ignore node_modules",
     "lint:ts": "eslint --ext .ts,.js .",
+    "lint:yaml": "yamllint --ignore=node_modules/**/*.yaml **/*.yaml",
     "prepack": "npm run clean && tsc -b",
     "test": "nyc --extension .ts mocha \"tests/**/*.test.ts\" ",
     "update-readme": "oclif-dev readme"
@@ -41,7 +42,8 @@
     "prettier": "^2.5.0",
     "rimraf": "^3.0.2",
     "ts-node": "^10.4.0",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.2",
+    "yaml-lint": "^1.2.4"
   },
   "engines": {
     "node": ">=16.0.0"
