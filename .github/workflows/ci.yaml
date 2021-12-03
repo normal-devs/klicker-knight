@@ -19,8 +19,7 @@ jobs:
         run: npm ci
       - name: Lint Code
         if: always()
-        # run: npm run lint:ts
-        run: exit 1
+        run: npm run lint:ts
       - name: Lint Docs
         if: always()
         run: npm run lint:md
