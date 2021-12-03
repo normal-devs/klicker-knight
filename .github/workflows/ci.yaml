@@ -18,18 +18,18 @@ jobs:
       - name: Install
         run: npm ci
       - name: Lint Code
-        # if: always()
+        if: always()
         # run: npm run lint:ts
         run: exit 1
       - name: Lint Docs
-        # if: always()
+        if: always()
         run: npm run lint:md
       - name: Lint Yaml
-        # if: always()
+        if: always()
         run: npm run lint:yaml
       - name: Test
-        # if: always()
+        if: always()
         run: npm test
       - name: Run App
-        # if: always()
+        if: always()
         run: npm run dev
