@@ -15,6 +15,8 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
+    '@typescript-eslint/await-thenable': 'error',
+    '@typescript-eslint/require-await': 'error',
     'import/prefer-default-export': 'off',
     'import/no-default-export': 'error',
     'max-len': [
