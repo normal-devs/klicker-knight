@@ -4,7 +4,7 @@ export class Database {
   defaultFilePath: string;
 
   constructor() {
-    this.defaultFilePath = 'src/utils/data.json';
+    this.defaultFilePath = 'data.json';
   }
 
   async hasGameFile(filePathOverride?: string): Promise<boolean> {
