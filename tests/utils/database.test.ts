@@ -10,10 +10,10 @@ describe('database', () => {
   context('hasGameFile', () => {
     context('when file exists', () => {
       before(async function () {
-        await writeFileSync('data.json', '');
+        await writeFileSync('saves/data.json', '');
       });
       after(async function () {
-        await unlinkSync('data.json');
+        await unlinkSync('saves/data.json');
       });
       it('expect hasGameFile to return true', async () => {
         const returnValue = await database.hasGameFile();
@@ -22,19 +22,19 @@ describe('database', () => {
     });
     context('when file exists - using file path over ride', () => {
       before(async function () {
-        await writeFileSync('dataTest.json', '');
+        await writeFileSync('saves/dataTest.json', '');
       });
       after(async function () {
-        await unlinkSync('dataTest.json');
+        await unlinkSync('saves/dataTest.json');
       });
       it('expect hasGameFile to return true', async () => {
-        const returnValue = await database.hasGameFile('dataTest.json');
+        const returnValue = await database.hasGameFile('saves/dataTest.json');
         expect(returnValue).to.equal(true);
       });
     });
     context('when file does not exist', () => {
       it('expect hasGameFile to return false', async () => {
-        const returnValue = await database.hasGameFile('dataTest.json');
+        const returnValue = await database.hasGameFile('saves/dataTest.json');
         expect(returnValue).to.equal(false);
       });
     });
@@ -42,10 +42,10 @@ describe('database', () => {
   context('load', () => {
     context('when file exists and has data', () => {
       before(async function () {
-        await writeFileSync('data.json', JSON.stringify({ foo: 'bar' }));
+        await writeFileSync('saves/data.json', JSON.stringify({ foo: 'bar' }));
       });
       after(async function () {
-        await unlinkSync('data.json');
+        await unlinkSync('saves/data.json');
       });
       it('expect load to return data', async () => {
         const returnValue = await database.load();
@@ -54,22 +54,22 @@ describe('database', () => {
     });
     context('when file exists and has data - using file path over ride', () => {
       before(async function () {
-        await writeFileSync('dataTest.json', JSON.stringify({ foo: 'bar' }));
+        await writeFileSync('saves/dataTest.json', JSON.stringify({ foo: 'bar' }));
       });
       after(async function () {
-        await unlinkSync('dataTest.json');
+        await unlinkSync('saves/dataTest.json');
       });
       it('expect load to return data', async () => {
-        const returnValue = await database.load('dataTest.json');
+        const returnValue = await database.load('saves/dataTest.json');
         expect(returnValue).to.eql({ foo: 'bar' });
       });
     });
     context('when file exists and has no data', () => {
       before(async function () {
-        await writeFileSync('data.json', '');
+        await writeFileSync('saves/data.json', '');
       });
       after(async function () {
-        await unlinkSync('data.json');
+        await unlinkSync('saves/data.json');
       });
       it('expect load to return error', async () => {
         const returnValue = await database.load();
@@ -86,14 +86,14 @@ describe('database', () => {
   context('save', () => {
     context('when file exists and is being saved with valid data', () => {
       before(async function () {
-        await writeFileSync('data.json', JSON.stringify({ foo: 'bar' }));
+        await writeFileSync('saves/data.json', JSON.stringify({ foo: 'bar' }));
       });
       after(async function () {
-        await unlinkSync('data.json');
+        await unlinkSync('saves/data.json');
       });
       it('expect save to save data', async () => {
         await database.save({ foo: 'foo' });
-        const returnValue = await readFileSync('data.json', 'utf-8');
+        const returnValue = await readFileSync('saves/data.json', 'utf-8');
         expect(JSON.parse(returnValue)).to.eql({ foo: 'foo' });
       });
     });
@@ -101,11 +101,11 @@ describe('database', () => {
       'when file does not exist and is being saved with valid data',
       () => {
         after(async function () {
-          await unlinkSync('data.json');
+          await unlinkSync('saves/data.json');
         });
         it('expect save to save data', async () => {
           await database.save({ foo: 'foo' });
-          const returnValue = await readFileSync('data.json', 'utf-8');
+          const returnValue = await readFileSync('saves/data.json', 'utf-8');
           expect(JSON.parse(returnValue)).to.eql({ foo: 'foo' });
         });
       }
@@ -114,14 +114,14 @@ describe('database', () => {
       'when file exists and is being saved with valid data - using file path over ride',
       () => {
         before(async function () {
-          await writeFileSync('dataTest.json', JSON.stringify({ foo: 'bar' }));
+          await writeFileSync('saves/dataTest.json', JSON.stringify({ foo: 'bar' }));
         });
         after(async function () {
-          await unlinkSync('dataTest.json');
+          await unlinkSync('saves/dataTest.json');
         });
         it('expect save to save data', async () => {
-          await database.save({ foo: 'foo' }, 'dataTest.json');
-          const returnValue = await readFileSync('dataTest.json', 'utf-8');
+          await database.save({ foo: 'foo' }, 'saves/dataTest.json');
+          const returnValue = await readFileSync('saves/dataTest.json', 'utf-8');
           expect(JSON.parse(returnValue)).to.eql({ foo: 'foo' });
         });
       }
@@ -130,26 +130,26 @@ describe('database', () => {
   context('delete', () => {
     context('when file exists', () => {
       before(async function () {
-        await writeFileSync('data.json', JSON.stringify({ foo: 'bar' }));
+        await writeFileSync('saves/data.json', JSON.stringify({ foo: 'bar' }));
       });
       it('expect delete to remove file', async () => {
         await database.delete();
-        expect(existsSync('data.json')).to.eql(false);
+        expect(existsSync('saves/data.json')).to.eql(false);
       });
     });
     context('when file exists - using file path over ride', () => {
       before(async function () {
-        await writeFileSync('dataTest.json', JSON.stringify({ foo: 'bar' }));
+        await writeFileSync('saves/dataTest.json', JSON.stringify({ foo: 'bar' }));
       });
       it('expect delete to remove file', async () => {
-        await database.delete('dataTest.json');
-        expect(existsSync('data.json')).to.eql(false);
+        await database.delete('saves/dataTest.json');
+        expect(existsSync('saves/data.json')).to.eql(false);
       });
     });
     context('when file does not exists', () => {
       it('expect delete to not fail', async () => {
         await database.delete();
-        expect(existsSync('data.json')).to.eql(false);
+        expect(existsSync('saves/data.json')).to.eql(false);
       });
     });
   });
