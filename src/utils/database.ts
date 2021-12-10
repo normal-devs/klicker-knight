@@ -30,11 +30,12 @@ export class Database {
     );
   }
 
-  delete(filePathOverride?: string): void {
+  delete(filePathOverride?: string): boolean {
     try {
-      return unlinkSync(filePathOverride || this.defaultFilePath);
+      unlinkSync(filePathOverride || this.defaultFilePath);
+      return true;
     } catch (error) {
-      return undefined;
+      return false;
     }
   }
 }

@@ -133,7 +133,8 @@ describe('database', () => {
         writeFileSync('saves/data.json', JSON.stringify({ foo: 'bar' }));
       });
       it('expect delete to remove file', () => {
-        database.delete();
+        const returnValue = database.delete();
+        expect(returnValue).to.equal(true);
         expect(existsSync('saves/data.json')).to.eql(false);
       });
     });
@@ -142,13 +143,15 @@ describe('database', () => {
         writeFileSync('saves/dataTest.json', JSON.stringify({ foo: 'bar' }));
       });
       it('expect delete to remove file', () => {
-        database.delete('saves/dataTest.json');
+        const returnValue = database.delete('saves/dataTest.json');
+        expect(returnValue).to.equal(true);
         expect(existsSync('saves/data.json')).to.eql(false);
       });
     });
     context('when file does not exists', () => {
       it('expect delete to not fail', () => {
-        database.delete();
+        const returnValue = database.delete();
+        expect(returnValue).to.equal(false);
         expect(existsSync('saves/data.json')).to.eql(false);
       });
     });
