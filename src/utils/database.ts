@@ -7,13 +7,13 @@ export class Database {
     this.defaultFilePath = 'saves/data.json';
   }
 
-  async hasGameFile(filePathOverride?: string): Promise<boolean> {
+  hasGameFile(filePathOverride?: string): any {
     return existsSync(filePathOverride || this.defaultFilePath);
   }
 
-  async load(filePathOverride?: string): Promise<object> {
+  load(filePathOverride?: string): unknown {
     try {
-      const data = await readFileSync(
+      const data = readFileSync(
         filePathOverride || this.defaultFilePath,
         'utf-8'
       );
@@ -23,14 +23,14 @@ export class Database {
     }
   }
 
-  async save(data: object, filePathOverride?: string): Promise<void> {
+  save(data: object, filePathOverride?: string): void {
     return writeFileSync(
       filePathOverride || this.defaultFilePath,
       JSON.stringify(data)
     );
   }
 
-  async delete(filePathOverride?: string): Promise<void> {
+  delete(filePathOverride?: string): void {
     try {
       return unlinkSync(filePathOverride || this.defaultFilePath);
     } catch (error) {
