@@ -18,7 +18,7 @@ describe('database', () => {
         expect(returnValue).to.equal(true);
       });
     });
-    context('when file exists - using file path over ride', () => {
+    context('when file exists - using file path override', () => {
       before(function () {
         writeFileSync('saves/dataTest.json', '');
       });
@@ -50,7 +50,7 @@ describe('database', () => {
         expect(returnValue).to.eql({ foo: 'bar' });
       });
     });
-    context('when file exists and has data - using file path over ride', () => {
+    context('when file exists and has data - using file path override', () => {
       before(function () {
         writeFileSync('saves/dataTest.json', JSON.stringify({ foo: 'bar' }));
       });
@@ -109,7 +109,7 @@ describe('database', () => {
       }
     );
     context(
-      'when file exists and is being saved with valid data - using file path over ride',
+      'when file exists and is being saved with valid data - using file path override',
       () => {
         before(function () {
           writeFileSync('saves/dataTest.json', JSON.stringify({ foo: 'bar' }));
@@ -136,7 +136,7 @@ describe('database', () => {
         expect(existsSync('saves/data.json')).to.eql(false);
       });
     });
-    context('when file exists - using file path over ride', () => {
+    context('when file exists - using file path override', () => {
       before(function () {
         writeFileSync('saves/dataTest.json', JSON.stringify({ foo: 'bar' }));
       });
