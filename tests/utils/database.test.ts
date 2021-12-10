@@ -147,10 +147,12 @@ describe('database', () => {
       });
     });
     context('when file does not exists', () => {
+      before(function () {
+        expect(existsSync('saves/data.json')).to.eql(false);
+      });
       it('expect delete to not fail', () => {
         const returnValue = database.delete();
         expect(returnValue).to.equal(false);
-        expect(existsSync('saves/data.json')).to.eql(false);
       });
     });
   });
