@@ -1,5 +1,3 @@
-/* eslint-disable mocha/no-hooks-for-single-case */
-/* eslint-disable func-names */
 import { expect } from 'chai';
 import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
 import { Database } from '../../src/utils/database';
