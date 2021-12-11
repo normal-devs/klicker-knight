@@ -1,5 +1,7 @@
+/* eslint sort-keys: 'error' */
+
 module.exports = {
-  require: 'ts-node/register',
   recursive: true,
+  require: 'ts-node/register',
   timeout: 5000,
 };

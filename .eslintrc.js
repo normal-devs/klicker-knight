@@ -1,3 +1,5 @@
+/* eslint sort-keys: 'error' */
+
 module.exports = {
   extends: [
     'airbnb-base',
@@ -16,21 +18,21 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     '@typescript-eslint/await-thenable': 'error',
-    '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/no-unsafe-return': 'error',
-    'import/prefer-default-export': 'off',
+    '@typescript-eslint/require-await': 'error',
     'import/no-default-export': 'error',
+    'import/prefer-default-export': 'off',
     'max-len': [
       'error',
       120,
       2,
       {
-        ignoreUrls: true,
         ignoreComments: false,
         ignoreRegExpLiterals: true,
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
         ignoreTrailingComments: true,
+        ignoreUrls: true,
       },
     ],
     'mocha/no-exclusive-tests': 'error',
