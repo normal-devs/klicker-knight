@@ -19,6 +19,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
+    '@typescript-eslint/explicit-module-boundary-types': 'error',
     'import/no-default-export': 'error',
     'import/prefer-default-export': 'off',
     'max-len': [
