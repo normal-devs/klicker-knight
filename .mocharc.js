@@ -1,5 +1,5 @@
 module.exports = {
-  require: 'ts-node/register',
+  require: 'tests/registerTests',
   recursive: true,
   timeout: 5000,
 }
