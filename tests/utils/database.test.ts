@@ -46,13 +46,13 @@ describe('load', () => {
     });
     it('expect load to return error', () => {
       const returnValue = databaseUtils.load();
-      expect(returnValue).to.have.own.property('error');
+      expect(returnValue).to.eql(null);
     });
   });
   context('when file does not exist', () => {
     it('expect load to return error', () => {
       const returnValue = databaseUtils.load();
-      expect(returnValue).to.have.own.property('error');
+      expect(returnValue).to.eql(null);
     });
   });
 });

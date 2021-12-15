@@ -12,7 +12,7 @@ module.exports = {
       const data = readFileSync(defaultFilePath, 'utf-8');
       return JSON.parse(data);
     } catch (error) {
-      return { error };
+      return null;
     }
   },
 
