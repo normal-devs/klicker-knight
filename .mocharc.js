@@ -3,6 +3,6 @@
 // eslint-disable-next-line import/no-commonjs
 module.exports = {
   recursive: true,
-  require: 'ts-node/register',
+  require: 'tests/registerTests',
   timeout: 5000,
 };

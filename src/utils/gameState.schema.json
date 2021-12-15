@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GameState",
+  "type": "object",
+  "properties": {
+    "currentRoomId": {
+      "type": "null"
+    }
+  },
+  "required": ["currentRoomId"],
+  "additionalProperties": false
+}

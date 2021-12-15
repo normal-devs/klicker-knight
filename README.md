@@ -7,6 +7,8 @@ The spearhead thrust into the untapped market of npm cli games
 ```bash
 npm install
 
+npm run compile:gameStateSchema
+
 npm run dev
 ```
 

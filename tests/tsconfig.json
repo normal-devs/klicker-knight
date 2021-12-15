@@ -1,10 +1,15 @@
 {
+  "ts-node": {
+    "files": true
+  },
   "extends": "../tsconfig",
   "compilerOptions": {
+    "resolveJsonModule": true,
     "rootDir": "../",
     "noEmit": true
   },
   "include": [
-    "./**/*.test.ts"
+    "./**/*.ts",
+    "./registerTests.js"
   ]
 }
