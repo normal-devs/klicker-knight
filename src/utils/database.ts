@@ -1,41 +1,36 @@
-import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
+const { existsSync, readFileSync, writeFileSync, unlinkSync } = require('fs');
 
-export class Database {
-  defaultFilePath: string;
+const defaultFilePath = 'saves/data.json';
 
-  constructor() {
-    this.defaultFilePath = 'saves/data.json';
-  }
+module.exports = {
+  hasGameFile(): any {
+    return existsSync(defaultFilePath);
+  },
 
-  hasGameFile(filePathOverride?: string): any {
-    return existsSync(filePathOverride || this.defaultFilePath);
-  }
-
-  load(filePathOverride?: string): unknown {
+  load(): unknown {
     try {
-      const data = readFileSync(
-        filePathOverride || this.defaultFilePath,
-        'utf-8'
-      );
+      const data = readFileSync(defaultFilePath, 'utf-8');
       return JSON.parse(data);
     } catch (error) {
       return { error };
     }
-  }
+  },
 
-  save(data: object, filePathOverride?: string): void {
-    return writeFileSync(
-      filePathOverride || this.defaultFilePath,
-      JSON.stringify(data)
-    );
-  }
-
-  delete(filePathOverride?: string): boolean {
+  save(data: object): boolean {
     try {
-      unlinkSync(filePathOverride || this.defaultFilePath);
+      writeFileSync(defaultFilePath, JSON.stringify(data));
       return true;
     } catch (error) {
       return false;
     }
-  }
-}
+  },
+
+  delete(): boolean {
+    try {
+      unlinkSync(defaultFilePath);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+};
