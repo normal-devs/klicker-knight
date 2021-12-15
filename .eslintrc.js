@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/no-unsafe-return': 'error',
+    'import/no-import-module-exports': 'off',
     'import/prefer-default-export': 'off',
     'import/no-default-export': 'error',
     'max-len': [
