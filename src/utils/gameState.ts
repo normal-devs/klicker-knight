@@ -2,11 +2,11 @@ import type { GameState } from './gameStateSchema';
 import { databaseUtil } from './database';
 
 // TODO: replace this with ajv or something: https://github.com/normal-devs/klicker-knight/projects/1#card-74624641
-const isGameState = (u: unknown): u is GameState =>
-  typeof u === 'object' &&
-  u !== null &&
-  'currentRoomId' in u &&
-  (u as Record<'currentRoomId', any>).currentRoomId === null; // eslint-disable-line @typescript-eslint/no-explicit-any
+const isGameState = (unknownState: unknown): unknownState is GameState =>
+  typeof unknownState === 'object' &&
+  unknownState !== null &&
+  'currentRoomId' in unknownState &&
+  (unknownState as Record<'currentRoomId', any>).currentRoomId === null; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 const init = (): GameState => ({
   currentRoomId: null,
