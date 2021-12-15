@@ -1,5 +1,8 @@
+/* eslint sort-keys: 'error' */
+
+// eslint-disable-next-line import/no-commonjs
 module.exports = {
-  require: 'ts-node/register',
   recursive: true,
+  require: 'ts-node/register',
   timeout: 5000,
-}
+};

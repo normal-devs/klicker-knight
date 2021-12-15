@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
 
 const defaultFilePath = 'saves/data.json';
 
-module.exports = {
+export const databaseUtil = {
   hasGameFile(): boolean {
     return existsSync(defaultFilePath);
   },
