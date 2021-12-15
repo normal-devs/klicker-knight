@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
 
-const databaseUtils = require('../../src/utils/database');
+import { databaseUtil } from '../../src/utils/database';
 
 describe('hasGameFile', () => {
   context('when file exists', () => {
@@ -12,14 +12,12 @@ describe('hasGameFile', () => {
       unlinkSync('saves/data.json');
     });
     it('expect hasGameFile to return true', () => {
-      const returnValue = databaseUtils.hasGameFile();
-      expect(returnValue).to.equal(true);
+      expect(databaseUtil.hasGameFile()).to.equal(true);
     });
   });
   context('when file does not exist', () => {
     it('expect hasGameFile to return false', () => {
-      const returnValue = databaseUtils.hasGameFile();
-      expect(returnValue).to.equal(false);
+      expect(databaseUtil.hasGameFile()).to.equal(false);
     });
   });
 });
@@ -33,7 +31,7 @@ describe('load', () => {
       unlinkSync('saves/data.json');
     });
     it('expect load to return data', () => {
-      const returnValue = databaseUtils.load();
+      const returnValue = databaseUtil.load();
       expect(returnValue).to.eql({ foo: 'bar' });
     });
   });
@@ -45,14 +43,12 @@ describe('load', () => {
       unlinkSync('saves/data.json');
     });
     it('expect load to return error', () => {
-      const returnValue = databaseUtils.load();
-      expect(returnValue).to.eql(null);
+      expect(databaseUtil.load()).to.eql(null);
     });
   });
   context('when file does not exist', () => {
     it('expect load to return error', () => {
-      const returnValue = databaseUtils.load();
-      expect(returnValue).to.eql(null);
+      expect(databaseUtil.load()).to.eql(null);
     });
   });
 });
@@ -66,7 +62,7 @@ describe('save', () => {
       unlinkSync('saves/data.json');
     });
     it('expect save to save data', () => {
-      databaseUtils.save({ foo: 'foo' });
+      databaseUtil.save({ foo: 'foo' });
       const returnValue = readFileSync('saves/data.json', 'utf-8');
       expect(returnValue).to.eql('{"foo":"foo"}');
     });
@@ -76,7 +72,7 @@ describe('save', () => {
       unlinkSync('saves/data.json');
     });
     it('expect save to save data', () => {
-      databaseUtils.save({ foo: 'foo' });
+      databaseUtil.save({ foo: 'foo' });
       const returnValue = readFileSync('saves/data.json', 'utf-8');
       expect(returnValue).to.eql('{"foo":"foo"}');
     });
@@ -89,8 +85,7 @@ describe('delete', () => {
       writeFileSync('saves/data.json', JSON.stringify({ foo: 'bar' }));
     });
     it('expect delete to remove file', () => {
-      const returnValue = databaseUtils.delete();
-      expect(returnValue).to.equal(true);
+      expect(databaseUtil.delete()).to.equal(true);
       expect(existsSync('saves/data.json')).to.eql(false);
     });
   });
@@ -99,8 +94,7 @@ describe('delete', () => {
       expect(existsSync('saves/data.json')).to.eql(false);
     });
     it('expect delete to not fail', () => {
-      const returnValue = databaseUtils.delete();
-      expect(returnValue).to.equal(false);
+      expect(databaseUtil.delete()).to.equal(false);
     });
   });
 });

@@ -1,5 +1,6 @@
 /* eslint sort-keys: 'error' */
 
+// eslint-disable-next-line import/no-commonjs
 module.exports = {
   extends: [
     'airbnb-base',
@@ -20,6 +21,7 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'error',
+    'import/no-commonjs': 'error',
     'import/no-default-export': 'error',
     'import/no-import-module-exports': 'off',
     'import/prefer-default-export': 'off',
