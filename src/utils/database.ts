@@ -1,11 +1,10 @@
-const { existsSync, readFileSync, writeFileSync, unlinkSync } = require('fs');
+import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
 
 const defaultFilePath = 'saves/data.json';
 
 module.exports = {
   hasGameFile(): boolean {
-    if (existsSync(defaultFilePath)) return true;
-    return false;
+    return existsSync(defaultFilePath);
   },
 
   load(): unknown {
