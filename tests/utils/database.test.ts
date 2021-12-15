@@ -32,8 +32,8 @@ describe('load', () => {
     after(function () {
       unlinkSync('saves/data.json');
     });
-    it('expect load to return data', async () => {
-      const returnValue = await databaseUtils.load();
+    it('expect load to return data', () => {
+      const returnValue = databaseUtils.load();
       expect(returnValue).to.eql({ foo: 'bar' });
     });
   });
@@ -44,14 +44,14 @@ describe('load', () => {
     after(function () {
       unlinkSync('saves/data.json');
     });
-    it('expect load to return error', async () => {
-      const returnValue = await databaseUtils.load();
+    it('expect load to return error', () => {
+      const returnValue = databaseUtils.load();
       expect(returnValue).to.have.own.property('error');
     });
   });
   context('when file does not exist', () => {
-    it('expect load to return error', async () => {
-      const returnValue = await databaseUtils.load();
+    it('expect load to return error', () => {
+      const returnValue = databaseUtils.load();
       expect(returnValue).to.have.own.property('error');
     });
   });
