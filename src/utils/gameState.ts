@@ -14,8 +14,7 @@ const init = (): GameState => ({
 
 export const gameStateUtil = {
   load: (): GameState => {
-    const hasGameFile = databaseUtil.hasGameFile();
-    const unknownState = hasGameFile ? databaseUtil.load() : null;
+    const unknownState = databaseUtil.load();
     const hasValidSaveState = isGameState(unknownState);
     const gameState = hasValidSaveState ? unknownState : init();
 
