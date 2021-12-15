@@ -1,12 +1,12 @@
 import type { GameState } from './gameStateSchema';
-import { database } from './database';
+import { databaseUtil } from './database';
 
 // TODO: replace this with ajv or something: https://github.com/normal-devs/klicker-knight/projects/1#card-74624641
 const isGameState = (u: unknown): u is GameState =>
   typeof u === 'object' &&
   u !== null &&
   'currentRoomId' in u &&
-  (u as Record<'currentRoomId', any>).currentRoomId === null;
+  (u as Record<'currentRoomId', any>).currentRoomId === null; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 const init = (): GameState => ({
   currentRoomId: null,
@@ -14,9 +14,11 @@ const init = (): GameState => ({
 
 export const gameStateUtil = {
   load: (): GameState => {
-    const unknownState = database.hasGameFile() ? database.load() : null;
+    const unknownState = databaseUtil.hasGameFile()
+      ? databaseUtil.load()
+      : null;
     const hasValidSaveState =
-      database.hasGameFile() && isGameState(unknownState);
+      databaseUtil.hasGameFile() && isGameState(unknownState);
     const gameState = hasValidSaveState ? unknownState : init();
 
     if (!hasValidSaveState) {
@@ -25,7 +27,7 @@ export const gameStateUtil = {
 
     return gameState;
   },
-  save: (state: GameState) => {
-    database.save(state);
+  save: (state: GameState): void => {
+    databaseUtil.save(state);
   },
 };

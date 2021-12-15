@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import sinon, { SinonSpy } from 'sinon';
-import { database } from '../../src/utils/database';
+import { databaseUtil } from '../../src/utils/database';
 import { gameStateUtil } from '../../src/utils/gameState';
 import { GameState } from '../../src/utils/gameStateSchema';
 import { generateGameState } from '../testHelpers/generateGameState';
@@ -11,10 +11,10 @@ describe('gameStateUtil', () => {
       let result: GameState;
       let mockGameState: GameState;
       before(() => {
-        sinon.stub(database, 'hasGameFile').returns(true);
+        sinon.stub(databaseUtil, 'hasGameFile').returns(true);
         mockGameState = generateGameState();
-        sinon.stub(database, 'load').returns(mockGameState);
-        sinon.stub(database, 'save');
+        sinon.stub(databaseUtil, 'load').returns(mockGameState);
+        sinon.stub(databaseUtil, 'save');
         result = gameStateUtil.load();
       });
       after(() => {
@@ -26,15 +26,15 @@ describe('gameStateUtil', () => {
       });
 
       it('does not save the new game state', () => {
-        expect((database.save as SinonSpy).called).to.eq(false);
+        expect((databaseUtil.save as SinonSpy).called).to.eq(false);
       });
     });
 
     context('when the game state does not exist', () => {
       let result: GameState;
       before(() => {
-        sinon.stub(database, 'hasGameFile').returns(false);
-        sinon.stub(database, 'save');
+        sinon.stub(databaseUtil, 'hasGameFile').returns(false);
+        sinon.stub(databaseUtil, 'save');
         result = gameStateUtil.load();
       });
       after(() => {
@@ -42,8 +42,8 @@ describe('gameStateUtil', () => {
       });
 
       it('saves the new game state', () => {
-        expect((database.save as SinonSpy).called).to.eq(true);
-        expect((database.save as SinonSpy).args).to.eql([
+        expect((databaseUtil.save as SinonSpy).called).to.eq(true);
+        expect((databaseUtil.save as SinonSpy).args).to.eql([
           [
             {
               currentRoomId: null,
@@ -62,9 +62,9 @@ describe('gameStateUtil', () => {
     context('when the game state is invalid', () => {
       let result: GameState;
       before(() => {
-        sinon.stub(database, 'hasGameFile').returns(false);
-        sinon.stub(database, 'load').returns('not a game state');
-        sinon.stub(database, 'save');
+        sinon.stub(databaseUtil, 'hasGameFile').returns(false);
+        sinon.stub(databaseUtil, 'load').returns('not a game state');
+        sinon.stub(databaseUtil, 'save');
         result = gameStateUtil.load();
       });
       after(() => {
@@ -72,8 +72,8 @@ describe('gameStateUtil', () => {
       });
 
       it('saves the new game state', () => {
-        expect((database.save as SinonSpy).called).to.eq(true);
-        expect((database.save as SinonSpy).args).to.eql([
+        expect((databaseUtil.save as SinonSpy).called).to.eq(true);
+        expect((databaseUtil.save as SinonSpy).args).to.eql([
           [
             {
               currentRoomId: null,

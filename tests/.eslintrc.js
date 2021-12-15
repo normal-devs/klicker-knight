@@ -1,6 +1,9 @@
+// eslint-disable-next-line import/no-commonjs
 module.exports = {
   extends: ['../.eslintrc.js'],
   rules: {
-    'mocha/no-hooks-for-single-case': 'off',
+    'mocha/max-top-level-suites': 0,
+    'func-names': 0,
+    'mocha/no-hooks-for-single-case': 0,
   },
 };
