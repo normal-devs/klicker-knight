@@ -11,14 +11,14 @@ describe('hasGameFile', () => {
     after(function () {
       unlinkSync('saves/data.json');
     });
-    it('expect hasGameFile to return true', async () => {
-      const returnValue = await databaseUtils.hasGameFile();
+    it('expect hasGameFile to return true', () => {
+      const returnValue = databaseUtils.hasGameFile();
       expect(returnValue).to.equal(true);
     });
   });
   context('when file does not exist', () => {
-    it('expect hasGameFile to return false', async () => {
-      const returnValue = await databaseUtils.hasGameFile();
+    it('expect hasGameFile to return false', () => {
+      const returnValue = databaseUtils.hasGameFile();
       expect(returnValue).to.equal(false);
     });
   });
