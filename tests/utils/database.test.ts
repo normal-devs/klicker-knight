@@ -68,7 +68,7 @@ describe('save', () => {
     it('expect save to save data', () => {
       databaseUtils.save({ foo: 'foo' });
       const returnValue = readFileSync('saves/data.json', 'utf-8');
-      expect(JSON.parse(returnValue)).to.eql({ foo: 'foo' });
+      expect(returnValue).to.eql('{"foo":"foo"}');
     });
   });
   context('when file does not exist and is being saved with valid data', () => {
@@ -78,7 +78,7 @@ describe('save', () => {
     it('expect save to save data', () => {
       databaseUtils.save({ foo: 'foo' });
       const returnValue = readFileSync('saves/data.json', 'utf-8');
-      expect(JSON.parse(returnValue)).to.eql({ foo: 'foo' });
+      expect(returnValue).to.eql('{"foo":"foo"}');
     });
   });
 });
