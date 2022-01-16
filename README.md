@@ -25,3 +25,13 @@ npm run dev
   "eslint.format.enable": true,
 }
 ```
+
+### Recommended VSCode Extensions
+
+- [GitHub Markdown Preview](https://marketplace.visualstudio.com/items?itemName=bierner.github-markdown-preview)
+- [Markdown Preview Mermaid Support](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid)
+- [Mermaid Markdown Syntax Highlighting](https://marketplace.visualstudio.com/items?itemName=bpruitt-goddard.mermaid-markdown-syntax-highlighting)
+
+### Documentation
+
+Docs are located in [./docs/](./docs/). A good place to start is [./docs/client.md](./docs/client.md).
