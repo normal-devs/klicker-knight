@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import sinon, { SinonSpy } from 'sinon';
 import { databaseUtil } from '../../src/utils/databaseUtil';
 import { gameStateUtil } from '../../src/utils/gameStateUtil';
-import { GameState } from '../../src/utils/gameStateSchema';
+import { GameState } from '../../src/utils/types';
 import { generateGameState } from '../testHelpers/generateGameState';
 
 describe('gameStateUtil', () => {
