@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "clean": "rimraf lib",
+    "clean:game": "node -e 'const { databaseUtil } = require(\"./lib/utils/databaseUtil.js\"); databaseUtil.delete();'",
     "compile:gameStateSchema": "json2ts src/utils/types/gameState.schema.json > src/utils/types/gameState.d.ts",
     "dev": "node bin/run",
     "lint:md": "markdownlint **/*.md --ignore node_modules",
