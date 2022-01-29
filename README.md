@@ -12,6 +12,8 @@ npm run compile:gameStateSchema
 npm run --silent dev
 ```
 
+Use `npm run clean:game` to delete old save files.
+
 ### Configuring Vscode Formatting
 
 - install eslint vscode extension
