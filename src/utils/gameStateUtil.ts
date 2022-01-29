@@ -1,12 +1,13 @@
+import Ajv from 'ajv';
 import type { GameState } from './types';
 import { databaseUtil } from './databaseUtil';
+import gameStateSchema from './types/gameState.schema.json';
 
-// TODO: replace this with ajv or something: https://github.com/normal-devs/klicker-knight/projects/1#card-74624641
+const ajv = new Ajv();
+const validateGameState = ajv.compile(gameStateSchema);
+
 const isGameState = (unknownState: unknown): unknownState is GameState =>
-  typeof unknownState === 'object' &&
-  unknownState !== null &&
-  'currentRoomId' in unknownState &&
-  (unknownState as Record<'currentRoomId', any>).currentRoomId === null; // eslint-disable-line @typescript-eslint/no-explicit-any
+  validateGameState(unknownState);
 
 const init = (): GameState => ({
   currentRoomId: null,
