@@ -10,9 +10,10 @@ npm install
 npm run compile:gameStateSchema
 
 npm run --silent dev
-```
 
-Use `npm run clean:game` to delete old save files.
+# Delete the current save file
+npm run clean:game
+```
 
 ### Configuring Vscode Formatting
 
