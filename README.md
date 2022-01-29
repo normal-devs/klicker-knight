@@ -12,7 +12,7 @@ npm run compile:gameStateSchema
 npm run --silent dev
 
 # Delete the current save file
-npm run clean:game
+npm run clean:save
 ```
 
 ### Configuring Vscode Formatting
