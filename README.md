@@ -9,7 +9,7 @@ npm install
 
 npm run compile:gameStateSchema
 
-npm run dev
+npm run --silent dev
 ```
 
 ### Configuring Vscode Formatting

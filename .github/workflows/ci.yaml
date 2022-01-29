@@ -26,6 +26,9 @@ jobs:
       - name: Lint Yaml
         if: always()
         run: npm run lint:yaml
+      - name: Typecheck
+        if: always()
+        run: npm run typecheck
       - name: Test
         if: always()
         run: npm test
