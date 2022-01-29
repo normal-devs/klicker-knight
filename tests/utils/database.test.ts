@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
 
-import { databaseUtil } from '../../src/utils/database';
+import { databaseUtil } from '../../src/utils/databaseUtil';
 
 describe('hasGameFile', () => {
   context('when file exists', () => {
