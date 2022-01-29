@@ -1,5 +1,5 @@
-import type { GameState } from './gameStateSchema';
-import { databaseUtil } from './database';
+import type { GameState } from './types';
+import { databaseUtil } from './databaseUtil';
 
 // TODO: replace this with ajv or something: https://github.com/normal-devs/klicker-knight/projects/1#card-74624641
 const isGameState = (unknownState: unknown): unknownState is GameState =>

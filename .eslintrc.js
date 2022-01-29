@@ -24,6 +24,20 @@ module.exports = {
     'import/no-commonjs': 'error',
     'import/no-default-export': 'error',
     'import/no-import-module-exports': 'off',
+    'import/no-restricted-paths': [
+      'error',
+      {
+        zones: [
+          {
+            except: ['./src/utils/types/index.ts'],
+            from: './src/utils/types/gameState.d.ts',
+            message:
+              'Make src/utils/types/gameState.d.ts types available in src/utils/types/index.ts to provide a unified interface for other modules. Then import from src/utils/types/',
+            target: './',
+          },
+        ],
+      },
+    ],
     'import/prefer-default-export': 'off',
     'max-len': [
       'error',
