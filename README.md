@@ -38,3 +38,5 @@ npm run clean:game
 ### Documentation
 
 Docs are located in [./docs/](./docs/). A good place to start is [./docs/client.md](./docs/client.md).
+
+Tests use [semantic-mocha](./semantic-mocha/README.md) which is currently being developed in this project.
