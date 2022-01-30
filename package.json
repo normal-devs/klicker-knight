@@ -11,6 +11,7 @@
     "lint:yaml": "yamllint --ignore=node_modules/**/*.yaml **/*.yaml",
     "prepack": "npm run clean && tsc -b",
     "test": "nyc --extension .ts mocha \"tests/**/*.test.ts\"",
+    "test:semantic-mocha": "nyc --extension .ts mocha --config semantic-mocha/tests/.mocharc.js \"semantic-mocha/tests/**/*.test.ts\"",
     "typecheck": "tsc --noEmit -P tests/tsconfig.json ",
     "update-readme": "oclif-dev readme"
   },
