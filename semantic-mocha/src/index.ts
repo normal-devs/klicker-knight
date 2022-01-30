@@ -17,23 +17,29 @@ type AssertionCallback = () => void;
 type ChainableAssertionRegistrant<TArranged, TResult> = (
   assertionDescription: string,
   onAssert: ChainableAssertionCallback<TArranged, TResult>,
-) => ScenarioAssertionBuilder<TArranged, TResult>;
+) => AssertedScenarioBuilder<TArranged, TResult>;
 
 type ChainableAssertionCallback<TArranged, TResult> = (
   arranged: TArranged,
   result: TResult,
 ) => void;
 
-type ScenarioAssertionBuilder<TArranged, TResult> = {
-  assert: ChainableAssertionRegistrant<TArranged, TResult>;
-};
+type AssertedScenarioBuilder<TArranged, TResult> = ScenarioAssertBuilder<
+  TArranged,
+  TResult
+>;
 
 // ActRegistrant
 type ActRegistrant<TArranged> = <TResult>(
   onAct: ActCallback<TArranged, TResult>,
-) => ScenarioAssertionBuilder<TArranged, TResult>;
+) => ActionedScenarioBuilder<TArranged, TResult>;
 
 type ActCallback<TArranged, TResult> = (arranged: TArranged) => TResult;
+
+type ActionedScenarioBuilder<TArranged, TResult> = ScenarioAssertBuilder<
+  TArranged,
+  TResult
+>;
 
 // AnnihilateRegistrant
 type AnnihilateRegistrant<TArranged> = (
@@ -42,9 +48,7 @@ type AnnihilateRegistrant<TArranged> = (
 
 type AnnihilateCallback<TArranged> = (arranged: TArranged) => void;
 
-type AnnihilatedScenarioBuilder<TArranged> = {
-  act: ActRegistrant<TArranged>;
-} & ScenarioAssertionBuilder<TArranged, void>;
+type AnnihilatedScenarioBuilder<TArranged> = ScenarioActBuilder<TArranged>;
 
 // ArrangeRegistrant
 type ArrangeRegistrant = <TArranged>(
@@ -53,16 +57,32 @@ type ArrangeRegistrant = <TArranged>(
 
 type ArrangeCallback<TArranged> = () => TArranged;
 
-type ArrangedScenarioBuilder<TArranged> = {
-  annihilate: AnnihilateRegistrant<TArranged>;
-} & AnnihilatedScenarioBuilder<TArranged>;
+type ArrangedScenarioBuilder<TArranged> = ScenarioAnnihilateBuilder<TArranged> &
+  ScenarioActBuilder<TArranged>;
 
 // ScenarioRegistrant
 type ScenarioRegistrant = (scenarioDescription: string) => ScenarioBuilder;
 
-type ScenarioBuilder = {
+// Scenario Builders
+type ScenarioBuilder = ScenarioArrangeBuilder &
+  ScenarioAnnihilateBuilder<void> &
+  ScenarioActBuilder<void>;
+
+type ScenarioArrangeBuilder = {
   arrange: ArrangeRegistrant;
-} & Omit<ArrangedScenarioBuilder<void>, 'annihilate'>;
+};
+
+type ScenarioActBuilder<TArranged> = {
+  act: ActRegistrant<TArranged>;
+};
+
+type ScenarioAnnihilateBuilder<TArranged> = {
+  annihilate: AnnihilateRegistrant<TArranged>;
+};
+
+type ScenarioAssertBuilder<TArranged, TResult> = {
+  assert: ChainableAssertionRegistrant<TArranged, TResult>;
+};
 
 // UnitSuiteRegistrant
 type UnitSuiteRegistrant = (
@@ -184,7 +204,7 @@ const buildRegisterChainableAssertion = <TArranged, TResult>(
   > = (
     assertionDescription,
     onAssert,
-  ): ScenarioAssertionBuilder<TArranged, TResult> => {
+  ): AssertedScenarioBuilder<TArranged, TResult> => {
     buildRegisterAssertion(parentConfig)(assertionDescription, () =>
       onAssert(getArranged(), getResult()),
     );
@@ -204,7 +224,7 @@ const buildActRegistrant =
   ): ActRegistrant<TArranged> =>
   <TResult>(
     onAct: ActCallback<TArranged, TResult>,
-  ): ScenarioAssertionBuilder<TArranged, TResult> => {
+  ): ActionedScenarioBuilder<TArranged, TResult> => {
     let result: TResult;
     const getResult = () => result;
     const hookWrapper = () => {
@@ -235,11 +255,6 @@ const buildAnnihilateRegistrant =
 
     return {
       act: buildActRegistrant<TArranged>(parentConfig, getArranged),
-      assert: buildRegisterChainableAssertion<TArranged, void>(
-        parentConfig,
-        getArranged,
-        noop,
-      ),
     };
   };
 
@@ -262,11 +277,6 @@ const buildArrangeRegistrant =
         getArranged,
       ),
       act: buildActRegistrant<TArranged>(parentConfig, getArranged),
-      assert: buildRegisterChainableAssertion<TArranged, void>(
-        parentConfig,
-        getArranged,
-        noop,
-      ),
     };
   };
 
@@ -278,8 +288,8 @@ const buildRegisterScenario =
 
     return {
       arrange: buildArrangeRegistrant(config),
+      annihilate: buildAnnihilateRegistrant(config, noop),
       act: buildActRegistrant<void>(config, noop),
-      assert: buildRegisterChainableAssertion<void, void>(config, noop, noop),
     };
   };
 
