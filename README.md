@@ -9,7 +9,10 @@ npm install
 
 npm run compile:gameStateSchema
 
-npm run dev
+npm run --silent dev
+
+# Delete the current save file
+npm run clean:game
 ```
 
 ### Configuring Vscode Formatting

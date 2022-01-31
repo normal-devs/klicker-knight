@@ -3,13 +3,15 @@
   "version": "0.0.0",
   "scripts": {
     "clean": "rimraf lib",
-    "compile:gameStateSchema": "json2ts src/utils/gameState.schema.json > src/utils/gameStateSchema.d.ts",
+    "clean:game": "rm -r saves/*.json",
+    "compile:gameStateSchema": "json2ts src/utils/types/gameState.schema.json > src/utils/types/gameState.d.ts",
     "dev": "node bin/run",
     "lint:md": "markdownlint **/*.md --ignore node_modules",
     "lint:ts": "eslint --ext .ts,.js .",
     "lint:yaml": "yamllint --ignore=node_modules/**/*.yaml **/*.yaml",
     "prepack": "npm run clean && tsc -b",
     "test": "nyc --extension .ts mocha \"tests/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit -P tests/tsconfig.json ",
     "update-readme": "oclif-dev readme"
   },
   "bin": {
@@ -19,6 +21,7 @@
     "@oclif/command": "^1.8.6",
     "@oclif/config": "^1.18.1",
     "@oclif/plugin-help": "^3.2.9",
+    "ajv": "^8.9.0",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
