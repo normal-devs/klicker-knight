@@ -134,10 +134,13 @@ type SingletonModuleSuiteRegistrantCallback = (
 type GenericCallback = () => void;
 
 // MochaConfig
-type MochaFn = Mocha.SuiteFunction | Mocha.HookFunction | Mocha.TestFunction;
+type MochaFunction =
+  | Mocha.SuiteFunction
+  | Mocha.HookFunction
+  | Mocha.TestFunction;
 
-abstract class MochaConfig<T extends MochaFn> {
-  constructor(public mochaFn: T, public description: string) {}
+abstract class MochaConfig<T extends MochaFunction> {
+  constructor(public mochaFunction: T, public description: string) {}
 
   abstract apply(): void;
 }
@@ -148,37 +151,37 @@ class AssertionConfig extends MochaConfig<Mocha.TestFunction> {
   }
 
   apply(): void {
-    this.mochaFn(this.description, this.onAssert);
+    this.mochaFunction(this.description, this.onAssert);
   }
 }
 
 class HookConfig extends MochaConfig<Mocha.HookFunction> {
   constructor(
-    mochaFn: Mocha.HookFunction,
+    mochaFunction: Mocha.HookFunction,
     description: string,
     public onHook: GenericCallback,
   ) {
-    super(mochaFn, description);
+    super(mochaFunction, description);
   }
 
   apply(): void {
-    this.mochaFn(this.description, this.onHook);
+    this.mochaFunction(this.description, this.onHook);
   }
 }
 
 class SuiteConfig extends MochaConfig<Mocha.SuiteFunction> {
-  public nested: MochaConfig<MochaFn>[] = [];
+  public nested: MochaConfig<MochaFunction>[] = [];
 
   constructor(public description: string) {
     super(mochaDescribe, description);
   }
 
-  add(config: MochaConfig<MochaFn>) {
+  add(config: MochaConfig<MochaFunction>) {
     this.nested.push(config);
   }
 
   apply() {
-    this.mochaFn(this.description, () => {
+    this.mochaFunction(this.description, () => {
       this.nested.forEach((innerConfig) => {
         innerConfig.apply();
       });
