@@ -8,7 +8,7 @@ describe('klicker-knight', () => {
   });
 
   it('trips on a flagstone', () => {
-    const result = execSync('npm run --slient klicker-knight');
+    const result = execSync('npm run --silent klicker-knight');
     expect(result.toString()).to.contain(
       'flagstone. You fall and break your neck.',
     );
