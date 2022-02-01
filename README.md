@@ -9,7 +9,7 @@ npm install
 
 npm run compile:gameStateSchema
 
-npm run --silent dev
+npm run --silent klicker-knight
 
 # Delete the current save file
 npm run clean:game
