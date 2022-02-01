@@ -29,9 +29,9 @@ jobs:
       - name: Typecheck
         if: always()
         run: npm run typecheck
-      - name: Test
+      - name: Test Src
         if: always()
-        run: npm test
-      - name: Run App
+        run: npm run test:src
+      - name: Test E2E
         if: always()
-        run: npm run dev
+        run: npm run test:e2e
