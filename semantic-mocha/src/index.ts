@@ -81,7 +81,7 @@ type ScenarioAnnihilateBuilder<TArranged> = {
 };
 
 type ScenarioAssertBuilder<TArranged, TResult> = {
-  assert: ChainableAssertionRegistrant<TArranged, TResult>;
+  assert: MochafiedRegistrant<ChainableAssertionRegistrant<TArranged, TResult>>;
 };
 
 // UnitSuiteRegistrant
@@ -93,8 +93,8 @@ type UnitSuiteRegistrant = (
 type UnitSuiteRegistrantCallback = (unitSuite: UnitSuite) => void;
 
 type UnitSuite = {
-  testScenario: ScenarioRegistrant;
-  assert: AssertionRegistrant;
+  testScenario: MochafiedRegistrant<ScenarioRegistrant>;
+  assert: MochafiedRegistrant<AssertionRegistrant>;
 };
 
 // ExportSuiteRegistrant
@@ -106,7 +106,7 @@ type ExportSuiteRegistrant = (
 type ExportSuiteRegistrantCallback = (exportSuite: ExportSuite) => void;
 
 type ExportSuite = {
-  testUnit: UnitSuiteRegistrant;
+  testUnit: MochafiedRegistrant<UnitSuiteRegistrant>;
 } & UnitSuite;
 
 // ModuleSuiteRegistrant
@@ -118,7 +118,7 @@ type ModuleSuiteRegistrant = (
 type ModuleSuiteRegistrantCallback = (moduleSuite: ModuleSuite) => void;
 
 type ModuleSuite = {
-  testExport: ExportSuiteRegistrant;
+  testExport: MochafiedRegistrant<ExportSuiteRegistrant>;
 };
 
 // SingletonModuleSuiteRegistrant
@@ -135,9 +135,19 @@ type GenericCallback = () => void;
 
 // MochaConfig
 type MochaFunction =
-  | Mocha.SuiteFunction
+  | MochaSuiteFunction
   | Mocha.HookFunction
-  | Mocha.TestFunction;
+  | MochaTestFunction;
+
+type MochaSuiteFunction =
+  | Mocha.SuiteFunction
+  | Mocha.ExclusiveSuiteFunction
+  | Mocha.PendingSuiteFunction;
+
+type MochaTestFunction =
+  | Mocha.TestFunction
+  | Mocha.ExclusiveTestFunction
+  | Mocha.PendingTestFunction;
 
 abstract class MochaConfig<T extends MochaFunction> {
   constructor(public mochaFunction: T, public description: string) {}
@@ -145,9 +155,13 @@ abstract class MochaConfig<T extends MochaFunction> {
   abstract apply(): void;
 }
 
-class AssertionConfig extends MochaConfig<Mocha.TestFunction> {
-  constructor(description: string, public onAssert: GenericCallback) {
-    super(mochaIt, description);
+class AssertionConfig extends MochaConfig<MochaTestFunction> {
+  constructor(
+    mochaFunction: MochaTestFunction,
+    description: string,
+    public onAssert: GenericCallback,
+  ) {
+    super(mochaFunction, description);
   }
 
   apply(): void {
@@ -169,11 +183,11 @@ class HookConfig extends MochaConfig<Mocha.HookFunction> {
   }
 }
 
-class SuiteConfig extends MochaConfig<Mocha.SuiteFunction> {
+class SuiteConfig extends MochaConfig<MochaSuiteFunction> {
   public nested: MochaConfig<MochaFunction>[] = [];
 
-  constructor(public description: string) {
-    super(mochaDescribe, description);
+  constructor(mochaFunction: MochaSuiteFunction, public description: string) {
+    super(mochaFunction, description);
   }
 
   add(config: MochaConfig<MochaFunction>) {
@@ -189,33 +203,78 @@ class SuiteConfig extends MochaConfig<Mocha.SuiteFunction> {
   }
 }
 
+// Mochafy
+const mochafyRegistrant = <
+  TMochaFunction extends Mocha.SuiteFunction | Mocha.TestFunction,
+  TRegistrant,
+>(
+  mochaFunction: TMochaFunction,
+  registrantBuilder: (
+    mochaFunction: RelatedMochaFunction<TMochaFunction>,
+  ) => TRegistrant,
+): MochafiedRegistrant<TRegistrant> =>
+  Object.assign(
+    registrantBuilder(mochaFunction as RelatedMochaFunction<TMochaFunction>),
+    {
+      only: registrantBuilder(
+        mochaFunction.only as RelatedMochaFunction<TMochaFunction>,
+      ),
+      skip: registrantBuilder(
+        mochaFunction.skip as RelatedMochaFunction<TMochaFunction>,
+      ),
+    },
+  );
+
+type MochafiedRegistrant<TRegistrant> = TRegistrant & {
+  only: TRegistrant;
+  skip: TRegistrant;
+};
+
+type RelatedMochaFunction<T extends Mocha.SuiteFunction | Mocha.TestFunction> =
+  T extends Mocha.SuiteFunction ? MochaSuiteFunction : MochaTestFunction;
+
 // Registrant Builders
-const buildRegisterAssertion =
-  (parentConfig: SuiteConfig): AssertionRegistrant =>
-  (assertionDescription, onAssert) => {
-    parentConfig.add(new AssertionConfig(assertionDescription, onAssert));
-  };
+const buildRegisterAssertion = (
+  parentConfig: SuiteConfig,
+): MochafiedRegistrant<AssertionRegistrant> =>
+  mochafyRegistrant<Mocha.TestFunction, AssertionRegistrant>(
+    mochaIt,
+    (mochaFunction) =>
+      (assertionDescription: string, onAssert: AssertionCallback) => {
+        parentConfig.add(
+          new AssertionConfig(mochaFunction, assertionDescription, onAssert),
+        );
+      },
+  );
 
 const buildRegisterChainableAssertion = <TArranged, TResult>(
   parentConfig: SuiteConfig,
   getArranged: () => TArranged,
   getResult: () => TResult,
-) => {
-  const registerChainableAssertion: ChainableAssertionRegistrant<
-    TArranged,
-    TResult
-  > = (
-    assertionDescription,
-    onAssert,
-  ): AssertedScenarioBuilder<TArranged, TResult> => {
-    buildRegisterAssertion(parentConfig)(assertionDescription, () =>
-      onAssert(getArranged(), getResult()),
-    );
+): MochafiedRegistrant<ChainableAssertionRegistrant<TArranged, TResult>> => {
+  const registerChainableAssertion: MochafiedRegistrant<
+    ChainableAssertionRegistrant<TArranged, TResult>
+  > = mochafyRegistrant<
+    Mocha.TestFunction,
+    ChainableAssertionRegistrant<TArranged, TResult>
+  >(
+    mochaIt,
+    (mochaFunction) =>
+      (
+        assertionDescription: string,
+        onAssert: ChainableAssertionCallback<TArranged, TResult>,
+      ) => {
+        parentConfig.add(
+          new AssertionConfig(mochaFunction, assertionDescription, () =>
+            onAssert(getArranged(), getResult()),
+          ),
+        );
 
-    return {
-      assert: registerChainableAssertion,
-    };
-  };
+        return {
+          assert: registerChainableAssertion,
+        };
+      },
+  );
 
   return registerChainableAssertion;
 };
@@ -283,67 +342,82 @@ const buildArrangeRegistrant =
     };
   };
 
-const buildRegisterScenario =
-  (parentConfig: SuiteConfig): ScenarioRegistrant =>
-  (scenarioDescription): ScenarioBuilder => {
-    const config = new SuiteConfig(scenarioDescription);
-    parentConfig.add(config);
+const buildRegisterScenario = (
+  parentConfig: SuiteConfig,
+): MochafiedRegistrant<ScenarioRegistrant> =>
+  mochafyRegistrant(
+    mochaDescribe,
+    (mochaFunction) =>
+      (scenarioDescription): ScenarioBuilder => {
+        const config = new SuiteConfig(mochaFunction, scenarioDescription);
+        parentConfig.add(config);
 
-    return {
-      arrange: buildArrangeRegistrant(config),
-      annihilate: buildAnnihilateRegistrant(config, noop),
-      act: buildActRegistrant<void>(config, noop),
-    };
-  };
+        return {
+          arrange: buildArrangeRegistrant(config),
+          annihilate: buildAnnihilateRegistrant(config, noop),
+          act: buildActRegistrant<void>(config, noop),
+        };
+      },
+  );
 
-const buildRegisterUnitSuite =
-  (parentConfig: SuiteConfig): UnitSuiteRegistrant =>
-  (unitDescription, onUnitSuite) => {
-    const config = new SuiteConfig(unitDescription);
-    parentConfig.add(config);
+const buildRegisterUnitSuite = (
+  parentConfig: SuiteConfig,
+): MochafiedRegistrant<UnitSuiteRegistrant> =>
+  mochafyRegistrant(
+    mochaDescribe,
+    (mochaFunction) => (unitDescription, onUnitSuite) => {
+      const config = new SuiteConfig(mochaFunction, unitDescription);
+      parentConfig.add(config);
 
-    const unitSuite: UnitSuite = {
-      testScenario: buildRegisterScenario(config),
-      assert: buildRegisterAssertion(config),
-    };
-    onUnitSuite(unitSuite);
-  };
+      const unitSuite: UnitSuite = {
+        testScenario: buildRegisterScenario(config),
+        assert: buildRegisterAssertion(config),
+      };
+      onUnitSuite(unitSuite);
+    },
+  );
 
-const buildExportSuite = (parentConfig: SuiteConfig) => ({
+const buildExportSuite = (parentConfig: SuiteConfig): ExportSuite => ({
   testUnit: buildRegisterUnitSuite(parentConfig),
   testScenario: buildRegisterScenario(parentConfig),
   assert: buildRegisterAssertion(parentConfig),
 });
 
-const buildRegisterExportSuite =
-  (parentConfig: SuiteConfig): ExportSuiteRegistrant =>
-  (exportDescription, onExportSuite) => {
-    const config = new SuiteConfig(exportDescription);
-    parentConfig.add(config);
-    onExportSuite(buildExportSuite(config));
-  };
+const buildRegisterExportSuite = (
+  parentConfig: SuiteConfig,
+): MochafiedRegistrant<ExportSuiteRegistrant> =>
+  mochafyRegistrant(
+    mochaDescribe,
+    (mochaFunction) => (exportDescription, onExportSuite) => {
+      const config = new SuiteConfig(mochaFunction, exportDescription);
+      parentConfig.add(config);
+      onExportSuite(buildExportSuite(config));
+    },
+  );
 
-const registerModuleSuite: ModuleSuiteRegistrant = (
-  relativeModulePath,
-  onModuleSuite,
-) => {
-  const config = new SuiteConfig(relativeModulePath);
-  const moduleSuite: ModuleSuite = {
-    testExport: buildRegisterExportSuite(config),
-  };
+const registerModuleSuite: MochafiedRegistrant<ModuleSuiteRegistrant> =
+  mochafyRegistrant(
+    mochaDescribe,
+    (mochaFunction) => (relativeModulePath, onModuleSuite) => {
+      const config = new SuiteConfig(mochaFunction, relativeModulePath);
+      const moduleSuite: ModuleSuite = {
+        testExport: buildRegisterExportSuite(config),
+      };
 
-  onModuleSuite(moduleSuite);
-  config.apply();
-};
+      onModuleSuite(moduleSuite);
+      config.apply();
+    },
+  );
 
-const registerSingletonModuleSuite: SingletonModuleSuiteRegistrant = (
-  relativeModulePath,
-  onSingletonModuleSuite,
-) => {
-  const config = new SuiteConfig(relativeModulePath);
-  onSingletonModuleSuite(buildExportSuite(config));
-  config.apply();
-};
+const registerSingletonModuleSuite: MochafiedRegistrant<SingletonModuleSuiteRegistrant> =
+  mochafyRegistrant(
+    mochaDescribe,
+    (mochaFunction) => (relativeModulePath, onSingletonModuleSuite) => {
+      const config = new SuiteConfig(mochaFunction, relativeModulePath);
+      onSingletonModuleSuite(buildExportSuite(config));
+      config.apply();
+    },
+  );
 
 export const testModule = registerModuleSuite;
 export const testSingletonModule = registerSingletonModuleSuite;
