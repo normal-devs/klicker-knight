@@ -4,8 +4,10 @@
 module.exports = {
   extends: ['../.eslintrc.js'],
   rules: {
-    'func-names': 0,
-    'mocha/max-top-level-suites': 0,
-    'mocha/no-hooks-for-single-case': 0,
+    'func-names': 'off',
+    'local-rules/semantic-mocha/no-member-only': 'error',
+    'local-rules/semantic-mocha/no-member-skip': 'warn',
+    'mocha/max-top-level-suites': 'off',
+    'mocha/no-hooks-for-single-case': 'off',
   },
 };

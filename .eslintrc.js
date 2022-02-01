@@ -22,7 +22,7 @@ module.exports = {
       'semantic-mocha/tests/tsconfig.json',
     ],
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'eslint-plugin-local-rules'],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'error',
     'import/no-commonjs': 'error',

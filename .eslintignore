@@ -1,4 +1,6 @@
 /.nyc_output/
+/eslint-local-rules/index.js
+/eslint-local-rules/dist/
 /lib/
 /node_modules/
 !.mocharc.js
