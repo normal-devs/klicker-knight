@@ -15,6 +15,8 @@ module.exports = {
     project: [
       './tsconfig.configFiles.json',
       'tsconfig.json',
+      'eslint-local-rules/tsconfig.json',
+      'eslint-local-rules/tests/tsconfig.json',
       'tests/tsconfig.json',
       'semantic-mocha/tsconfig.json',
       'semantic-mocha/tests/tsconfig.json',
