@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import sinon, { SinonSpy } from 'sinon';
-import { databaseUtil } from '../../src/utils/databaseUtil';
-import { gameStateUtil } from '../../src/utils/gameStateUtil';
-import { generateGameState } from '../testHelpers/generateGameState';
-import { testSingletonModule } from '../testHelpers/semanticMocha';
+import { databaseUtil } from '../../../src/utils/databaseUtil';
+import { gameStateUtil } from '../../../src/utils/gameStateUtil';
+import { generateGameState } from '../../testHelpers/generateGameState';
+import { testSingletonModule } from '../../testHelpers/semanticMocha';
 
 testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
   testUnit('load', ({ testScenario }) => {

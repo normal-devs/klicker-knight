@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
-import { defaultFilePath, databaseUtil } from '../../src/utils/databaseUtil';
-import { testSingletonModule } from '../testHelpers/semanticMocha';
+import { defaultFilePath, databaseUtil } from '../../../src/utils/databaseUtil';
+import { testSingletonModule } from '../../testHelpers/semanticMocha';
 
 testSingletonModule('utils/databaseUtil', ({ testUnit }) => {
   testUnit('hasGameFile', ({ testScenario }) => {
