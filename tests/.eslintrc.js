@@ -6,7 +6,7 @@ module.exports = {
   rules: {
     'func-names': 'off',
     'local-rules/semantic-mocha/no-member-only': 'error',
-    'local-rules/semantic-mocha/no-member-skip': 'warn',
+    'local-rules/semantic-mocha/no-member-skip': 'error',
     'mocha/max-top-level-suites': 'off',
     'mocha/no-hooks-for-single-case': 'off',
   },
