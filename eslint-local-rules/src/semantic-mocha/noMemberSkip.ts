@@ -5,6 +5,9 @@ export const semanticMochaNoMemberSkip = createCustomRule(
   'semantic-mocha/no-member-skip',
   {
     meta: {
+      docs: {
+        url: 'https://github.com/normal-devs/klicker-knight/blob/main/eslint-local-rules/docs/semantic-mocha/no-member-skip.md',
+      },
       messages: {
         noSkip: 'Unexpected .skip call.',
       },

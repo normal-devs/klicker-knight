@@ -5,6 +5,9 @@ export const semanticMochaNoMemberOnly = createCustomRule(
   'semantic-mocha/no-member-only',
   {
     meta: {
+      docs: {
+        url: 'https://github.com/normal-devs/klicker-knight/blob/main/eslint-local-rules/docs/semantic-mocha/no-member-only.md',
+      },
       messages: {
         noOnly: 'Unexpected .only call.',
       },
