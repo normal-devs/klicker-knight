@@ -1,100 +1,163 @@
 import { expect } from 'chai';
 import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
+import { defaultFilePath, databaseUtil } from '../../../src/utils/databaseUtil';
+import { testSingletonModule } from '../../testHelpers/semanticMocha';
 
-import { databaseUtil } from '../../../src/utils/databaseUtil';
+testSingletonModule('utils/databaseUtil', ({ testUnit }) => {
+  testUnit('hasGameFile', ({ testScenario }) => {
+    testScenario('when the file exists')
+      .arrange(() => {
+        writeFileSync(defaultFilePath, '');
+      })
+      .annihilate(() => {
+        unlinkSync(defaultFilePath);
+      })
+      .act(() => databaseUtil.hasGameFile())
+      .assert('returns true', (arranged, result) => {
+        expect(result).to.eq(true);
+      });
 
-describe('hasGameFile', () => {
-  context('when file exists', () => {
-    before(function () {
-      writeFileSync('saves/data.json', '');
-    });
-    after(function () {
-      unlinkSync('saves/data.json');
-    });
-    it('expect hasGameFile to return true', () => {
-      expect(databaseUtil.hasGameFile()).to.equal(true);
-    });
+    testScenario('when the file does not exist')
+      .arrange(() => {
+        expect(existsSync(defaultFilePath)).to.eq(false);
+      })
+      .act(() => databaseUtil.hasGameFile())
+      .assert('returns false', (arranged, result) => {
+        expect(result).to.eq(false);
+      });
   });
-  context('when file does not exist', () => {
-    it('expect hasGameFile to return false', () => {
-      expect(databaseUtil.hasGameFile()).to.equal(false);
-    });
-  });
-});
 
-describe('load', () => {
-  context('when file exists and has data', () => {
-    before(function () {
-      writeFileSync('saves/data.json', JSON.stringify({ foo: 'bar' }));
-    });
-    after(function () {
-      unlinkSync('saves/data.json');
-    });
-    it('expect load to return data', () => {
-      const returnValue = databaseUtil.load();
-      expect(returnValue).to.eql({ foo: 'bar' });
-    });
-  });
-  context('when file exists and has no data', () => {
-    before(function () {
-      writeFileSync('saves/data.json', '');
-    });
-    after(function () {
-      unlinkSync('saves/data.json');
-    });
-    it('expect load to return error', () => {
-      expect(databaseUtil.load()).to.eql(null);
-    });
-  });
-  context('when file does not exist', () => {
-    it('expect load to return error', () => {
-      expect(databaseUtil.load()).to.eql(null);
-    });
-  });
-});
+  testUnit('load', ({ testScenario }) => {
+    testScenario('when the file exists and has data')
+      .arrange(() => {
+        writeFileSync(defaultFilePath, '{"foo":"bar"}');
+      })
+      .annihilate(() => {
+        unlinkSync(defaultFilePath);
+      })
+      .act(() => databaseUtil.load())
+      .assert('returns the parsed data', (arranged, result) => {
+        expect(result).to.eql({ foo: 'bar' });
+      });
 
-describe('save', () => {
-  context('when file exists and is being saved with valid data', () => {
-    before(function () {
-      writeFileSync('saves/data.json', JSON.stringify({ foo: 'bar' }));
-    });
-    after(function () {
-      unlinkSync('saves/data.json');
-    });
-    it('expect save to save data', () => {
-      databaseUtil.save({ foo: 'foo' });
-      const returnValue = readFileSync('saves/data.json', 'utf-8');
-      expect(returnValue).to.eql('{"foo":"foo"}');
-    });
-  });
-  context('when file does not exist and is being saved with valid data', () => {
-    after(function () {
-      unlinkSync('saves/data.json');
-    });
-    it('expect save to save data', () => {
-      databaseUtil.save({ foo: 'foo' });
-      const returnValue = readFileSync('saves/data.json', 'utf-8');
-      expect(returnValue).to.eql('{"foo":"foo"}');
-    });
-  });
-});
+    testScenario('when the file exists and does not have data')
+      .arrange(() => {
+        writeFileSync(defaultFilePath, '');
+      })
+      .annihilate(() => {
+        unlinkSync(defaultFilePath);
+      })
+      .act(() => databaseUtil.load())
+      .assert('returns null', (arranged, result) => {
+        expect(result).to.equal(null);
+      });
 
-describe('delete', () => {
-  context('when file exists', () => {
-    before(function () {
-      writeFileSync('saves/data.json', JSON.stringify({ foo: 'bar' }));
-    });
-    it('expect delete to remove file', () => {
-      expect(databaseUtil.delete()).to.equal(true);
-      expect(existsSync('saves/data.json')).to.eql(false);
-    });
+    testScenario('when the file does not exist')
+      .arrange(() => {
+        expect(existsSync(defaultFilePath)).to.eq(false);
+      })
+      .act(() => databaseUtil.load())
+      .assert('returns null', (arranged, result) => {
+        expect(result).to.eq(null);
+      });
   });
-  context('when file does not exists', () => {
-    before(function () {
-      expect(existsSync('saves/data.json')).to.eql(false);
-    });
-    it('expect delete to not fail', () => {
-      expect(databaseUtil.delete()).to.equal(false);
-    });
+
+  testUnit('save', ({ testScenario }) => {
+    testScenario('when the file exists and the new data is valid')
+      .arrange(() => {
+        writeFileSync(defaultFilePath, '');
+      })
+      .annihilate(() => {
+        unlinkSync(defaultFilePath);
+      })
+      .act(() => {
+        const saveResult = databaseUtil.save({ foo: 'foo' });
+        const fileValue = readFileSync(defaultFilePath, 'utf-8');
+
+        return {
+          saveResult,
+          fileValue,
+        };
+      })
+      .assert('returns true', (arranged, { saveResult }) => {
+        expect(saveResult).to.eq(true);
+      })
+      .assert('writes to the file', (arranged, { fileValue }) => {
+        expect(fileValue).to.eq('{"foo":"foo"}');
+      });
+
+    testScenario('when the file does not exist and the new data is valid')
+      .arrange(() => {
+        expect(existsSync(defaultFilePath)).to.eq(false);
+      })
+      .act(() => {
+        const saveResult = databaseUtil.save({ foo: 'foo' });
+        const fileValue = readFileSync(defaultFilePath, 'utf-8');
+
+        return {
+          saveResult,
+          fileValue,
+        };
+      })
+      .assert('returns true', (arranged, { saveResult }) => {
+        expect(saveResult).to.eq(true);
+      })
+      .assert('writes to the file', (arranged, { fileValue }) => {
+        expect(fileValue).to.eq('{"foo":"foo"}');
+      });
+
+    testScenario('when the new data is invalid')
+      .arrange(() => {
+        writeFileSync(defaultFilePath, '{"foo":"bar"}');
+      })
+      .act(() => {
+        const foo: Record<string, object> = {};
+        foo.foo = foo;
+
+        const saveResult = databaseUtil.save(foo);
+        const fileValue = readFileSync(defaultFilePath, 'utf-8');
+
+        return {
+          saveResult,
+          fileValue,
+        };
+      })
+      .assert('returns false', (arranged, { saveResult }) => {
+        expect(saveResult).to.eq(false);
+      })
+      .assert('does not write to the file', (arranged, { fileValue }) => {
+        expect(fileValue).to.eq('{"foo":"bar"}');
+      });
+  });
+
+  testUnit('delete', ({ testScenario }) => {
+    testScenario('when the file exists')
+      .arrange(() => {
+        writeFileSync(defaultFilePath, '');
+      })
+      .act(() => {
+        const deleteResult = databaseUtil.delete();
+        const fileExists = existsSync(defaultFilePath);
+
+        return {
+          deleteResult,
+          fileExists,
+        };
+      })
+      .assert('returns true', (arranged, { deleteResult }) => {
+        expect(deleteResult).to.eq(true);
+      })
+      .assert('deleted the file', (arranged, { fileExists }) => {
+        expect(fileExists).to.eq(false);
+      });
+
+    testScenario('when the file does not exist')
+      .arrange(() => {
+        expect(existsSync(defaultFilePath)).to.eq(false);
+      })
+      .act(() => databaseUtil.delete())
+      .assert('returns false', (arranged, result) => {
+        expect(result).to.eq(false);
+      });
   });
 });

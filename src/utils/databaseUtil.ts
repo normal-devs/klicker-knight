@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
 
-const defaultFilePath = 'saves/data.json';
+export const defaultFilePath = 'saves/data.json';
 
 export const databaseUtil = {
   hasGameFile(): boolean {

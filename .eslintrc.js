@@ -16,6 +16,8 @@ module.exports = {
       './tsconfig.configFiles.json',
       'tsconfig.json',
       'tests/tsconfig.json',
+      'semantic-mocha/tsconfig.json',
+      'semantic-mocha/tests/tsconfig.json',
     ],
   },
   plugins: ['@typescript-eslint'],
@@ -39,6 +41,7 @@ module.exports = {
       },
     ],
     'import/prefer-default-export': 'off',
+    'max-classes-per-file': 'off',
     'max-len': [
       'error',
       120,

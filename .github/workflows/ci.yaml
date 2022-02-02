@@ -29,6 +29,9 @@ jobs:
       - name: Typecheck
         if: always()
         run: npm run typecheck
+      - name: Test Semantic-Mocha
+        if: always()
+        run: npm run test:semantic-mocha
       - name: Test Src
         if: always()
         run: npm run test:src
