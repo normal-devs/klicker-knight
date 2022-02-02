@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "scripts": {
     "clean:game": "rm -r saves/*.json",
-    "compile:custom-eslint-rules": "tsc -P eslint-local-rules/tsconfig.json",
     "compile:gameStateSchema": "json2ts src/utils/types/gameState.schema.json > src/utils/types/gameState.d.ts",
     "klicker-knight": "ts-node src/klickerKnight",
     "lint:md": "markdownlint **/*.md --ignore node_modules",

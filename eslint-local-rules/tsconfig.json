@@ -3,10 +3,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "noImplicitAny": true,
-    "outDir": "dist",
+    "noEmit": true,
     "strict": true,
     "target": "es2021",
-    "newLine": "LF",
   },
   "include": [
     "./src/**/*.ts"
