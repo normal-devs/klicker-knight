@@ -15,12 +15,14 @@ module.exports = {
     project: [
       './tsconfig.configFiles.json',
       'tsconfig.json',
+      'eslint-local-rules/tsconfig.json',
+      'eslint-local-rules/tests/tsconfig.json',
       'tests/tsconfig.json',
       'semantic-mocha/tsconfig.json',
       'semantic-mocha/tests/tsconfig.json',
     ],
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'eslint-plugin-local-rules'],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'error',
     'import/no-commonjs': 'error',

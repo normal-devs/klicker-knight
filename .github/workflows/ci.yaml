@@ -17,6 +17,9 @@ jobs:
           node-version: '16.x'
       - name: Install
         run: npm ci
+      - name: Test Custom Eslint
+        if: always()
+        run: npm run test:custom-eslint-rules
       - name: Lint Code
         if: always()
         run: npm run lint:ts

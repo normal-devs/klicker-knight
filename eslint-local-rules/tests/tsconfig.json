@@ -1,0 +1,13 @@
+{
+  "ts-node": {
+    "transpileOnly": true
+  },
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "rootDir": "../",
+  },
+  "include": [
+    "./**/*.ts",
+    "./registerTests.js"
+  ]
+}
