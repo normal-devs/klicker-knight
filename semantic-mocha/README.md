@@ -8,7 +8,6 @@ The library is a work in progress and will need to be modified as new use cases 
 
 ## Roadmap
 
-- Support linting .only
 - Eventually move this project to its own repository
 - Split the index file into separate modules
 - Create an extensible framework to apply custom patterns
