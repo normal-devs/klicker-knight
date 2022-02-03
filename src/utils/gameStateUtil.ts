@@ -2,6 +2,7 @@ import Ajv from 'ajv';
 import type { GameState } from './types';
 import { databaseUtil } from './databaseUtil';
 import gameStateSchema from './types/gameState.schema.json';
+import { DeveloperError } from './developerError';
 
 const ajv = new Ajv();
 const validateGameState = ajv.compile(gameStateSchema);
@@ -25,7 +26,14 @@ export const gameStateUtil = {
 
     return gameState;
   },
-  save: (state: GameState): void => {
-    databaseUtil.save(state);
+  save: (state: object): void => {
+    if (isGameState(state)) {
+      databaseUtil.save(state);
+      return;
+    }
+
+    throw new DeveloperError(
+      'Attempted to save an invalid game state. Did you forget to compile the game state schema?',
+    );
   },
 };

@@ -4,6 +4,7 @@ import { databaseUtil } from '../../../src/utils/databaseUtil';
 import { gameStateUtil } from '../../../src/utils/gameStateUtil';
 import { generateGameState } from '../../testHelpers/generateGameState';
 import { testSingletonModule } from '../../testHelpers/semanticMocha';
+import { tryErrorable } from '../../testHelpers/tryErrorable';
 
 testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
   testUnit('load', ({ testScenario }) => {
@@ -74,6 +75,46 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
         expect(result).to.eql({
           currentRoomId: null,
         });
+      });
+  });
+
+  testUnit('save', ({ testScenario }) => {
+    testScenario('when given a valid game state')
+      .arrange(() => {
+        sinon.stub(databaseUtil, 'save');
+        return generateGameState();
+      })
+      .annihilate(() => {
+        sinon.restore();
+      })
+      .act((mockGameState) => gameStateUtil.save(mockGameState))
+      .assert('saves the game state', (mockGameState) => {
+        expect((databaseUtil.save as SinonSpy).args).to.eql([
+          [
+            {
+              currentRoomId: null,
+            },
+          ],
+        ]);
+      });
+
+    testScenario('when given an invalid game state')
+      .arrange(() => {
+        sinon.stub(databaseUtil, 'save');
+      })
+      .annihilate(() => {
+        sinon.restore();
+      })
+      .act(() => {
+        return tryErrorable(() => {
+          gameStateUtil.save({});
+        });
+      })
+      .assert('throws an error', (arranged, error) => {
+        expect(error).to.be.an.instanceOf(Error);
+      })
+      .assert('does not save the game', () => {
+        expect((databaseUtil.save as SinonSpy).called).to.eq(false);
       });
   });
 });
