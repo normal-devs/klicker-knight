@@ -24,6 +24,8 @@ Start with importing one of the following:
 export const testModule: ModuleSuiteRegistrant;
 
 export const testSingletonModule: SingletonModuleSuiteRegistrant;
+
+export const testIntegration: IntegrationSuiteRegistrant;
 ```
 
 ### ModuleSuiteRegistrant

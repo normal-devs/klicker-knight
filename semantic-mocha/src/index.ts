@@ -407,18 +407,25 @@ const buildRegisterUnitSuite = (
   );
 
 const buildRegisterIntegrationSuite = (
-  parentConfig: SuiteConfig,
+  parentConfig: SuiteConfig | null,
 ): MochafiedRegistrant<IntegrationSuiteRegistrant> =>
   mochafyRegistrant(
     mochaDescribe,
     (mochaFunction) => (integrationDescription, onIntegrationSuite) => {
       const config = new SuiteConfig(mochaFunction, integrationDescription);
-      parentConfig.add(config);
+
+      if (parentConfig) {
+        parentConfig.add(config);
+      }
 
       const integrationSuite: IntegrationSuite = {
         testScenario: buildRegisterScenario(config),
       };
       onIntegrationSuite(integrationSuite);
+
+      if (!parentConfig) {
+        config.apply();
+      }
     },
   );
 
@@ -465,5 +472,9 @@ const registerSingletonModuleSuite: MochafiedRegistrant<SingletonModuleSuiteRegi
     },
   );
 
+const registerIntegrationSuite: MochafiedRegistrant<IntegrationSuiteRegistrant> =
+  buildRegisterIntegrationSuite(null);
+
 export const testModule = registerModuleSuite;
 export const testSingletonModule = registerSingletonModuleSuite;
+export const testIntegration = registerIntegrationSuite;
