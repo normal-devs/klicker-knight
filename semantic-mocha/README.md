@@ -64,8 +64,19 @@ or to register a suite of tests for units within the export.
 
 ```ts
 type ExportSuite = {
+  testIntegration: IntegrationSuiteRegistrant;
   testUnit: UnitSuiteRegistrant;
   assert: AssertionRegistrant;
+  testScenario: ScenarioRegistrant;
+}
+```
+
+### IntegrationSuiteRegistrant
+
+Enables registering integration test scenarios for a unit of an export of a module.
+
+```ts
+type ExportSuite = {
   testScenario: ScenarioRegistrant;
 }
 ```

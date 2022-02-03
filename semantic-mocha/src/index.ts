@@ -89,6 +89,10 @@ type ExportParentSuite = {
   testExport: MochafiedRegistrant<ExportSuiteRegistrant>;
 };
 
+type IntegrationParentSuite = {
+  testIntegration: MochafiedRegistrant<IntegrationSuiteRegistrant>;
+};
+
 type UnitParentSuite = {
   testUnit: MochafiedRegistrant<UnitSuiteRegistrant>;
 };
@@ -111,6 +115,18 @@ type UnitSuiteRegistrantCallback = (unitSuite: UnitSuite) => void;
 
 type UnitSuite = AssertableSuite & ScenarioableSuite;
 
+// IntegrationSuiteRegistrant
+type IntegrationSuiteRegistrant = (
+  integrationDescription: string,
+  onIntegrationSuite: IntegrationSuiteRegistrantCallback,
+) => void;
+
+type IntegrationSuiteRegistrantCallback = (
+  integrationSuite: IntegrationSuite,
+) => void;
+
+type IntegrationSuite = ScenarioableSuite;
+
 // ExportSuiteRegistrant
 type ExportSuiteRegistrant = (
   moduleExportDescription: string,
@@ -119,7 +135,10 @@ type ExportSuiteRegistrant = (
 
 type ExportSuiteRegistrantCallback = (exportSuite: ExportSuite) => void;
 
-type ExportSuite = UnitParentSuite & AssertableSuite & ScenarioableSuite;
+type ExportSuite = IntegrationParentSuite &
+  UnitParentSuite &
+  AssertableSuite &
+  ScenarioableSuite;
 
 // ModuleSuiteRegistrant
 type ModuleSuiteRegistrant = (
@@ -387,7 +406,24 @@ const buildRegisterUnitSuite = (
     },
   );
 
+const buildRegisterIntegrationSuite = (
+  parentConfig: SuiteConfig,
+): MochafiedRegistrant<IntegrationSuiteRegistrant> =>
+  mochafyRegistrant(
+    mochaDescribe,
+    (mochaFunction) => (integrationDescription, onIntegrationSuite) => {
+      const config = new SuiteConfig(mochaFunction, integrationDescription);
+      parentConfig.add(config);
+
+      const integrationSuite: IntegrationSuite = {
+        testScenario: buildRegisterScenario(config),
+      };
+      onIntegrationSuite(integrationSuite);
+    },
+  );
+
 const buildExportSuite = (parentConfig: SuiteConfig): ExportSuite => ({
+  testIntegration: buildRegisterIntegrationSuite(parentConfig),
   testUnit: buildRegisterUnitSuite(parentConfig),
   testScenario: buildRegisterScenario(parentConfig),
   assert: buildRegisterAssertion(parentConfig),
