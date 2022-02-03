@@ -37,7 +37,6 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
       })
       .act(() => gameStateUtil.load())
       .assert('saves the new game state', () => {
-        expect((databaseUtil.save as SinonSpy).called).to.eq(true);
         expect((databaseUtil.save as SinonSpy).args).to.eql([
           [
             {
@@ -63,7 +62,6 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
       })
       .act(() => gameStateUtil.load())
       .assert('saves the new game state', () => {
-        expect((databaseUtil.save as SinonSpy).called).to.eq(true);
         expect((databaseUtil.save as SinonSpy).args).to.eql([
           [
             {
