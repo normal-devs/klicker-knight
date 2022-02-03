@@ -84,6 +84,23 @@ type ScenarioAssertBuilder<TArranged, TResult> = {
   assert: MochafiedRegistrant<ChainableAssertionRegistrant<TArranged, TResult>>;
 };
 
+// Suites
+type ExportParentSuite = {
+  testExport: MochafiedRegistrant<ExportSuiteRegistrant>;
+};
+
+type UnitParentSuite = {
+  testUnit: MochafiedRegistrant<UnitSuiteRegistrant>;
+};
+
+type AssertableSuite = {
+  assert: MochafiedRegistrant<AssertionRegistrant>;
+};
+
+type ScenarioableSuite = {
+  testScenario: MochafiedRegistrant<ScenarioRegistrant>;
+};
+
 // UnitSuiteRegistrant
 type UnitSuiteRegistrant = (
   unitDescription: string,
@@ -92,10 +109,7 @@ type UnitSuiteRegistrant = (
 
 type UnitSuiteRegistrantCallback = (unitSuite: UnitSuite) => void;
 
-type UnitSuite = {
-  testScenario: MochafiedRegistrant<ScenarioRegistrant>;
-  assert: MochafiedRegistrant<AssertionRegistrant>;
-};
+type UnitSuite = AssertableSuite & ScenarioableSuite;
 
 // ExportSuiteRegistrant
 type ExportSuiteRegistrant = (
@@ -105,9 +119,7 @@ type ExportSuiteRegistrant = (
 
 type ExportSuiteRegistrantCallback = (exportSuite: ExportSuite) => void;
 
-type ExportSuite = {
-  testUnit: MochafiedRegistrant<UnitSuiteRegistrant>;
-} & UnitSuite;
+type ExportSuite = UnitParentSuite & AssertableSuite & ScenarioableSuite;
 
 // ModuleSuiteRegistrant
 type ModuleSuiteRegistrant = (
@@ -117,9 +129,7 @@ type ModuleSuiteRegistrant = (
 
 type ModuleSuiteRegistrantCallback = (moduleSuite: ModuleSuite) => void;
 
-type ModuleSuite = {
-  testExport: MochafiedRegistrant<ExportSuiteRegistrant>;
-};
+type ModuleSuite = ExportParentSuite;
 
 // SingletonModuleSuiteRegistrant
 type SingletonModuleSuiteRegistrant = (
