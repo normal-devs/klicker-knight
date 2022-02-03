@@ -3,8 +3,8 @@ import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
 import { defaultFilePath, databaseUtil } from '../../../src/utils/databaseUtil';
 import { testSingletonModule } from '../../testHelpers/semanticMocha';
 
-testSingletonModule('utils/databaseUtil', ({ testUnit }) => {
-  testUnit('hasGameFile', ({ testScenario }) => {
+testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
+  testIntegration('hasGameFile', ({ testScenario }) => {
     testScenario('when the file exists')
       .arrange(() => {
         writeFileSync(defaultFilePath, '');
@@ -27,7 +27,7 @@ testSingletonModule('utils/databaseUtil', ({ testUnit }) => {
       });
   });
 
-  testUnit('load', ({ testScenario }) => {
+  testIntegration('load', ({ testScenario }) => {
     testScenario('when the file exists and has data')
       .arrange(() => {
         writeFileSync(defaultFilePath, '{"foo":"bar"}');
@@ -62,7 +62,7 @@ testSingletonModule('utils/databaseUtil', ({ testUnit }) => {
       });
   });
 
-  testUnit('save', ({ testScenario }) => {
+  testIntegration('save', ({ testScenario }) => {
     testScenario('when the file exists and the new data is valid')
       .arrange(() => {
         writeFileSync(defaultFilePath, '');
@@ -130,7 +130,7 @@ testSingletonModule('utils/databaseUtil', ({ testUnit }) => {
       });
   });
 
-  testUnit('delete', ({ testScenario }) => {
+  testIntegration('delete', ({ testScenario }) => {
     testScenario('when the file exists')
       .arrange(() => {
         writeFileSync(defaultFilePath, '');
