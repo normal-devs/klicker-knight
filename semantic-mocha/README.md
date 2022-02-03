@@ -16,7 +16,15 @@ The library is a work in progress and will need to be modified as new use cases 
 
 ## Current API
 
-Start with importing `testModule` or `testSingletonModule`.
+### Semantic-Mocha
+
+Start with importing one of the following:
+
+```ts
+export const testModule: ModuleSuiteRegistrant;
+
+export const testSingletonModule: SingletonModuleSuiteRegistrant;
+```
 
 ### ModuleSuiteRegistrant
 
@@ -26,7 +34,6 @@ Registers a suite of tests for a module. Takes a callback to register suites for
 type ModuleSuiteRegistrant =
   (description: string, (suite: ModuleSuite) => void) => void;
 
-export const testModule: ModuleSuiteRegistrant;
 ```
 
 ### SingletonModuleSuiteRegistrant
@@ -38,8 +45,6 @@ or to register a suite of tests for units within the export.
 ```ts
 type SingletonModuleSuiteRegistrant =
   (description: string, (suite: ExportSuite) => void) => void;
-
-export const testSingletonModule: SingletonModuleSuiteRegistrant;
 ```
 
 ### ModuleSuite
