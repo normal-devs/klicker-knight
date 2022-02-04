@@ -26,7 +26,7 @@ export const gameStateUtil = {
 
     return gameState;
   },
-  save: (state: object): void => {
+  save: (state: unknown): void => {
     if (isGameState(state)) {
       databaseUtil.save(state);
       return;
