@@ -16,7 +16,7 @@ export const databaseUtil = {
     }
   },
 
-  save(data: object): boolean {
+  save(data: unknown): boolean {
     try {
       writeFileSync(defaultFilePath, JSON.stringify(data));
       return true;
