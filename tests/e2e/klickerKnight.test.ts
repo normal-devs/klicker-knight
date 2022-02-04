@@ -1,16 +1,15 @@
 import { expect } from 'chai';
 import { execSync } from 'child_process';
 import { databaseUtil } from '../../src/utils/databaseUtil';
+import { testIntegration } from '../testHelpers/semanticMocha';
 
-describe('klicker-knight', () => {
-  after(() => {
-    databaseUtil.delete();
-  });
-
-  it('trips on a flagstone', () => {
-    const result = execSync('npm run --silent klicker-knight');
-    expect(result.toString()).to.contain(
-      'flagstone. You fall and break your neck.',
-    );
-  });
+testIntegration('klicker-knight', ({ testScenario }) => {
+  testScenario('always')
+    .annihilate(() => {
+      databaseUtil.delete();
+    })
+    .act(() => execSync('npm run --silent klicker-knight').toString())
+    .assert('trips on a flagstone', (arrranged, result) => {
+      expect(result).to.contain('flagstone. You fall and break your neck.');
+    });
 });

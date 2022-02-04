@@ -84,6 +84,27 @@ type ScenarioAssertBuilder<TArranged, TResult> = {
   assert: MochafiedRegistrant<ChainableAssertionRegistrant<TArranged, TResult>>;
 };
 
+// Suites
+type ExportParentSuite = {
+  testExport: MochafiedRegistrant<ExportSuiteRegistrant>;
+};
+
+type IntegrationParentSuite = {
+  testIntegration: MochafiedRegistrant<IntegrationSuiteRegistrant>;
+};
+
+type UnitParentSuite = {
+  testUnit: MochafiedRegistrant<UnitSuiteRegistrant>;
+};
+
+type AssertableSuite = {
+  assert: MochafiedRegistrant<AssertionRegistrant>;
+};
+
+type ScenarioableSuite = {
+  testScenario: MochafiedRegistrant<ScenarioRegistrant>;
+};
+
 // UnitSuiteRegistrant
 type UnitSuiteRegistrant = (
   unitDescription: string,
@@ -92,10 +113,19 @@ type UnitSuiteRegistrant = (
 
 type UnitSuiteRegistrantCallback = (unitSuite: UnitSuite) => void;
 
-type UnitSuite = {
-  testScenario: MochafiedRegistrant<ScenarioRegistrant>;
-  assert: MochafiedRegistrant<AssertionRegistrant>;
-};
+type UnitSuite = AssertableSuite & ScenarioableSuite;
+
+// IntegrationSuiteRegistrant
+type IntegrationSuiteRegistrant = (
+  integrationDescription: string,
+  onIntegrationSuite: IntegrationSuiteRegistrantCallback,
+) => void;
+
+type IntegrationSuiteRegistrantCallback = (
+  integrationSuite: IntegrationSuite,
+) => void;
+
+type IntegrationSuite = ScenarioableSuite;
 
 // ExportSuiteRegistrant
 type ExportSuiteRegistrant = (
@@ -105,9 +135,10 @@ type ExportSuiteRegistrant = (
 
 type ExportSuiteRegistrantCallback = (exportSuite: ExportSuite) => void;
 
-type ExportSuite = {
-  testUnit: MochafiedRegistrant<UnitSuiteRegistrant>;
-} & UnitSuite;
+type ExportSuite = IntegrationParentSuite &
+  UnitParentSuite &
+  AssertableSuite &
+  ScenarioableSuite;
 
 // ModuleSuiteRegistrant
 type ModuleSuiteRegistrant = (
@@ -117,9 +148,7 @@ type ModuleSuiteRegistrant = (
 
 type ModuleSuiteRegistrantCallback = (moduleSuite: ModuleSuite) => void;
 
-type ModuleSuite = {
-  testExport: MochafiedRegistrant<ExportSuiteRegistrant>;
-};
+type ModuleSuite = ExportParentSuite;
 
 // SingletonModuleSuiteRegistrant
 type SingletonModuleSuiteRegistrant = (
@@ -377,7 +406,31 @@ const buildRegisterUnitSuite = (
     },
   );
 
+const buildRegisterIntegrationSuite = (
+  parentConfig: SuiteConfig | null,
+): MochafiedRegistrant<IntegrationSuiteRegistrant> =>
+  mochafyRegistrant(
+    mochaDescribe,
+    (mochaFunction) => (integrationDescription, onIntegrationSuite) => {
+      const config = new SuiteConfig(mochaFunction, integrationDescription);
+
+      if (parentConfig) {
+        parentConfig.add(config);
+      }
+
+      const integrationSuite: IntegrationSuite = {
+        testScenario: buildRegisterScenario(config),
+      };
+      onIntegrationSuite(integrationSuite);
+
+      if (!parentConfig) {
+        config.apply();
+      }
+    },
+  );
+
 const buildExportSuite = (parentConfig: SuiteConfig): ExportSuite => ({
+  testIntegration: buildRegisterIntegrationSuite(parentConfig),
   testUnit: buildRegisterUnitSuite(parentConfig),
   testScenario: buildRegisterScenario(parentConfig),
   assert: buildRegisterAssertion(parentConfig),
@@ -419,5 +472,9 @@ const registerSingletonModuleSuite: MochafiedRegistrant<SingletonModuleSuiteRegi
     },
   );
 
+const registerIntegrationSuite: MochafiedRegistrant<IntegrationSuiteRegistrant> =
+  buildRegisterIntegrationSuite(null);
+
 export const testModule = registerModuleSuite;
 export const testSingletonModule = registerSingletonModuleSuite;
+export const testIntegration = registerIntegrationSuite;
