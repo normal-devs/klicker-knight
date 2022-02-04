@@ -88,7 +88,7 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
         sinon.restore();
       })
       .act((mockGameState) => gameStateUtil.save(mockGameState))
-      .assert('saves the game state', (mockGameState) => {
+      .assert('saves the game state', () => {
         expect((databaseUtil.save as SinonSpy).args).to.eql([
           [
             {
