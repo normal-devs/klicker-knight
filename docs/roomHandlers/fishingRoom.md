@@ -35,5 +35,4 @@ stateDiagram-v2
 
   BrokenLine --> AtEntrance: stop
   BrokenLine --> AtEntrance: fix
-  BrokenLine --> [*]: leave
 ```
