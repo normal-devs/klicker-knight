@@ -9,7 +9,7 @@ npm install
 
 npm run compile:gameStateSchema
 
-npm run --silent dev
+npm run --silent klicker-knight
 
 # Delete the current save file
 npm run clean:game
@@ -38,3 +38,7 @@ npm run clean:game
 ### Documentation
 
 Docs are located in [./docs/](./docs/). A good place to start is [./docs/client.md](./docs/client.md).
+
+Tests use [semantic-mocha](./semantic-mocha/README.md) which is currently being developed in this project.
+
+[Custom Eslint Rules](./eslint-local-rules/README.md)

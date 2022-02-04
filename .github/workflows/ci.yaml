@@ -17,6 +17,9 @@ jobs:
           node-version: '16.x'
       - name: Install
         run: npm ci
+      - name: Test Custom Eslint
+        if: always()
+        run: npm run test:custom-eslint-rules
       - name: Lint Code
         if: always()
         run: npm run lint:ts
@@ -29,9 +32,12 @@ jobs:
       - name: Typecheck
         if: always()
         run: npm run typecheck
-      - name: Test
+      - name: Test Semantic-Mocha
         if: always()
-        run: npm test
-      - name: Run App
+        run: npm run test:semantic-mocha
+      - name: Test Src
         if: always()
-        run: npm run dev
+        run: npm run test:src
+      - name: Test E2E
+        if: always()
+        run: npm run test:e2e
