@@ -7,7 +7,7 @@
     "klicker-knight": "ts-node src/klickerKnight",
     "lint:md": "markdownlint **/*.md --ignore node_modules",
     "lint:ts": "eslint --ext .ts,.js .",
-    "lint:yaml": "yamllint --format github --ignore=node_modules/**/*.yaml **/*.yaml",
+    "lint:yaml": "yamllint --ignore=node_modules/**/*.yaml **/*.yaml",
     "test:custom-eslint-rules": "mocha -c --config eslint-local-rules/tests/.mocharc.js \"eslint-local-rules/tests/rules/**/*.test.ts\"",
     "test:e2e": "mocha -c \"tests/e2e/**/*.test.ts\"",
     "test:semantic-mocha": "nyc --extension .ts mocha -c --config semantic-mocha/tests/.mocharc.js \"semantic-mocha/tests/**/*.test.ts\"",
