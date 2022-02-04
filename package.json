@@ -6,7 +6,7 @@
     "compile:gameStateSchema": "json2ts src/utils/types/gameState.schema.json > src/utils/types/gameState.d.ts",
     "klicker-knight": "ts-node src/klickerKnight",
     "lint:md": "markdownlint **/*.md --ignore node_modules",
-    "lint:ts": "eslint --ext .ts,.js .",
+    "lint:ts": "eslint --color --ext .ts,.js .",
     "lint:yaml": "yamllint --ignore=node_modules/**/*.yaml **/*.yaml",
     "test:custom-eslint-rules": "mocha -c --config eslint-local-rules/tests/.mocharc.js \"eslint-local-rules/tests/rules/**/*.test.ts\"",
     "test:e2e": "mocha -c \"tests/e2e/**/*.test.ts\"",
