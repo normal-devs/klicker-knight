@@ -4,7 +4,7 @@ A room with a beach and a boat dock. The player can fish from dock or leave. Fis
 
 ## States
 
-- **AtEntrance**: The player is on a dock with a fishing pole. Total number of fish caught is X so far!
+- **AtEntrance**: The player is on a dock with a good/bad fishing pole. Total number of fish caught is X so far!
 - **Fishing**: Hopefully the fish are hungry today.
 - **Caught**: Congratulations!!! The player caught a fish!!!
 - **BrokenLine**: The player has a broken their fishing line and the fish got away.
