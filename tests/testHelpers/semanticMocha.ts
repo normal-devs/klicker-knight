@@ -1,1 +1,5 @@
-export { testModule, testSingletonModule } from '../../semantic-mocha/src';
+export {
+  testModule,
+  testSingletonModule,
+  testIntegration,
+} from '../../semantic-mocha/src';
