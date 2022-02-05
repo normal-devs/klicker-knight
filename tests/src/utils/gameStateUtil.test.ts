@@ -81,7 +81,7 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
   testUnit('save', ({ testScenario }) => {
     testScenario('when given a valid game state')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'save');
+        sinon.stub(databaseUtil, 'save').returns(true);
         return generateGameState();
       })
       .annihilate(() => {
@@ -100,7 +100,7 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
 
     testScenario('when given an invalid game state')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'save');
+        sinon.stub(databaseUtil, 'save').returns(true);
       })
       .annihilate(() => {
         sinon.restore();
@@ -115,6 +115,23 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
       })
       .assert('does not save the game', () => {
         expect((databaseUtil.save as SinonSpy).called).to.eq(false);
+      });
+
+    testScenario('when the databaseUtil fails to save the data')
+      .arrange(() => {
+        sinon.stub(databaseUtil, 'save').returns(false);
+        return generateGameState();
+      })
+      .annihilate(() => {
+        sinon.restore();
+      })
+      .act((mockGameState) => {
+        return tryErrorable(() => {
+          gameStateUtil.save(mockGameState);
+        });
+      })
+      .assert('throws an error', (arranged, error) => {
+        expect(error).to.be.an.instanceOf(Error);
       });
   });
 });

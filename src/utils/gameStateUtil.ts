@@ -27,13 +27,15 @@ export const gameStateUtil = {
     return gameState;
   },
   save: (state: unknown): void => {
-    if (isGameState(state)) {
-      databaseUtil.save(state);
-      return;
+    if (!isGameState(state)) {
+      throw new DeveloperError(
+        'Attempted to save an invalid game state. Did you forget to compile the game state schema?',
+      );
     }
 
-    throw new DeveloperError(
-      'Attempted to save an invalid game state. Did you forget to compile the game state schema?',
-    );
+    const isSaved = databaseUtil.save(state);
+    if (!isSaved) {
+      throw new DeveloperError('Database failed to save the game state.');
+    }
   },
 };
