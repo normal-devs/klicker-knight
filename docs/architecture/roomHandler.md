@@ -8,6 +8,8 @@ If the Command is the default Command, the RoomHandler runs the [DefaultCommandH
 
 If the Command is invalid for the given RoomState, the RoomHandler runs a special [InvalidCommandHandler](./commandHandler.md#invalidcommandhandler)
 
+## Run
+
 ```mermaid
 sequenceDiagram
   autonumber

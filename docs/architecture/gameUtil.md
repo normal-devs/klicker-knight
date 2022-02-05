@@ -11,6 +11,8 @@ It interacts with the [GameStateUtil](./gameStateUtil.md) to save and load the G
 the [RoomUtil](./roomUtil.md) to run the Command and retrieve
 the next [RoomHandler](./roomHandler.md), and the RoomHandler to get the PlayerStateDescription and available Commands.
 
+## Run
+
 ```mermaid
 sequenceDiagram
   autonumber
