@@ -4,6 +4,37 @@ import { defaultFilePath, databaseUtil } from '../../../src/utils/databaseUtil';
 import { testSingletonModule } from '../../testHelpers/semanticMocha';
 
 testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
+  testIntegration('delete', ({ testScenario }) => {
+    testScenario('when the file exists')
+      .arrange(() => {
+        fs.writeFileSync(defaultFilePath, '');
+      })
+      .act(() => {
+        const deleteResult = databaseUtil.delete();
+        const fileExists = fs.existsSync(defaultFilePath);
+
+        return {
+          deleteResult,
+          fileExists,
+        };
+      })
+      .assert('returns true', (arranged, { deleteResult }) => {
+        expect(deleteResult).to.eq(true);
+      })
+      .assert('deleted the file', (arranged, { fileExists }) => {
+        expect(fileExists).to.eq(false);
+      });
+
+    testScenario('when the file does not exist')
+      .arrange(() => {
+        expect(fs.existsSync(defaultFilePath)).to.eq(false);
+      })
+      .act(() => databaseUtil.delete())
+      .assert('returns false', (arranged, result) => {
+        expect(result).to.eq(false);
+      });
+  });
+
   testIntegration('hasGameFile', ({ testScenario }) => {
     testScenario('when the file exists')
       .arrange(() => {
@@ -127,37 +158,6 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
       })
       .assert('does not write to the file', (arranged, { fileValue }) => {
         expect(fileValue).to.eq('{"foo":"bar"}');
-      });
-  });
-
-  testIntegration('delete', ({ testScenario }) => {
-    testScenario('when the file exists')
-      .arrange(() => {
-        fs.writeFileSync(defaultFilePath, '');
-      })
-      .act(() => {
-        const deleteResult = databaseUtil.delete();
-        const fileExists = fs.existsSync(defaultFilePath);
-
-        return {
-          deleteResult,
-          fileExists,
-        };
-      })
-      .assert('returns true', (arranged, { deleteResult }) => {
-        expect(deleteResult).to.eq(true);
-      })
-      .assert('deleted the file', (arranged, { fileExists }) => {
-        expect(fileExists).to.eq(false);
-      });
-
-    testScenario('when the file does not exist')
-      .arrange(() => {
-        expect(fs.existsSync(defaultFilePath)).to.eq(false);
-      })
-      .act(() => databaseUtil.delete())
-      .assert('returns false', (arranged, result) => {
-        expect(result).to.eq(false);
       });
   });
 });
