@@ -8,6 +8,7 @@
     "importHelpers": true,
     "module": "commonjs",
     "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
     "outDir": "lib",
     "resolveJsonModule": true,
     "rootDir": "src",

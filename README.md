@@ -42,3 +42,10 @@ Docs are located in [./docs/](./docs/). A good place to start is [./docs/client.
 Tests use [semantic-mocha](./semantic-mocha/README.md) which is currently being developed in this project.
 
 [Custom Eslint Rules](./eslint-local-rules/README.md)
+
+### Developer FAQ
+
+**Why are all of the types in one file?**
+
+As of 2022-02-02 we haven't solidified the architecture of the game,
+so it's difficult to determine where types should live such that there are no circular import dependencies
