@@ -181,7 +181,9 @@ type MochaTestFunction =
 abstract class MochaConfig<T extends MochaFunction> {
   constructor(public mochaFunction: T, public description: string) {}
 
-  abstract apply(): void;
+  apply(): void {
+    console.log(this.description, this.mochaFunction);
+  }
 }
 
 class AssertionConfig extends MochaConfig<MochaTestFunction> {
@@ -194,6 +196,7 @@ class AssertionConfig extends MochaConfig<MochaTestFunction> {
   }
 
   apply(): void {
+    super.apply();
     this.mochaFunction(this.description, this.onAssert);
   }
 }
@@ -208,6 +211,7 @@ class HookConfig extends MochaConfig<Mocha.HookFunction> {
   }
 
   apply(): void {
+    super.apply();
     this.mochaFunction(this.description, this.onHook);
   }
 }
@@ -224,6 +228,7 @@ class SuiteConfig extends MochaConfig<MochaSuiteFunction> {
   }
 
   apply() {
+    super.apply();
     this.mochaFunction(this.description, () => {
       this.nested.forEach((innerConfig) => {
         innerConfig.apply();
@@ -322,7 +327,7 @@ const buildActRegistrant =
       result = onAct(getArranged());
     };
 
-    parentConfig.add(new HookConfig(mochaBefore, 'act', hookWrapper));
+    parentConfig.add(new HookConfig(mochaBefore, '"act"', hookWrapper));
 
     return {
       assert: buildRegisterChainableAssertion<TArranged, TResult>(
@@ -342,7 +347,7 @@ const buildAnnihilateRegistrant =
     onAnnihilate: AnnihilateCallback<TArranged>,
   ): AnnihilatedScenarioBuilder<TArranged> => {
     const hookWrapper = () => onAnnihilate(getArranged());
-    parentConfig.add(new HookConfig(mochaAfter, 'act', hookWrapper));
+    parentConfig.add(new HookConfig(mochaAfter, 'annihilate', hookWrapper));
 
     return {
       act: buildActRegistrant<TArranged>(parentConfig, getArranged),
@@ -425,6 +430,7 @@ const buildRegisterIntegrationSuite = (
 
       if (!parentConfig) {
         config.apply();
+        console.log();
       }
     },
   );
@@ -459,6 +465,7 @@ const registerModuleSuite: MochafiedRegistrant<ModuleSuiteRegistrant> =
 
       onModuleSuite(moduleSuite);
       config.apply();
+      console.log();
     },
   );
 
@@ -469,6 +476,7 @@ const registerSingletonModuleSuite: MochafiedRegistrant<SingletonModuleSuiteRegi
       const config = new SuiteConfig(mochaFunction, relativeModulePath);
       onSingletonModuleSuite(buildExportSuite(config));
       config.apply();
+      console.log();
     },
   );
 

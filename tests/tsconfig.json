@@ -4,9 +4,9 @@
   },
   "extends": "../tsconfig",
   "compilerOptions": {
+    "outDir": "foo",
     "resolveJsonModule": true,
     "rootDir": "../",
-    "noEmit": true
   },
   "include": [
     "./**/*.ts",
