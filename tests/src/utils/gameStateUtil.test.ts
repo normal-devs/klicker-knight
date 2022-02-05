@@ -82,7 +82,9 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
     testScenario('with a valid game state')
       .arrange(() => {
         sinon.stub(databaseUtil, 'save').returns(true);
-        return generateGameState();
+
+        const mockGameState = generateGameState();
+        return mockGameState;
       })
       .annihilate(() => {
         sinon.restore();
@@ -120,7 +122,9 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
     testScenario('when the databaseUtil fails to save the data')
       .arrange(() => {
         sinon.stub(databaseUtil, 'save').returns(false);
-        return generateGameState();
+
+        const mockGameState = generateGameState();
+        return mockGameState;
       })
       .annihilate(() => {
         sinon.restore();
