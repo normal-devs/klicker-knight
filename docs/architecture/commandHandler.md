@@ -19,7 +19,7 @@ It returns the input RoomState and the [InvalidCommandDescription](../data/comma
 ```mermaid
 sequenceDiagram
   autonumber
-  participant A as Anything
+  participant A as Actor
   participant CH as CommandHandler<T>
 
   note over CH: T extends RoomId

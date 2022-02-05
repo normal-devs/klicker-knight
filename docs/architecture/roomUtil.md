@@ -12,7 +12,7 @@ to make sure that there is a new valid RoomState after a player runs a [Command]
 sequenceDiagram
   autonumber
 
-  participant A as Anything
+  participant A as Actor
   participant RU as RoomUtil
 
   A ->> RU: getRandomRoomHandler()
@@ -27,7 +27,7 @@ sequenceDiagram
 sequenceDiagram
   autonumber
 
-  participant A as Anything
+  participant A as Actor
   participant RU as RoomUtil
 
   A ->> RU: getRoomHandlerByGameState(gameState: Gamestate)
@@ -42,7 +42,7 @@ sequenceDiagram
 sequenceDiagram
   autonumber
 
-  participant A as Anything
+  participant A as Actor
   participant RU as RoomUtil
   participant RH as RoomHandler<T>
 
@@ -61,7 +61,7 @@ sequenceDiagram
 sequenceDiagram
   autonumber
 
-  participant A as Anything
+  participant A as Actor
   participant RU as RoomUtil
   participant RH as RoomHandler<RoomId>
 

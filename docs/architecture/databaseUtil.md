@@ -9,7 +9,7 @@ as well as parsing and serializing the game data.
 ```mermaid
 sequenceDiagram
   autonumber
-  participant A as Anything
+  participant A as Actor
   participant D as DatabaseUtil
   participant F as File System
 
@@ -32,7 +32,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
   autonumber
-  participant A as Anything
+  participant A as Actor
   participant D as GameStateUtil
   participant F as DatabaseUtil
 

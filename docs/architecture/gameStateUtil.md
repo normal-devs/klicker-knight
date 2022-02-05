@@ -8,7 +8,7 @@ when loading and saving data via the [DatabaseUtil](./databaseUtil.md).
 ```mermaid
 sequenceDiagram
   autonumber
-  participant A as Anything
+  participant A as Actor
   participant G as GameStateUtil
   participant D as DatabaseUtil
 
@@ -34,7 +34,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
   autonumber
-  participant A as Anything
+  participant A as Actor
   participant G as GameStateUtil
   participant D as DatabaseUtil
 

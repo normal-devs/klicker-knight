@@ -13,7 +13,7 @@ If the Command is invalid for the given RoomState, the RoomHandler runs a specia
 ```mermaid
 sequenceDiagram
   autonumber
-  participant A as Anything
+  participant A as Actor
   participant RH as RoomHandler<T>
   participant CH as CommandHandler<T>
 

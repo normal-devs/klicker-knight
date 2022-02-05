@@ -16,7 +16,7 @@ the next [RoomHandler](./roomHandler.md), and the RoomHandler to get the PlayerS
 ```mermaid
 sequenceDiagram
   autonumber
-  participant A as Anything
+  participant A as Actor
   participant GU as GameUtil
   participant RU as RoomUtil
   participant RH1 as RoomHandler<T1>
