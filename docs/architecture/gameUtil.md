@@ -15,20 +15,36 @@ the next [RoomHandler](./roomHandler.md), and the RoomHandler to get the PlayerS
 sequenceDiagram
   autonumber
   participant A as Anything
-  participant G as GameUtil
+  participant GU as GameUtil
   participant RU as RoomUtil
-  participant RH as RoomHandler
+  participant RH1 as RoomHandler<T1>
+  participant RH2 as RoomHandler<T1 | T2>
   participant GS as GameStateUtil
 
-  A ->> G: run(command: string)
-  G ->> GS: load(): GameState
-  GS ->> G: gameState: GameState
-  G ->> RU: run(command, gameState)
-  RU ->> G: newGameState: GameState <br> commandDescription: string
-  G ->> RU: getRoomHandler(newGameState)
-  RU ->> G: roomHandler: RoomHandler
-  G ->> RH: getPlayerStateDescription(newGameState)
-  RH ->> G: playerStateDescription: string <br> availableCommands: string[]
-  G ->> GS: save(newGameState)
-  G ->> A: commandDescription: string <br> playerStateDescription: string <br> availableCommands: string[]
+  note over RH1, RH2: TX extends RoomId <br> T1 can equal T2
+
+  A ->> GU: run(command: string)
+
+  GU ->> GS: load()
+  GS ->> GU: gameState: GameState
+
+  GU ->> RU: getRoomHandlerByGameState(gameState)
+  RU ->> GU: roomHandlerA: RoomHandler<T1>
+
+  GU ->> RH1: run(gameState.roomState, command)
+  RH1 ->> GU: commandDescription: CommandDescription <br> roomState': RoomState<T1> | null
+
+  GU ->> RU: coerceRoomState(roomState')
+  RU ->> GU: nextRoomState: RoomState<T1 | T2>
+
+  GU ->> RU: getRoomHandler(nextRoomState)
+  RU ->> GU: roomHandlerB: RoomHandler<T1 | T2>
+  GU ->> GU: nextGameState: GameState
+
+  GU ->> RH2: getPlayerStateDescription(nextGameState)
+  RH2 ->> GU: playerStateDescription: string <br> availableCommands: string[]
+
+  GU ->> GS: save(nextGameState)
+
+  GU ->> A: commandDescription: string <br> playerStateDescription: string <br> availableCommands: string[]
 ```
