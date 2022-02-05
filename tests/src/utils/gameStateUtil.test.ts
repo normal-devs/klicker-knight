@@ -10,7 +10,6 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
   testUnit('load', ({ testScenario }) => {
     testScenario('when the game data is valid')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'hasGameFile').returns(true);
         const mockGameState = generateGameState();
         sinon.stub(databaseUtil, 'load').returns(mockGameState);
         sinon.stub(gameStateUtil, 'save');
@@ -21,6 +20,9 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
         sinon.restore();
       })
       .act(() => gameStateUtil.load())
+      .assert('loads the game data', () => {
+        expect((databaseUtil.load as SinonSpy).calledOnce).to.eq(true);
+      })
       .assert('returns the game state', (mockGameState, result) => {
         expect(result).to.eq(mockGameState);
       })
@@ -30,13 +32,16 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
 
     testScenario('when the game data does not exist')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'hasGameFile').returns(false);
+        sinon.stub(databaseUtil, 'load').returns(null);
         sinon.stub(gameStateUtil, 'save');
       })
       .annihilate(() => {
         sinon.restore();
       })
       .act(() => gameStateUtil.load())
+      .assert('loads the game data', () => {
+        expect((databaseUtil.load as SinonSpy).calledOnce).to.eq(true);
+      })
       .assert('saves a new game state', () => {
         expect((gameStateUtil.save as SinonSpy).args).to.eql([
           [
@@ -54,7 +59,6 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
 
     testScenario('when the game data is invalid')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'hasGameFile').returns(false);
         sinon.stub(databaseUtil, 'load').returns('not a game state');
         sinon.stub(gameStateUtil, 'save');
       })
@@ -62,6 +66,9 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
         sinon.restore();
       })
       .act(() => gameStateUtil.load())
+      .assert('loads the game data', () => {
+        expect((databaseUtil.load as SinonSpy).calledOnce).to.eq(true);
+      })
       .assert('saves a new game state', () => {
         expect((gameStateUtil.save as SinonSpy).args).to.eql([
           [
@@ -114,6 +121,7 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
       })
       .assert('throws an error', (arranged, error) => {
         expect(error).to.be.an.instanceOf(Error);
+        expect((error as Error).message).to.include('invalid game state');
       })
       .assert('does not save the game state', () => {
         expect((databaseUtil.save as SinonSpy).called).to.eq(false);
@@ -134,8 +142,12 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
           gameStateUtil.save(mockGameState);
         });
       })
+      .assert('attempts to save the data', (mockGameState) => {
+        expect((databaseUtil.save as SinonSpy).args).to.eql([[mockGameState]]);
+      })
       .assert('throws an error', (arranged, error) => {
         expect(error).to.be.an.instanceOf(Error);
+        expect((error as Error).message).to.include('Database failed');
       });
   });
 });
