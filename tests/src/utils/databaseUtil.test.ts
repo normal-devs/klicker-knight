@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
+import fs from 'fs';
 import { defaultFilePath, databaseUtil } from '../../../src/utils/databaseUtil';
 import { testSingletonModule } from '../../testHelpers/semanticMocha';
 
@@ -7,10 +7,10 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
   testIntegration('hasGameFile', ({ testScenario }) => {
     testScenario('when the file exists')
       .arrange(() => {
-        writeFileSync(defaultFilePath, '');
+        fs.writeFileSync(defaultFilePath, '');
       })
       .annihilate(() => {
-        unlinkSync(defaultFilePath);
+        fs.unlinkSync(defaultFilePath);
       })
       .act(() => databaseUtil.hasGameFile())
       .assert('returns true', (arranged, result) => {
@@ -19,7 +19,7 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
 
     testScenario('when the file does not exist')
       .arrange(() => {
-        expect(existsSync(defaultFilePath)).to.eq(false);
+        expect(fs.existsSync(defaultFilePath)).to.eq(false);
       })
       .act(() => databaseUtil.hasGameFile())
       .assert('returns false', (arranged, result) => {
@@ -30,10 +30,10 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
   testIntegration('load', ({ testScenario }) => {
     testScenario('when the file exists and has data')
       .arrange(() => {
-        writeFileSync(defaultFilePath, '{"foo":"bar"}');
+        fs.writeFileSync(defaultFilePath, '{"foo":"bar"}');
       })
       .annihilate(() => {
-        unlinkSync(defaultFilePath);
+        fs.unlinkSync(defaultFilePath);
       })
       .act(() => databaseUtil.load())
       .assert('returns the parsed data', (arranged, result) => {
@@ -42,10 +42,10 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
 
     testScenario('when the file exists and does not have data')
       .arrange(() => {
-        writeFileSync(defaultFilePath, '');
+        fs.writeFileSync(defaultFilePath, '');
       })
       .annihilate(() => {
-        unlinkSync(defaultFilePath);
+        fs.unlinkSync(defaultFilePath);
       })
       .act(() => databaseUtil.load())
       .assert('returns null', (arranged, result) => {
@@ -54,7 +54,7 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
 
     testScenario('when the file does not exist')
       .arrange(() => {
-        expect(existsSync(defaultFilePath)).to.eq(false);
+        expect(fs.existsSync(defaultFilePath)).to.eq(false);
       })
       .act(() => databaseUtil.load())
       .assert('returns null', (arranged, result) => {
@@ -65,14 +65,14 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
   testIntegration('save', ({ testScenario }) => {
     testScenario('when the file exists and the new data is valid')
       .arrange(() => {
-        writeFileSync(defaultFilePath, '');
+        fs.writeFileSync(defaultFilePath, '');
       })
       .annihilate(() => {
-        unlinkSync(defaultFilePath);
+        fs.unlinkSync(defaultFilePath);
       })
       .act(() => {
         const saveResult = databaseUtil.save({ foo: 'foo' });
-        const fileValue = readFileSync(defaultFilePath, 'utf-8');
+        const fileValue = fs.readFileSync(defaultFilePath, 'utf-8');
 
         return {
           saveResult,
@@ -88,11 +88,11 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
 
     testScenario('when the file does not exist and the new data is valid')
       .arrange(() => {
-        expect(existsSync(defaultFilePath)).to.eq(false);
+        expect(fs.existsSync(defaultFilePath)).to.eq(false);
       })
       .act(() => {
         const saveResult = databaseUtil.save({ foo: 'foo' });
-        const fileValue = readFileSync(defaultFilePath, 'utf-8');
+        const fileValue = fs.readFileSync(defaultFilePath, 'utf-8');
 
         return {
           saveResult,
@@ -108,14 +108,14 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
 
     testScenario('when the new data is invalid')
       .arrange(() => {
-        writeFileSync(defaultFilePath, '{"foo":"bar"}');
+        fs.writeFileSync(defaultFilePath, '{"foo":"bar"}');
       })
       .act(() => {
         const foo: Record<string, object> = {};
         foo.foo = foo;
 
         const saveResult = databaseUtil.save(foo);
-        const fileValue = readFileSync(defaultFilePath, 'utf-8');
+        const fileValue = fs.readFileSync(defaultFilePath, 'utf-8');
 
         return {
           saveResult,
@@ -133,11 +133,11 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
   testIntegration('delete', ({ testScenario }) => {
     testScenario('when the file exists')
       .arrange(() => {
-        writeFileSync(defaultFilePath, '');
+        fs.writeFileSync(defaultFilePath, '');
       })
       .act(() => {
         const deleteResult = databaseUtil.delete();
-        const fileExists = existsSync(defaultFilePath);
+        const fileExists = fs.existsSync(defaultFilePath);
 
         return {
           deleteResult,
@@ -153,7 +153,7 @@ testSingletonModule('utils/databaseUtil', ({ testIntegration }) => {
 
     testScenario('when the file does not exist')
       .arrange(() => {
-        expect(existsSync(defaultFilePath)).to.eq(false);
+        expect(fs.existsSync(defaultFilePath)).to.eq(false);
       })
       .act(() => databaseUtil.delete())
       .assert('returns false', (arranged, result) => {

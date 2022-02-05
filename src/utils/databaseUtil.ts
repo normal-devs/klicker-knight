@@ -1,15 +1,15 @@
-import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
+import fs from 'fs';
 
 export const defaultFilePath = 'saves/data.json';
 
 export const databaseUtil = {
   hasGameFile(): boolean {
-    return existsSync(defaultFilePath);
+    return fs.existsSync(defaultFilePath);
   },
 
   load(): unknown {
     try {
-      const data = readFileSync(defaultFilePath, 'utf-8');
+      const data = fs.readFileSync(defaultFilePath, 'utf-8');
       return JSON.parse(data);
     } catch (error) {
       return null;
@@ -18,7 +18,7 @@ export const databaseUtil = {
 
   save(data: unknown): boolean {
     try {
-      writeFileSync(defaultFilePath, JSON.stringify(data));
+      fs.writeFileSync(defaultFilePath, JSON.stringify(data));
       return true;
     } catch (error) {
       return false;
@@ -27,7 +27,7 @@ export const databaseUtil = {
 
   delete(): boolean {
     try {
-      unlinkSync(defaultFilePath);
+      fs.unlinkSync(defaultFilePath);
       return true;
     } catch (error) {
       return false;
