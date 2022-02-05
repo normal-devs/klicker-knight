@@ -2,7 +2,7 @@
 
 A Room is an abstract concept that the player exists in and interacts with.
 
-- A Room has a unique [room id](./roomId.md)
+- A Room has a unique [room type](./roomType.md)
 - An instance of a Room is a [RoomState](./roomState.md)
 - A Room is defined by a state machine
   - states are [PlayerState](./playerState.md)s

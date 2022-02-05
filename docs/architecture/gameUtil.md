@@ -23,7 +23,7 @@ sequenceDiagram
   participant RH2 as RoomHandler<T1 | T2>
   participant GS as GameStateUtil
 
-  note over RH1, RH2: TX extends RoomId <br> T1 can equal T2
+  note over RH1, RH2: TX extends RoomType <br> T1 can equal T2
 
   A ->> GU: run(command: string)
 

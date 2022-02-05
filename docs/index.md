@@ -37,13 +37,13 @@ stateDiagram-v2
   [*] --> (abstract)<br>Room
 
   (abstract)<br>Room --> (abstract)<br>Door
-  (abstract)<br>Room --> RoomId
+  (abstract)<br>Room --> RoomType
   (abstract)<br>Room --> RoomState
   (abstract)<br>Room --> PlayerState
   (abstract)<br>Room --> Command
   (abstract)<br>Room --> rooms/
 
-  RoomState --> RoomId
+  RoomState --> RoomType
   RoomState --> PlayerState
   RoomState --> PlayerStateDescription
   RoomState --> Command

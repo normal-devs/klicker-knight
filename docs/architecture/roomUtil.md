@@ -1,7 +1,7 @@
 # RoomUtil
 
 The [RoomUtil](../src/utils/roomUtil.ts) abstracts selecting a random [RoomHandler](./roomHandler.md),
-or selecting a RoomHandler by [GameState](../data/GameState.md) or [room id](../data/RoomId.md)
+or selecting a RoomHandler by [GameState](../data/GameState.md) or [room type](../data/roomType.md)
 
 It also abstracts coercing a nullable [RoomState](../data/roomState.md) which is used by the [GameUtil](./gameUtil.md)
 to make sure that there is a new valid RoomState after a player runs a [Command](../data/command.md).
@@ -16,8 +16,8 @@ sequenceDiagram
   participant RU as RoomUtil
 
   A ->> RU: getRandomRoomHandler()
-  note over RU: T extends RoomId
-  RU ->> RU: pick random roomId <br> roomId: T <br> getRoomHandlerByRoomId<T>(roomId) <br> roomHandler: RoomHandler<T>
+  note over RU: T extends RoomType
+  RU ->> RU: pick random roomType <br> roomType: T <br> getRoomHandlerByRoomType<T>(roomType) <br> roomHandler: RoomHandler<T>
   RU ->> A: roomHandler: RoomHandler
 ```
 
@@ -31,12 +31,12 @@ sequenceDiagram
   participant RU as RoomUtil
 
   A ->> RU: getRoomHandlerByGameState(gameState: Gamestate)
-  note over RU: T extends RoomId <br> gameState.roomState: RoomState<T> <br> roomState.roomId: T
-  RU ->> RU: getRoomHandlerByRoomId<T>(roomId) <br> roomHandler: RoomHandler<T>
+  note over RU: T extends RoomType <br> gameState.roomState: RoomState<T> <br> roomState.roomType: T
+  RU ->> RU: getRoomHandlerByRoomType<T>(roomType) <br> roomHandler: RoomHandler<T>
   RU ->> A: roomHandler: RoomHandler
 ```
 
-## GetRoomHandlerByRoomId
+## GetRoomHandlerByRoomType
 
 ```mermaid
 sequenceDiagram
@@ -46,10 +46,10 @@ sequenceDiagram
   participant RU as RoomUtil
   participant RH as RoomHandler<T>
 
-  note over RH: T extends RoomId
+  note over RH: T extends RoomType
 
-  A ->> RU: getRoomHandlerByRoomId<T extends RoomId>(roomId: T)
-  RU ->> RU: lookup RoomHandler <br> subclass by roomId
+  A ->> RU: getRoomHandlerByRoomType<T extends RoomType>(roomType: T)
+  RU ->> RU: lookup RoomHandler <br> subclass by roomType
   RU ->> RH: instantiate
   RH ->> RU: roomHandler: RoomHandler<T>
   RU ->> A: roomHandler: RoomHandler<T>
@@ -63,20 +63,20 @@ sequenceDiagram
 
   participant A as Actor
   participant RU as RoomUtil
-  participant RH as RoomHandler<RoomId>
+  participant RH as RoomHandler<RoomType>
 
-  A ->> RU: coerceRoomState(roomState: RoomState<RoomId> | null)
+  A ->> RU: coerceRoomState(roomState: RoomState<RoomType> | null)
 
   alt roomState is null
     note over RU: The player left the current room
 
-    RU ->> RU: getRandomRoomHandler() <br> roomHandler: RoomHandler<RoomId>
+    RU ->> RU: getRandomRoomHandler() <br> roomHandler: RoomHandler<RoomType>
     RU ->> RH: getNewRoomState()
-    RH ->> RU: newRoomState: RoomState<RoomId>
+    RH ->> RU: newRoomState: RoomState<RoomType>
     RU ->> RU: nextRoomState = newRoomstate
   else
     RU ->> RU: nextRoomState = roomState
   end
 
-  RU ->> A: nextRoomState: RoomState<RoomId>
+  RU ->> A: nextRoomState: RoomState<RoomType>
 ```

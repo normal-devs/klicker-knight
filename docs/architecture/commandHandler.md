@@ -22,7 +22,7 @@ sequenceDiagram
   participant A as Actor
   participant CH as CommandHandler<T>
 
-  note over CH: T extends RoomId
+  note over CH: T extends RoomType
 
   A ->> CH: run(roomState: RoomState<T>)
   CH ->> A: commandDescription: CommandDescription <br> roomState: RoomState<T> | null

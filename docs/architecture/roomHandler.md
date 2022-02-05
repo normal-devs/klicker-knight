@@ -1,6 +1,6 @@
 # RoomHandler
 
-A RoomHandler models the state machine of a [Room](../data/room.md). Every RoomHandler corresponds to a unique [room id](../data/roomId.md).
+A RoomHandler models the state machine of a [Room](../data/room.md). Every RoomHandler corresponds to a unique [room type](../data/roomType.md).
 A RoomHandler abstracts finding and running the [CommandHandler](./commandHandler.md)
 that corresponds to a given [Command](../data/command.md) and [RoomState](../data/roomState.md).
 
@@ -17,7 +17,7 @@ sequenceDiagram
   participant RH as RoomHandler<T>
   participant CH as CommandHandler<T>
 
-  note over RH,CH: T extends RoomId
+  note over RH,CH: T extends RoomType
 
   A ->> RH: run(command: string, roomState: RoomState<T>)
 
