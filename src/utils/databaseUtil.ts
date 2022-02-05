@@ -3,6 +3,15 @@ import fs from 'fs';
 export const defaultFilePath = 'saves/data.json';
 
 export const databaseUtil = {
+  delete(): boolean {
+    try {
+      fs.unlinkSync(defaultFilePath);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+
   hasGameFile(): boolean {
     return fs.existsSync(defaultFilePath);
   },
@@ -19,15 +28,6 @@ export const databaseUtil = {
   save(data: unknown): boolean {
     try {
       fs.writeFileSync(defaultFilePath, JSON.stringify(data));
-      return true;
-    } catch (error) {
-      return false;
-    }
-  },
-
-  delete(): boolean {
-    try {
-      fs.unlinkSync(defaultFilePath);
       return true;
     } catch (error) {
       return false;
