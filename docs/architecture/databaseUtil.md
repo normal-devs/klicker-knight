@@ -17,11 +17,16 @@ sequenceDiagram
 
   A ->> D: delete()
   D ->> F: unlink()
+  D ->> D: error: unknown | null
+  D ->> D: hasGameFile() <br> isOnDisk: boolean <br>
+  D ->> A: isOnDisk: boolean <br> error: unknown | null
 
-  note over D: Handle errors
-
-  D ->> D: hasGameFile() <br> isOnDisk: boolean
-  D ->> A: isOnDisk: boolean
+  alt encountered error
+    D ->> D: hasGameFile() <br> isFileOnDisk: boolean
+    D ->> A: isFileOnDisk: boolean <br> error: unknown
+  else
+    D ->> A: isFileOnDisk: true <br> error: null
+  end
 ```
 
 ## HasGameFile
@@ -35,8 +40,8 @@ sequenceDiagram
 
   A ->> D: hasGameFile()
   D ->> F: exists()
-  F ->> D: isOnDisk: boolean
-  D ->> A: isOnDisk: boolean
+  F ->> D: isFileOnDisk: boolean
+  D ->> A: isFileOnDisk: boolean
 ```
 
 ## Load
@@ -55,9 +60,9 @@ sequenceDiagram
   D ->> D: parse(serializeData) <br> data: unknown
 
   alt encountered error
-    D ->> A: data: null
+    D ->> A: data: null <br> error: unknown
   else
-    D ->> A: data: unknown
+    D ->> A: data: unknown <br> error: null
   end
 ```
 
@@ -75,8 +80,8 @@ sequenceDiagram
   D ->> F: write(serializedData)
 
   alt encountered error
-    D ->> A: isSaved: false
+    D ->> A: isSaved: false <br> error: unknown
   else
-    D ->> A: isSaved: true
+    D ->> A: isSaved: true <br> error: unknown
   end
 ```

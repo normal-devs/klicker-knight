@@ -21,8 +21,7 @@ sequenceDiagram
   alt data is GameState
     G ->> G: gameState: GameState
   else
-    G ->> G: init()
-    G ->> G: gameState: GameState
+    G ->> G: init() <br> gameState: GameState
     G ->> D: save(gameState)
   end
 
