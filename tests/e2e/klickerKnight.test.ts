@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { execSync } from 'child_process';
 import { databaseUtil } from '../../src/utils/databaseUtil';
+import { INVALID_COMMAND } from '../testHelpers/invalidCommand';
 import { testIntegration } from '../testHelpers/semanticMocha';
 
 const run = (command: string): string =>
@@ -34,7 +35,7 @@ testIntegration('klicker-knight', ({ testScenario }) => {
 
   testScenario('with an invalid command')
     .annihilate(cleanupSave)
-    .act(() => run('super-invalid-command-ok-thnx'))
+    .act(() => run(INVALID_COMMAND))
     .assert('outputs a failed command description', (arranged, result) => {
       expect(result).to.include('You cannot do that');
     })

@@ -1,29 +1,32 @@
+import { ExampleRoom1Handler } from './roomHandlers/exampleRoom1Handler';
 import { formatGameOutput } from './utils/formatGameOutput';
-import {
-  Command,
-  CommandDescription,
-  DEFAULT_COMMAND,
-  GameOutput,
-} from './utils/types';
+import { gameStateUtil } from './utils/gameStateUtil';
+import { Command, DEFAULT_COMMAND, GameOutput, GameState } from './utils/types';
 
 const [input] = process.argv.slice(2);
 const command: Command = input ?? DEFAULT_COMMAND;
 
-// TODO: Move fetching command description to RoomHandler
-let commandDescription: CommandDescription;
-if (command === DEFAULT_COMMAND) {
-  commandDescription = null;
-} else if (command === 'leave') {
-  commandDescription = 'You leave example room 1';
-} else {
-  commandDescription = 'You cannot do that';
-}
+// TODO: move orchestration to gameUtil
+const gameState = gameStateUtil.load();
+const roomHandler = new ExampleRoom1Handler();
+const { commandDescription, roomState: resultingRoomState } = roomHandler.run(
+  gameState.roomState,
+  command,
+);
+const { playerStateDescription, availableCommands } =
+  roomHandler.getRoomStateDescription(resultingRoomState);
+
+// TODO: handle a room transition (resultingRoomState is null)
+const newGameState: GameState = {
+  roomState: resultingRoomState,
+};
+gameStateUtil.save(newGameState);
 
 // TODO: move aggregating game output to gameUtil
 const gameOutput: GameOutput = {
   commandDescription,
-  playerStateDescription: 'You are in example room 1',
-  availableCommands: ['leave'],
+  playerStateDescription,
+  availableCommands,
 };
 
 const output = formatGameOutput(gameOutput);
