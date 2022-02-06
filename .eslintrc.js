@@ -18,6 +18,7 @@ module.exports = {
       'eslint-local-rules/tsconfig.json',
       'eslint-local-rules/tests/tsconfig.json',
       'tests/tsconfig.json',
+      'scripts/tsconfig.json',
       'semantic-mocha/tsconfig.json',
       'semantic-mocha/tests/tsconfig.json',
     ],
@@ -33,10 +34,14 @@ module.exports = {
       {
         zones: [
           {
-            except: ['./src/utils/types/index.ts'],
             from: './src/utils/types/gameState.d.ts',
             message:
               'Make src/utils/types/gameState.d.ts types available in src/utils/types/index.ts to provide a unified interface for other modules. Then import from src/utils/types/',
+            target: './',
+          },
+          {
+            from: './src/utils/types/roomTypesTuple.ts',
+            message: 'Import from src/utils/types/ instead',
             target: './',
           },
         ],

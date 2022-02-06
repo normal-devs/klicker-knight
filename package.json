@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "clean:game": "rm -r saves/*.json",
-    "compile:gameStateSchema": "json2ts src/utils/types/gameState.schema.json > src/utils/types/gameState.d.ts",
+    "compile:gameStateSchema": "json2ts src/utils/types/gameState.schema.json > src/utils/types/gameState.d.ts && ts-node scripts/compileRoomTypesTuple.ts",
     "klicker-knight": "ts-node src/klickerKnight",
     "lint:md": "markdownlint **/*.md --ignore node_modules",
     "lint:ts": "eslint --color --ext .ts,.js .",

@@ -1,10 +1,15 @@
-// eslint-disable-next-line import/no-restricted-paths
+/* eslint-disable import/no-restricted-paths */
 import type { RoomState } from './gameState';
+import type { ROOM_TYPES_TUPLE } from './roomTypesTuple';
+/* eslint-enable import/no-restricted-paths */
 
 // Game State
 export type { GameState, RoomState, ExampleRoom1 } from './gameState'; // eslint-disable-line import/no-restricted-paths
 
-export type RoomType = RoomState['type'];
+// eslint-disable-next-line import/no-restricted-paths
+export { ROOM_TYPES_TUPLE } from './roomTypesTuple';
+export type RoomTypesTuple = typeof ROOM_TYPES_TUPLE;
+export type RoomType = RoomTypesTuple[number];
 
 export type NarrowedRoomState<TRoomType extends RoomType> = RoomState & {
   type: TRoomType;
