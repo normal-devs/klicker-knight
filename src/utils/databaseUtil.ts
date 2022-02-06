@@ -2,13 +2,50 @@ import fs from 'fs';
 
 export const defaultFilePath = 'saves/data.json';
 
+export type LoadResult =
+  | {
+      data: unknown;
+      error: null;
+    }
+  | {
+      data: null;
+      error: unknown;
+    };
+
+export type SaveResult =
+  | {
+      isSaved: true;
+      error: null;
+    }
+  | {
+      isSaved: false;
+      error: unknown;
+    };
+
+export type DeleteResult =
+  | {
+      isFileOnDisk: false;
+      error: null;
+    }
+  | {
+      isFileOnDisk: boolean;
+      error: unknown;
+    };
+
 export const databaseUtil = {
-  delete(): boolean {
+  delete(): DeleteResult {
     try {
       fs.unlinkSync(defaultFilePath);
-      return true;
+
+      return {
+        isFileOnDisk: false,
+        error: null,
+      };
     } catch (error) {
-      return false;
+      return {
+        isFileOnDisk: databaseUtil.hasGameFile(),
+        error,
+      };
     }
   },
 
@@ -16,21 +53,34 @@ export const databaseUtil = {
     return fs.existsSync(defaultFilePath);
   },
 
-  load(): unknown {
+  load(): LoadResult {
     try {
       const data = fs.readFileSync(defaultFilePath, 'utf-8');
-      return JSON.parse(data);
+
+      return {
+        data: JSON.parse(data),
+        error: null,
+      };
     } catch (error) {
-      return null;
+      return {
+        data: null,
+        error,
+      };
     }
   },
 
-  save(data: unknown): boolean {
+  save(data: unknown): SaveResult {
     try {
       fs.writeFileSync(defaultFilePath, JSON.stringify(data));
-      return true;
+      return {
+        isSaved: true,
+        error: null,
+      };
     } catch (error) {
-      return false;
+      return {
+        isSaved: false,
+        error,
+      };
     }
   },
 };
