@@ -16,7 +16,7 @@ const init = (): GameState => ({
 
 export const gameStateUtil = {
   load: (): GameState => {
-    const unknownState = databaseUtil.load();
+    const { data: unknownState } = databaseUtil.load();
     const hasValidSaveState = isGameState(unknownState);
     const gameState = hasValidSaveState ? unknownState : init();
 
@@ -33,7 +33,7 @@ export const gameStateUtil = {
       );
     }
 
-    const isSaved = databaseUtil.save(state);
+    const { isSaved } = databaseUtil.save(state);
     if (!isSaved) {
       throw new DeveloperError('Database failed to save the game state.');
     }
