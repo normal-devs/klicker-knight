@@ -342,7 +342,7 @@ const buildAnnihilateRegistrant =
     onAnnihilate: AnnihilateCallback<TArranged>,
   ): AnnihilatedScenarioBuilder<TArranged> => {
     const hookWrapper = () => onAnnihilate(getArranged());
-    parentConfig.add(new HookConfig(mochaAfter, 'act', hookWrapper));
+    parentConfig.add(new HookConfig(mochaAfter, 'annihilate', hookWrapper));
 
     return {
       act: buildActRegistrant<TArranged>(parentConfig, getArranged),
