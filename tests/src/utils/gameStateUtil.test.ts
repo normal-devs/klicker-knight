@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import sinon, { SinonSpy } from 'sinon';
 import { databaseUtil } from '../../../src/utils/databaseUtil';
 import { gameStateUtil } from '../../../src/utils/gameStateUtil';
+import { GameState } from '../../../src/utils/types';
 import { generateGameState } from '../../testHelpers/generateGameState';
 import { testSingletonModule } from '../../testHelpers/semanticMocha';
 import { tryErrorable } from '../../testHelpers/tryErrorable';
@@ -40,6 +41,14 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
           error: Symbol('whoops'),
         });
         sinon.stub(gameStateUtil, 'save');
+
+        const expectedGameState: GameState = {
+          roomState: {
+            type: 'exampleRoom1',
+            playerState: 'AtEntrance',
+          },
+        };
+        return expectedGameState;
       })
       .annihilate(() => {
         sinon.restore();
@@ -48,19 +57,13 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
       .assert('loads the game data', () => {
         expect((databaseUtil.load as SinonSpy).calledOnce).to.eq(true);
       })
-      .assert('saves a new game state', () => {
+      .assert('saves a new game state', (expectedGameState) => {
         expect((gameStateUtil.save as SinonSpy).args).to.eql([
-          [
-            {
-              currentRoomId: null,
-            },
-          ],
+          [expectedGameState],
         ]);
       })
-      .assert('returns a new game state', (arranged, result) => {
-        expect(result).to.eql({
-          currentRoomId: null,
-        });
+      .assert('returns a new game state', (expectedGameState, result) => {
+        expect(result).to.eql(expectedGameState);
       });
 
     testScenario('when the game data is invalid')
@@ -70,6 +73,14 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
           error: null,
         });
         sinon.stub(gameStateUtil, 'save');
+
+        const expectedGameState: GameState = {
+          roomState: {
+            type: 'exampleRoom1',
+            playerState: 'AtEntrance',
+          },
+        };
+        return expectedGameState;
       })
       .annihilate(() => {
         sinon.restore();
@@ -78,19 +89,13 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
       .assert('loads the game data', () => {
         expect((databaseUtil.load as SinonSpy).calledOnce).to.eq(true);
       })
-      .assert('saves a new game state', () => {
+      .assert('saves a new game state', (expectedGameState) => {
         expect((gameStateUtil.save as SinonSpy).args).to.eql([
-          [
-            {
-              currentRoomId: null,
-            },
-          ],
+          [expectedGameState],
         ]);
       })
-      .assert('returns a new game state', (arranged, result) => {
-        expect(result).to.eql({
-          currentRoomId: null,
-        });
+      .assert('returns a new game state', (expectedGameState, result) => {
+        expect(result).to.eql(expectedGameState);
       });
   });
 
@@ -109,12 +114,15 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
       })
       .act((mockGameState) => gameStateUtil.save(mockGameState))
       .assert('saves the game state', () => {
+        const expectedGameState: GameState = {
+          roomState: {
+            type: 'exampleRoom1',
+            playerState: 'AtEntrance',
+          },
+        };
+
         expect((databaseUtil.save as SinonSpy).args).to.eql([
-          [
-            {
-              currentRoomId: null,
-            },
-          ],
+          [expectedGameState],
         ]);
       });
 

@@ -11,7 +11,10 @@ const isGameState = (unknownState: unknown): unknownState is GameState =>
   validateGameState(unknownState);
 
 const init = (): GameState => ({
-  currentRoomId: null,
+  roomState: {
+    type: 'exampleRoom1',
+    playerState: 'AtEntrance',
+  },
 });
 
 export const gameStateUtil = {
