@@ -3,6 +3,8 @@ import type { RoomState } from './gameState';
 import type { ROOM_TYPES_TUPLE } from './roomTypesTuple';
 /* eslint-enable import/no-restricted-paths */
 
+import type { RoomHandler } from '../../roomHandlers/roomHandler';
+
 // Game State
 export type { GameState, RoomState, ExampleRoom1 } from './gameState'; // eslint-disable-line import/no-restricted-paths
 
@@ -37,6 +39,10 @@ export type PlayerStateDescription = string;
 export type AvailableCommands = [string, ...string[]];
 
 // RoomHandler and CommandHandler
+export type AllRoomHandlersByRoomType = {
+  [TRoomType in RoomType]: RoomHandler<TRoomType>;
+};
+
 export type StateDescriptionAccessor<TRoomType extends RoomType> = Record<
   NarrowedRoomState<TRoomType>['playerState'],
   RoomStateDescription
@@ -55,5 +61,7 @@ export type PassthroughCommandHandler = <TRoomType extends RoomType>(
 
 export type CommandResult<TRoomType extends RoomType> = {
   commandDescription: CommandDescription;
-  roomState: NarrowedRoomState<TRoomType>;
+
+  // null indicates the player left the room
+  roomState: NarrowedRoomState<TRoomType> | null;
 };

@@ -11,12 +11,7 @@ type TRoomType = 'exampleRoom1';
 
 const leaveHandler: CommandHandler<TRoomType> = () => ({
   commandDescription: 'You leave example room 1',
-
-  // TODO: move new room initialization to a RoomHandler instance function
-  roomState: {
-    type: 'exampleRoom1',
-    playerState: 'AtEntrance',
-  },
+  roomState: null,
 });
 
 const stateDescriptionAccessor: StateDescriptionAccessor<TRoomType> = {
@@ -29,6 +24,13 @@ const stateDescriptionAccessor: StateDescriptionAccessor<TRoomType> = {
 export class ExampleRoom1Handler extends RoomHandler<TRoomType> {
   constructor() {
     super(stateDescriptionAccessor);
+  }
+
+  createRoomState(): NarrowedRoomState<'exampleRoom1'> {
+    return {
+      type: 'exampleRoom1',
+      playerState: 'AtEntrance',
+    };
   }
 
   protected getCommandHandler(

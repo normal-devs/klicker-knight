@@ -25,6 +25,8 @@ export abstract class RoomHandler<TRoomType extends RoomType> {
     private stateDescriptionAccessor: StateDescriptionAccessor<TRoomType>,
   ) {}
 
+  abstract createRoomState(): NarrowedRoomState<TRoomType>;
+
   run(
     roomState: NarrowedRoomState<TRoomType>,
     command: Command,

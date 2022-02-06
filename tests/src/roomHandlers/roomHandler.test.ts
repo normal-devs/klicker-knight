@@ -10,6 +10,7 @@ import {
   StateDescriptionAccessor,
   CommandResult,
   DEFAULT_COMMAND,
+  NarrowedRoomState,
 } from '../../../src/utils/types';
 import { INVALID_COMMAND } from '../../testHelpers/invalidCommand';
 
@@ -27,6 +28,10 @@ testSingletonModule('roomHandlers/RoomHandler', ({ testUnit }) => {
         };
 
         super(unusedAccessor);
+      }
+
+      createRoomState(): NarrowedRoomState<TTestRoomType> {
+        throw new Error('Method not implemented.');
       }
     }
 

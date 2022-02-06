@@ -1,6 +1,6 @@
-import { ExampleRoom1Handler } from './roomHandlers/exampleRoom1Handler';
 import { formatGameOutput } from './utils/formatGameOutput';
 import { gameStateUtil } from './utils/gameStateUtil';
+import { roomUtil } from './utils/roomUtil';
 import { Command, DEFAULT_COMMAND, GameOutput, GameState } from './utils/types';
 
 const [input] = process.argv.slice(2);
@@ -8,17 +8,21 @@ const command: Command = input ?? DEFAULT_COMMAND;
 
 // TODO: move orchestration to gameUtil
 const gameState = gameStateUtil.load();
-const roomHandler = new ExampleRoom1Handler();
-const { commandDescription, roomState: resultingRoomState } = roomHandler.run(
+const roomHandler1 = roomUtil.getRoomHandlerByRoomType(
+  gameState.roomState.type,
+);
+const { commandDescription, roomState: resultingRoomState } = roomHandler1.run(
   gameState.roomState,
   command,
 );
-const { playerStateDescription, availableCommands } =
-  roomHandler.getRoomStateDescription(resultingRoomState);
 
-// TODO: handle a room transition (resultingRoomState is null)
+const newRoomState = roomUtil.coerceRoomState(resultingRoomState);
+const roomHandler2 = roomUtil.getRoomHandlerByRoomType(newRoomState.type);
+const { playerStateDescription, availableCommands } =
+  roomHandler2.getRoomStateDescription(newRoomState);
+
 const newGameState: GameState = {
-  roomState: resultingRoomState,
+  roomState: newRoomState,
 };
 gameStateUtil.save(newGameState);
 

@@ -19,10 +19,10 @@ testSingletonModule(
         .act(({ roomHandler, inputRoomState }) =>
           roomHandler.run(inputRoomState, 'leave'),
         )
-        .assert('returns the leave result', ({ inputRoomState }, result) => {
+        .assert('returns a leave result', (arranged, result) => {
           const expectedResult: CommandResult<'exampleRoom1'> = {
             commandDescription: 'You leave example room 1',
-            roomState: inputRoomState,
+            roomState: null,
           };
 
           expect(result).to.eql(expectedResult);
