@@ -18,15 +18,15 @@ sequenceDiagram
 
   A ->> RU: coerceRoomState(roomState: RoomState<RoomType> | null)
 
-  alt roomState is null
+  alt roomState is RoomState
+    RU ->> RU: nextRoomState = roomState
+  else roomState is null
     note over RU: The player left the current room
 
     RU ->> RU: getRandomRoomHandler() <br> roomHandler: RoomHandler<RoomType>
     RU ->> RH: getNewRoomState()
     RH ->> RU: newRoomState: RoomState<RoomType>
     RU ->> RU: nextRoomState = newRoomstate
-  else
-    RU ->> RU: nextRoomState = roomState
   end
 
   RU ->> A: nextRoomState: RoomState<RoomType>

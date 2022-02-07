@@ -18,11 +18,11 @@ sequenceDiagram
   A ->> D: delete()
   D ->> F: unlink()
 
-  alt encountered error
+  alt success
+    D ->> A: isFileOnDisk: true <br> error: null
+  else encountered error
     D ->> D: hasGameFile() <br> isFileOnDisk: boolean
     D ->> A: isFileOnDisk: boolean <br> error: unknown
-  else
-    D ->> A: isFileOnDisk: true <br> error: null
   end
 ```
 
@@ -56,10 +56,10 @@ sequenceDiagram
 
   D ->> D: parse(serializeData) <br> data: unknown
 
-  alt encountered error
-    D ->> A: data: null <br> error: unknown
-  else
+  alt success
     D ->> A: data: unknown <br> error: null
+  else encountered error
+    D ->> A: data: null <br> error: unknown
   end
 ```
 
@@ -76,9 +76,9 @@ sequenceDiagram
   D ->> D: serialize(data) <br> serializedData: string
   D ->> F: write(serializedData)
 
-  alt encountered error
-    D ->> A: isSaved: false <br> error: unknown
-  else
+  alt success
     D ->> A: isSaved: true <br> error: null
+  else encountered error
+    D ->> A: isSaved: false <br> error: unknown
   end
 ```
