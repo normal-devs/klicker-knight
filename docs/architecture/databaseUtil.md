@@ -17,9 +17,6 @@ sequenceDiagram
 
   A ->> D: delete()
   D ->> F: unlink()
-  D ->> D: error: unknown | null
-  D ->> D: hasGameFile() <br> isOnDisk: boolean <br>
-  D ->> A: isOnDisk: boolean <br> error: unknown | null
 
   alt encountered error
     D ->> D: hasGameFile() <br> isFileOnDisk: boolean
@@ -82,6 +79,6 @@ sequenceDiagram
   alt encountered error
     D ->> A: isSaved: false <br> error: unknown
   else
-    D ->> A: isSaved: true <br> error: unknown
+    D ->> A: isSaved: true <br> error: null
   end
 ```

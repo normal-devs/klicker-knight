@@ -55,10 +55,11 @@ export const databaseUtil = {
 
   load(): LoadResult {
     try {
-      const data = fs.readFileSync(defaultFilePath, 'utf-8');
+      const serializedData = fs.readFileSync(defaultFilePath, 'utf-8');
+      const data: unknown = JSON.parse(serializedData);
 
       return {
-        data: JSON.parse(data),
+        data,
         error: null,
       };
     } catch (error) {
@@ -71,7 +72,9 @@ export const databaseUtil = {
 
   save(data: unknown): SaveResult {
     try {
-      fs.writeFileSync(defaultFilePath, JSON.stringify(data));
+      const serializedData = JSON.stringify(data);
+      fs.writeFileSync(defaultFilePath, serializedData);
+
       return {
         isSaved: true,
         error: null,
