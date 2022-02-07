@@ -52,6 +52,6 @@ stateDiagram-v2
   Command --> CommandDescription
 ```
 
-### [Rooms/](./room/)
+### [Rooms/](./rooms/)
 
 (See previous diagram)
