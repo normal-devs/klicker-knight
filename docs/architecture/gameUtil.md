@@ -1,7 +1,7 @@
 # GameUtil
 
 The [GameUtil](../../src/utils/gameUtil.ts) orchestrates
-loading the [GameState](../data/GameState),
+loading the [GameState](../data/gameState.md),
 aggregating the [CommandDescription](../data/commandDescription.md),
 [PlayerStateDescription](../data/playerStateDescription.md)
 and available [Command](../data/command.md)s,
