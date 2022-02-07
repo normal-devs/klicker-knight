@@ -8,13 +8,13 @@ It abstracts the string input and output from the [GameUtil](./gameUtil.md).
 ```mermaid
 sequenceDiagram
   autonumber
-  actor D as Developer
+  actor P as Player
   participant K as Klicker Knight
   participant G as GameUtil
 
-  D ->> K: npm run klicker-knight [<command> = 'default']
+  P ->> K: npm run klicker-knight [<command> = 'default']
   K ->> G: run(command);
   G ->> K: gameOutput: GameOutput
   K ->> K: output = formatGameOutput(gameOutput): string;
-  K ->> D: output: string
+  K ->> P: output: string
 ```
