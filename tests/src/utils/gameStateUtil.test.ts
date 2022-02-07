@@ -8,11 +8,13 @@ import { tryErrorable } from '../../testHelpers/tryErrorable';
 
 testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
   testUnit('load', ({ testScenario }) => {
-    testScenario('when a valid game state exists')
+    testScenario('when the game data is valid')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'hasGameFile').returns(true);
         const mockGameState = generateGameState();
-        sinon.stub(databaseUtil, 'load').returns(mockGameState);
+        sinon.stub(databaseUtil, 'load').returns({
+          data: mockGameState,
+          error: null,
+        });
         sinon.stub(gameStateUtil, 'save');
 
         return mockGameState;
@@ -21,6 +23,9 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
         sinon.restore();
       })
       .act(() => gameStateUtil.load())
+      .assert('loads the game data', () => {
+        expect((databaseUtil.load as SinonSpy).calledOnce).to.eq(true);
+      })
       .assert('returns the game state', (mockGameState, result) => {
         expect(result).to.eq(mockGameState);
       })
@@ -28,16 +33,22 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
         expect((gameStateUtil.save as SinonSpy).called).to.eq(false);
       });
 
-    testScenario('when the game state does not exist')
+    testScenario('when the game data does not exist')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'hasGameFile').returns(false);
+        sinon.stub(databaseUtil, 'load').returns({
+          data: null,
+          error: Symbol('whoops'),
+        });
         sinon.stub(gameStateUtil, 'save');
       })
       .annihilate(() => {
         sinon.restore();
       })
       .act(() => gameStateUtil.load())
-      .assert('saves the new game state', () => {
+      .assert('loads the game data', () => {
+        expect((databaseUtil.load as SinonSpy).calledOnce).to.eq(true);
+      })
+      .assert('saves a new game state', () => {
         expect((gameStateUtil.save as SinonSpy).args).to.eql([
           [
             {
@@ -52,17 +63,22 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
         });
       });
 
-    testScenario('when the game state is invalid')
+    testScenario('when the game data is invalid')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'hasGameFile').returns(false);
-        sinon.stub(databaseUtil, 'load').returns('not a game state');
+        sinon.stub(databaseUtil, 'load').returns({
+          data: 'not a game state',
+          error: null,
+        });
         sinon.stub(gameStateUtil, 'save');
       })
       .annihilate(() => {
         sinon.restore();
       })
       .act(() => gameStateUtil.load())
-      .assert('saves the new game state', () => {
+      .assert('loads the game data', () => {
+        expect((databaseUtil.load as SinonSpy).calledOnce).to.eq(true);
+      })
+      .assert('saves a new game state', () => {
         expect((gameStateUtil.save as SinonSpy).args).to.eql([
           [
             {
@@ -79,10 +95,14 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
   });
 
   testUnit('save', ({ testScenario }) => {
-    testScenario('when given a valid game state')
+    testScenario('with a valid game state')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'save').returns(true);
-        return generateGameState();
+        sinon.stub(databaseUtil, 'save').returns({
+          isSaved: true,
+          error: null,
+        });
+        const mockGameState = generateGameState();
+        return mockGameState;
       })
       .annihilate(() => {
         sinon.restore();
@@ -98,9 +118,9 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
         ]);
       });
 
-    testScenario('when given an invalid game state')
+    testScenario('with an invalid game state')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'save').returns(true);
+        sinon.stub(databaseUtil, 'save');
       })
       .annihilate(() => {
         sinon.restore();
@@ -112,15 +132,20 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
       })
       .assert('throws an error', (arranged, error) => {
         expect(error).to.be.an.instanceOf(Error);
+        expect((error as Error).message).to.include('invalid game state');
       })
-      .assert('does not save the game', () => {
+      .assert('does not save the game state', () => {
         expect((databaseUtil.save as SinonSpy).called).to.eq(false);
       });
 
     testScenario('when the databaseUtil fails to save the data')
       .arrange(() => {
-        sinon.stub(databaseUtil, 'save').returns(false);
-        return generateGameState();
+        sinon.stub(databaseUtil, 'save').returns({
+          isSaved: false,
+          error: Symbol('whoops'),
+        });
+        const mockGameState = generateGameState();
+        return mockGameState;
       })
       .annihilate(() => {
         sinon.restore();
@@ -130,8 +155,12 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
           gameStateUtil.save(mockGameState);
         });
       })
+      .assert('attempts to save the data', (mockGameState) => {
+        expect((databaseUtil.save as SinonSpy).args).to.eql([[mockGameState]]);
+      })
       .assert('throws an error', (arranged, error) => {
         expect(error).to.be.an.instanceOf(Error);
+        expect((error as Error).message).to.include('Database failed');
       });
   });
 });
