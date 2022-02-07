@@ -7,7 +7,7 @@ A Room is an abstract concept that the player exists in and interacts with.
 - A Room is defined by a state machine
   - states are [PlayerState](./playerState.md)s
   - transitions are [Command](./command.md)s
-  - the state machine is modeled by a [RoomHandler](../architecture/RoomHandler.md)
+  - the state machine is modeled by a [RoomHandler](../architecture/roomHandler.md)
 - A Room has one entrance ([Door](./door.md))
 - A Room has one or more exits (Doors)
 - All entrances are locked and cannot be exits
