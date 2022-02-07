@@ -6,6 +6,32 @@ or selecting a RoomHandler by [GameState](../data/GameState.md) or [room type](.
 It also abstracts coercing a nullable [RoomState](../data/roomState.md) which is used by the [GameUtil](./gameUtil.md)
 to make sure that there is a new valid RoomState after a player runs a [Command](../data/command.md).
 
+## CoerceRoomState
+
+```mermaid
+sequenceDiagram
+  autonumber
+
+  participant A as Actor
+  participant RU as RoomUtil
+  participant RH as RoomHandler<RoomType>
+
+  A ->> RU: coerceRoomState(roomState: RoomState<RoomType> | null)
+
+  alt roomState is null
+    note over RU: The player left the current room
+
+    RU ->> RU: getRandomRoomHandler() <br> roomHandler: RoomHandler<RoomType>
+    RU ->> RH: getNewRoomState()
+    RH ->> RU: newRoomState: RoomState<RoomType>
+    RU ->> RU: nextRoomState = newRoomstate
+  else
+    RU ->> RU: nextRoomState = roomState
+  end
+
+  RU ->> A: nextRoomState: RoomState<RoomType>
+```
+
 ## GetRandomRoomHandler
 
 ```mermaid
@@ -53,30 +79,4 @@ sequenceDiagram
   RU ->> RH: instantiate
   RH ->> RU: roomHandler: RoomHandler<T>
   RU ->> A: roomHandler: RoomHandler<T>
-```
-
-## CoerceRoomState
-
-```mermaid
-sequenceDiagram
-  autonumber
-
-  participant A as Actor
-  participant RU as RoomUtil
-  participant RH as RoomHandler<RoomType>
-
-  A ->> RU: coerceRoomState(roomState: RoomState<RoomType> | null)
-
-  alt roomState is null
-    note over RU: The player left the current room
-
-    RU ->> RU: getRandomRoomHandler() <br> roomHandler: RoomHandler<RoomType>
-    RU ->> RH: getNewRoomState()
-    RH ->> RU: newRoomState: RoomState<RoomType>
-    RU ->> RU: nextRoomState = newRoomstate
-  else
-    RU ->> RU: nextRoomState = roomState
-  end
-
-  RU ->> A: nextRoomState: RoomState<RoomType>
 ```
