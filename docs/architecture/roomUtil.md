@@ -1,6 +1,6 @@
 # RoomUtil
 
-The [RoomUtil](../src/utils/roomUtil.ts) abstracts selecting a random [RoomHandler](./roomHandler.md),
+The [RoomUtil](../../src/utils/roomUtil.ts) abstracts selecting a random [RoomHandler](./roomHandler.md),
 or selecting a RoomHandler by [GameState](../data/GameState.md) or [room type](../data/roomType.md)
 
 It also abstracts coercing a nullable [RoomState](../data/roomState.md) which is used by the [GameUtil](./gameUtil.md)

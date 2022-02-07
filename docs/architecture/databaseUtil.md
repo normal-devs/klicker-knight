@@ -1,6 +1,6 @@
 # DatabaseUtil
 
-The [DatabaseUtil](../src/utils/databaseUtil.ts) abstracts
+The [DatabaseUtil](../../src/utils/databaseUtil.ts) abstracts
 writing and reading to the file system,
 as well as parsing and serializing the game data.
 
