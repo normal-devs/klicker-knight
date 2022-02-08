@@ -1,6 +1,6 @@
 # Example Room 1
 
-- **roomType**: exampleRoom1.
+- **roomType**: exampleRoom1
 
 The simplest room you can have. You can be in the room, or you can leave.
 
