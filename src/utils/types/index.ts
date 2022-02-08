@@ -43,8 +43,8 @@ export type AllRoomHandlersByRoomType = {
   [TRoomType in RoomType]: RoomHandler<TRoomType>;
 };
 
-export type StateDescriptionAccessor<TRoomType extends RoomType> = Record<
-  NarrowedRoomState<TRoomType>['playerState'],
+export type StateDescriptionAccessor<TRoomState extends RoomState> = Record<
+  TRoomState['playerState'],
   RoomStateDescription
 >;
 

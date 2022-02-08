@@ -22,7 +22,9 @@ const invalidCommandHandler: PassthroughCommandHandler = (roomState) => ({
 
 export abstract class RoomHandler<TRoomType extends RoomType> {
   constructor(
-    private stateDescriptionAccessor: StateDescriptionAccessor<TRoomType>,
+    private stateDescriptionAccessor: StateDescriptionAccessor<
+      NarrowedRoomState<TRoomType>
+    >,
   ) {}
 
   abstract createRoomState(): NarrowedRoomState<TRoomType>;

@@ -20,7 +20,9 @@ testSingletonModule('roomHandlers/RoomHandler', ({ testUnit }) => {
   testUnit('run', ({ testScenario }) => {
     abstract class BaseTestRoomHandler extends RoomHandler<TTestRoomType> {
       constructor() {
-        const unusedAccessor: StateDescriptionAccessor<TTestRoomType> = {
+        const unusedAccessor: StateDescriptionAccessor<
+          NarrowedRoomState<TTestRoomType>
+        > = {
           AtEntrance: {
             playerStateDescription: '',
             availableCommands: [''],
