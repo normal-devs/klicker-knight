@@ -12,16 +12,13 @@ const roomTypes = Object.values(gameStateSchema.definitions)
   .filter((schema): schema is RoomStateSchema => 'properties' in schema)
   .map((schema) => schema.properties.type.const);
 
-const outputRoomTypeList = roomTypes
-  .map((roomType) => `'${roomType}'`)
-  .join(`\n  `);
-
 const output = [
   '// THIS FILE WAS AUTOMATICALLY GENERATED',
   '// Use "npm run compile:gameStateSchema" to rebuild',
   '',
-  `export const ROOM_TYPES_TUPLE = [${outputRoomTypeList}] as const;`,
-  '',
+  'export const ROOM_TYPES_TUPLE = [',
+  ...roomTypes.map((roomType) => `  '${roomType}',`),
+  '] as const;',
 ].join('\n');
 
 fs.writeFileSync('src/utils/types/roomTypesTuple.ts', output);
