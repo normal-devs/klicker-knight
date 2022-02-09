@@ -15,9 +15,9 @@ This room will go away when other rooms are implemented.
 ## Commands
 
 - **leave**: You leave example room 2
-- **go2A**: You move to state 2A
-- **go2B**: You move to state 2B
-- **goStart**: You move back to the entrance
+- **goTo2A**: You move to state 2A
+- **goTo2B**: You move to state 2B
+- **goToEntrance**: You move back to the entrance
 
 ## Diagram
 
@@ -25,11 +25,11 @@ This room will go away when other rooms are implemented.
 stateDiagram-v2
   [*] --> AtEntrance
 
-  AtEntrance --> State2A: go2A
-  AtEntrance --> State2B: go2B
+  AtEntrance --> State2A: goTo2A
+  AtEntrance --> State2B: goTo2B
   AtEntrance --> [*]: leave
 
-  State2A --> AtEntrance: goStart
+  State2A --> AtEntrance: goToEntrance
 
-  State2B --> AtEntrance: goStart
+  State2B --> AtEntrance: goToEntrance
 ```
