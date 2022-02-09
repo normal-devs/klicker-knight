@@ -1,14 +1,14 @@
 import { expect } from 'chai';
 import { testSingletonModule } from '../../testHelpers/semanticMocha';
 import { roomUtil } from '../../../src/utils/roomUtil';
-import { generateGameState } from '../../testHelpers/generateGameState';
+import { generateRoomState } from '../../testHelpers/generateGameState';
 import { RoomState } from '../../../src/utils/types';
 
 testSingletonModule('utils/roomUtil', ({ testUnit }) => {
   testUnit('coerceRoomState', ({ testScenario }) => {
     testScenario('when the room state is not null')
       .arrange(() => {
-        const mockRoomState = generateGameState().roomState;
+        const mockRoomState = generateRoomState();
         return { mockRoomState };
       })
       .act(({ mockRoomState }) => roomUtil.coerceRoomState(mockRoomState))

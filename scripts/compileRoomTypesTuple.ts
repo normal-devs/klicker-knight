@@ -1,16 +1,9 @@
 import fs from 'fs';
-import gameStateSchema from '../src/utils/types/gameState.schema.json';
+import { roomStateSchema } from '../src/utils/types/roomStateSchema';
 
-type ValuesOf<T> = T[keyof T];
-
-type ReusableSchemasCollection = typeof gameStateSchema.definitions;
-
-// The "RoomState" schema is a list of the individual room state schemas, so it can be safely omitted
-type RoomStateSchema = ValuesOf<Omit<ReusableSchemasCollection, 'RoomState'>>;
-
-const roomTypes = Object.values(gameStateSchema.definitions)
-  .filter((schema): schema is RoomStateSchema => 'properties' in schema)
-  .map((schema) => schema.properties.type.const);
+const roomTypes: string[] = roomStateSchema.oneOf.map(
+  (schema) => schema.properties.type.const,
+);
 
 const output = [
   '// THIS FILE WAS AUTOMATICALLY GENERATED',

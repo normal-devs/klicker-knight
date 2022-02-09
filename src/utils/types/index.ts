@@ -65,3 +65,6 @@ export type CommandResult<TRoomType extends RoomType> = {
   // null indicates the player left the room
   roomState: NarrowedRoomState<TRoomType> | null;
 };
+
+// Util
+export type ValuesOf<T> = T[keyof T];
