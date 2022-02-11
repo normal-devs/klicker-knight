@@ -14,7 +14,7 @@ testIntegration('klicker-knight', ({ testScenario }) => {
     .annihilate(cleanupSave)
     .act(() => run(''))
     .assert('outputs a room description', (arranged, result) => {
-      expect(result).to.include('You are in example room 1');
+      expect(result).to.match(/You are in example room \d/);
     })
     .assert('outputs available commands', (arranged, result) => {
       expect(result).to.include('Available Commands: leave');
@@ -24,10 +24,10 @@ testIntegration('klicker-knight', ({ testScenario }) => {
     .annihilate(cleanupSave)
     .act(() => run('leave'))
     .assert('outputs a command description', (arranged, result) => {
-      expect(result).to.include('You leave example room 1');
+      expect(result).to.match(/You leave example room \d/);
     })
     .assert('outputs a room description', (arranged, result) => {
-      expect(result).to.include('You are in example room 1');
+      expect(result).to.match(/You are in example room \d/);
     })
     .assert('outputs available commands', (arranged, result) => {
       expect(result).to.include('Available Commands: leave');
@@ -40,7 +40,7 @@ testIntegration('klicker-knight', ({ testScenario }) => {
       expect(result).to.include('You cannot do that');
     })
     .assert('outputs a room description', (arranged, result) => {
-      expect(result).to.include('You are in example room 1');
+      expect(result).to.match(/You are in example room \d/);
     })
     .assert('outputs available commands', (arranged, result) => {
       expect(result).to.include('Available Commands: leave');
@@ -53,7 +53,7 @@ testIntegration('klicker-knight', ({ testScenario }) => {
       expect(result).to.include('You cannot do that');
     })
     .assert('outputs a room description', (arranged, result) => {
-      expect(result).to.include('You are in example room 1');
+      expect(result).to.match(/You are in example room \d/);
     })
     .assert('outputs available commands', (arranged, result) => {
       expect(result).to.include('Available Commands: leave');

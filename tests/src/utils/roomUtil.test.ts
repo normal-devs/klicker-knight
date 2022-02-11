@@ -1,8 +1,10 @@
 import { expect } from 'chai';
+import sinon, { SinonSpy } from 'sinon';
 import { testSingletonModule } from '../../testHelpers/semanticMocha';
 import { roomUtil } from '../../../src/utils/roomUtil';
 import { generateRoomState } from '../../testHelpers/generateGameState';
 import { RoomState } from '../../../src/utils/types';
+import { ExampleRoom1Handler } from '../../../src/roomHandlers/exampleRoom1Handler';
 
 testSingletonModule('utils/roomUtil', ({ testUnit }) => {
   testUnit('coerceRoomState', ({ testScenario }) => {
@@ -17,7 +19,20 @@ testSingletonModule('utils/roomUtil', ({ testUnit }) => {
       });
 
     testScenario('when the room state is null')
+      .arrange(() => {
+        sinon
+          .stub(roomUtil, 'getRandomRoomHandler')
+          .returns(new ExampleRoom1Handler());
+      })
+      .annihilate(() => {
+        sinon.restore();
+      })
       .act(() => roomUtil.coerceRoomState(null))
+      .assert('fetches a random room handler', () => {
+        expect((roomUtil.getRandomRoomHandler as SinonSpy).calledOnce).to.eq(
+          true,
+        );
+      })
       .assert('returns a new room state', (arranged, result) => {
         const expectedResult: RoomState = {
           type: 'exampleRoom1',
