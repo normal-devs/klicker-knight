@@ -30,7 +30,9 @@ export const roomUtil = {
     const randomRoomType = ROOM_TYPES_TUPLE[randomIndex];
 
     if (randomRoomType === undefined) {
-      throw new DeveloperError('Unreachable');
+      throw new DeveloperError(
+        'Unreachable. Double check that "randomIndex" will always be valid',
+      );
     }
 
     return roomUtil.getRoomHandlerByRoomType(randomRoomType);
