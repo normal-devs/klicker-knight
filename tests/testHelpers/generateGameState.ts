@@ -17,7 +17,10 @@ export const generateGameState = schemaToGenerator<GameState>(
 
 export const generateRoomState = schemaToGenerator<RoomState>(roomStateSchema);
 
+export type NarrowedRoomStateOverride<TRoomType extends RoomType> =
+  NestedPartial<NarrowedRoomState<TRoomType>> & { type: TRoomType };
+
 export const generateNarrowedRoomState = <TRoomType extends RoomType>(
-  override: NestedPartial<NarrowedRoomState<TRoomType>> & { type: TRoomType },
+  override: NarrowedRoomStateOverride<TRoomType>,
 ): NarrowedRoomState<TRoomType> =>
   generateRoomState(override) as NarrowedRoomState<TRoomType>;

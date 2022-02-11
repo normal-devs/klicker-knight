@@ -61,7 +61,9 @@ type ArrangedScenarioBuilder<TArranged> = ScenarioAnnihilateBuilder<TArranged> &
   ScenarioActBuilder<TArranged>;
 
 // ScenarioRegistrant
-type ScenarioRegistrant = (scenarioDescription: string) => ScenarioBuilder;
+export type ScenarioRegistrant = (
+  scenarioDescription: string,
+) => ScenarioBuilder;
 
 // Scenario Builders
 type ScenarioBuilder = ScenarioArrangeBuilder &
