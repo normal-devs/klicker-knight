@@ -53,6 +53,8 @@ export abstract class RoomHandler<TRoomType extends RoomType> {
   getRoomStateDescription(
     roomState: NarrowedRoomState<TRoomType>,
   ): RoomStateDescription {
-    return this.stateDescriptionAccessor[roomState.playerState];
+    return this.stateDescriptionAccessor[
+      roomState.playerState as NarrowedRoomState<TRoomType>['playerState']
+    ];
   }
 }
