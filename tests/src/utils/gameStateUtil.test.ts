@@ -1,7 +1,10 @@
 import { expect } from 'chai';
 import sinon, { SinonSpy } from 'sinon';
+import { ExampleRoom1Handler } from '../../../src/roomHandlers/exampleRoom1Handler';
+import { ExampleRoom2Handler } from '../../../src/roomHandlers/exampleRoom2Handler';
 import { databaseUtil } from '../../../src/utils/databaseUtil';
 import { gameStateUtil } from '../../../src/utils/gameStateUtil';
+import { roomUtil } from '../../../src/utils/roomUtil';
 import { GameState } from '../../../src/utils/types';
 import { generateGameState } from '../../testHelpers/generateGameState';
 import { testSingletonModule } from '../../testHelpers/semanticMocha';
@@ -36,10 +39,14 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
 
     testScenario('when the game data does not exist')
       .arrange(() => {
+        const mockRoomHandler = new ExampleRoom1Handler();
+        sinon.stub(roomUtil, 'getRandomRoomHandler').returns(mockRoomHandler);
+
         sinon.stub(databaseUtil, 'load').returns({
           data: null,
           error: Symbol('whoops'),
         });
+
         sinon.stub(gameStateUtil, 'save');
 
         const expectedGameState: GameState = {
@@ -56,6 +63,11 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
       .act(() => gameStateUtil.load())
       .assert('loads the game data', () => {
         expect((databaseUtil.load as SinonSpy).calledOnce).to.eq(true);
+      })
+      .assert('fetches a random room handler', () => {
+        expect((roomUtil.getRandomRoomHandler as SinonSpy).calledOnce).to.eq(
+          true,
+        );
       })
       .assert('saves a new game state', (expectedGameState) => {
         expect((gameStateUtil.save as SinonSpy).args).to.eql([
@@ -68,15 +80,19 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
 
     testScenario('when the game data is invalid')
       .arrange(() => {
+        const mockRoomHandler = new ExampleRoom2Handler();
+        sinon.stub(roomUtil, 'getRandomRoomHandler').returns(mockRoomHandler);
+
         sinon.stub(databaseUtil, 'load').returns({
           data: 'not a game state',
           error: null,
         });
+
         sinon.stub(gameStateUtil, 'save');
 
         const expectedGameState: GameState = {
           roomState: {
-            type: 'exampleRoom1',
+            type: 'exampleRoom2',
             playerState: 'AtEntrance',
           },
         };
@@ -88,6 +104,11 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
       .act(() => gameStateUtil.load())
       .assert('loads the game data', () => {
         expect((databaseUtil.load as SinonSpy).calledOnce).to.eq(true);
+      })
+      .assert('fetches a random room handler', () => {
+        expect((roomUtil.getRandomRoomHandler as SinonSpy).calledOnce).to.eq(
+          true,
+        );
       })
       .assert('saves a new game state', (expectedGameState) => {
         expect((gameStateUtil.save as SinonSpy).args).to.eql([
@@ -106,24 +127,17 @@ testSingletonModule('utils/gameStateUtil', ({ testUnit }) => {
           isSaved: true,
           error: null,
         });
-        const mockGameState = generateGameState();
+        const mockGameState = generateGameState({
+          roomState: { type: 'exampleRoom1' },
+        });
         return mockGameState;
       })
       .annihilate(() => {
         sinon.restore();
       })
       .act((mockGameState) => gameStateUtil.save(mockGameState))
-      .assert('saves the game state', () => {
-        const expectedGameState: GameState = {
-          roomState: {
-            type: 'exampleRoom1',
-            playerState: 'AtEntrance',
-          },
-        };
-
-        expect((databaseUtil.save as SinonSpy).args).to.eql([
-          [expectedGameState],
-        ]);
+      .assert('saves the game state', (mockGameState) => {
+        expect((databaseUtil.save as SinonSpy).args).to.eql([[mockGameState]]);
       });
 
     testScenario('with an invalid game state')
