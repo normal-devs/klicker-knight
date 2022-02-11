@@ -38,7 +38,7 @@ export const roomUtil = {
     return roomUtil.getRoomHandlerByRoomType(randomRoomType);
   },
 
-  getRandomRoomState: (): RoomState => {
+  getRandomInitialRoomState: (): RoomState => {
     return roomUtil.getRandomRoomHandler().createRoomState();
   },
 

@@ -13,7 +13,7 @@ const isGameState = (unknownState: unknown): unknownState is GameState =>
 
 const init = (): GameState => {
   const newGameState: GameState = {
-    roomState: roomUtil.getRandomRoomState(),
+    roomState: roomUtil.getRandomInitialRoomState(),
   };
 
   return newGameState;
