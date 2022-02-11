@@ -2,6 +2,8 @@ import { RoomHandler } from './roomHandler';
 
 import {
   Command,
+  CommandHandler,
+  DEFAULT_COMMAND,
   NarrowedRoomState,
   NullableCommandHandler,
   StateDescriptionAccessor,
@@ -9,6 +11,8 @@ import {
 
 type TRoomType = 'exampleRoom2';
 type TRoomState = NarrowedRoomState<TRoomType>;
+type TPlayerState = TRoomState['playerState'];
+type TCommandHandler = CommandHandler<TRoomType>;
 type TNullableCommandHandler = NullableCommandHandler<TRoomType>;
 
 const stateDescriptionAccessor: StateDescriptionAccessor<TRoomState> = {
@@ -23,6 +27,46 @@ const stateDescriptionAccessor: StateDescriptionAccessor<TRoomState> = {
   State2B: {
     playerStateDescription: 'You are in state 2B',
     availableCommands: ['goToEntrance'],
+  },
+};
+
+const goToEntrance: TCommandHandler = (roomState) => ({
+  commandDescription: 'You move back to the entrance',
+  roomState: {
+    ...roomState,
+    playerState: 'AtEntrance',
+  },
+});
+
+const commandHandlersByCommandByPlayerState: Record<
+  TPlayerState,
+  Record<string, TNullableCommandHandler>
+> = {
+  AtEntrance: {
+    goTo2A: (roomState) => ({
+      commandDescription: 'You move to State2A',
+      roomState: {
+        ...roomState,
+        playerState: 'State2A',
+      },
+    }),
+    goTo2B: (roomState) => ({
+      commandDescription: 'You move to State2B',
+      roomState: {
+        ...roomState,
+        playerState: 'State2B',
+      },
+    }),
+    leave: () => ({
+      commandDescription: 'You leave example room 2',
+      roomState: null,
+    }),
+  },
+  State2A: {
+    goToEntrance,
+  },
+  State2B: {
+    goToEntrance,
   },
 };
 
@@ -42,13 +86,9 @@ export class ExampleRoom2Handler extends RoomHandler<TRoomType> {
     roomState: TRoomState,
     command: Command,
   ): TNullableCommandHandler {
-    if (command === 'leave') {
-      return () => ({
-        commandDescription: 'You leave example room 2',
-        roomState: null,
-      });
-    }
-
-    return null;
+    return command === DEFAULT_COMMAND
+      ? null
+      : commandHandlersByCommandByPlayerState[roomState.playerState][command] ??
+          null;
   }
 }
