@@ -33,11 +33,33 @@
       "required": ["type", "playerState"],
       "additionalProperties": false
     },
+    "ExampleRoom3": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "exampleRoom3"
+        },
+        "playerState": {
+          "enum": [
+            "AtEntrance",
+            "State3A",
+            "State3B"
+          ]
+        },
+        "laps": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["type", "playerState", "laps"],
+      "additionalProperties": false
+    },
     "RoomState": {
       "type": "object",
       "oneOf": [
         { "$ref": "#/definitions/ExampleRoom1" },
-        { "$ref": "#/definitions/ExampleRoom2" }
+        { "$ref": "#/definitions/ExampleRoom2" },
+        { "$ref": "#/definitions/ExampleRoom3" }
       ]
     }
   },
