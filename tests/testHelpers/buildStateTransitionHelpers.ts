@@ -7,15 +7,13 @@ import {
   DEFAULT_COMMAND,
   NarrowedRoomState,
   RoomType,
+  isNil,
 } from '../../src/utils/types';
 import {
   generateNarrowedRoomState,
   NarrowedRoomStateOverride,
 } from './generateGameState';
 import { INVALID_COMMAND } from './invalidCommand';
-
-const isNil = (value: unknown): value is null | undefined =>
-  value === null || value === undefined;
 
 type StateTransitionHelpers<TRoomType extends RoomType> = {
   testDefaultCommandAtEntrance: () => void;

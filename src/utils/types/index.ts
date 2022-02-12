@@ -76,3 +76,6 @@ export type CommandResult<TRoomType extends RoomType> = {
 
 // Util
 export type ValuesOf<T> = T[keyof T];
+
+export const isNil = (value: unknown): value is null | undefined =>
+  value === null || value === undefined;

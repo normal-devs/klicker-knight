@@ -22,7 +22,7 @@ const stateDescriptionAccessor: TStateDescriptionAccessor = {
     const lapsText = laps === 1 ? 'lap' : 'laps';
 
     return {
-      playerStateDescription: `You are at the entrance of example room 3 and have completed ${laps} ${lapsText}`,
+      playerStateDescription: `You are in example room 3 and have completed ${laps} ${lapsText}`,
       availableCommands: ['goTo3A'],
     };
   },
