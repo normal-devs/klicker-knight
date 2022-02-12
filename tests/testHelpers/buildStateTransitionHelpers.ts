@@ -2,7 +2,11 @@ import { expect } from 'chai';
 import { ScenarioRegistrant } from '../../semantic-mocha/src';
 import { RoomHandler } from '../../src/roomHandlers/roomHandler';
 import { DeveloperError } from '../../src/utils/developerError';
-import { CommandResult, RoomType } from '../../src/utils/types';
+import {
+  CommandResult,
+  NarrowedRoomState,
+  RoomType,
+} from '../../src/utils/types';
 import {
   generateNarrowedRoomState,
   NarrowedRoomStateOverride,
@@ -20,9 +24,25 @@ type StateTransitionScenarioRegistrant<TRoomType extends RoomType> = (
   onArrange: OnArrangeAccessor<TRoomType>,
 ) => void;
 
-type OnArrangeAccessor<TRoomType extends RoomType> = () => {
-  expectedResult: CommandResult<TRoomType>;
+type OnArrangeAccessor<TRoomType extends RoomType> =
+  () => ArrangedTransitionData<TRoomType>;
+
+export type ArrangedTransitionData<TRoomType extends RoomType> = {
+  startingRoomState: OmitKnownKeys<TRoomType>;
+  expectedResult: {
+    commandDescription: CommandResult<TRoomType>['commandDescription'];
+    roomState: null | OmitKnownKeys<TRoomType>;
+  };
 };
+
+const EXIT_CODE = '[*]';
+
+// Have to exclude room states that only have "type" and "playerState" or they become "any"
+type OmitKnownKeys<TRoomType extends RoomType> = TRoomType extends
+  | 'exampleRoom1'
+  | 'exampleRoom2'
+  ? Record<string, never>
+  : Omit<NarrowedRoomState<TRoomType>, 'type' | 'playerState'>;
 
 export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
   testScenario: ScenarioRegistrant,
@@ -57,15 +77,58 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
           );
         }
 
-        const { expectedResult } = onArrange();
+        const { startingRoomState, expectedResult: partialExpectedResult } =
+          onArrange();
 
         // deferring type check to data generator schema check
-        const override = {
+        const inputRoomStateOverride = {
+          ...startingRoomState,
           type: roomType,
           playerState: startingPlayerState,
         } as unknown as NarrowedRoomStateOverride<TRoomType>;
 
-        const inputRoomState = generateNarrowedRoomState<TRoomType>(override);
+        const inputRoomState = generateNarrowedRoomState<TRoomType>(
+          inputRoomStateOverride,
+        );
+
+        let expectedRoomState: CommandResult<TRoomType>['roomState'];
+        if (
+          partialExpectedResult.roomState !== null &&
+          endingPlayerState === EXIT_CODE
+        ) {
+          throw new DeveloperError(
+            '"expectedResult.roomState" must be null when testing an exit transition',
+          );
+        }
+
+        if (
+          partialExpectedResult.roomState === null &&
+          endingPlayerState !== EXIT_CODE
+        ) {
+          throw new DeveloperError(
+            '"expectedResult.roomState" cannot be null when testing an inner-room transition',
+          );
+        }
+
+        if (partialExpectedResult.roomState === null) {
+          expectedRoomState = partialExpectedResult.roomState;
+        } else {
+          // deferring type check to data generator schema check
+          const expectedRoomStateOverride = {
+            ...partialExpectedResult.roomState,
+            type: roomType,
+            playerState: endingPlayerState,
+          } as unknown as NarrowedRoomStateOverride<TRoomType>;
+
+          expectedRoomState = generateNarrowedRoomState<TRoomType>(
+            expectedRoomStateOverride,
+          );
+        }
+
+        const expectedResult: CommandResult<TRoomType> = {
+          commandDescription: partialExpectedResult.commandDescription,
+          roomState: expectedRoomState,
+        };
 
         return { inputRoomState, command, expectedResult };
       })
