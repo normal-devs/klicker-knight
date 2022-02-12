@@ -15,6 +15,7 @@ testSingletonModule('utils/formatGameOutput', ({ assert }) => {
 
     expect(result).to.eq(`
 You do something
+
 You are here
 Available Commands: doStuff, doThings`);
   });

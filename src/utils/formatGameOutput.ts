@@ -5,6 +5,7 @@ export const formatGameOutput = (gameOutput: GameOutput): string => {
 
   if (gameOutput.commandDescription !== null) {
     outputList.push(gameOutput.commandDescription);
+    outputList.push('');
   }
 
   outputList.push(gameOutput.playerStateDescription);
