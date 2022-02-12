@@ -1,12 +1,32 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "ExampleRoom1": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "exampleRoom1"
+        },
+        "playerState": {
+          "enum": [
+            "AtEntrance"
+          ]
+        }
+      },
+      "required": ["type", "playerState"],
+      "additionalProperties": false
+    },
+    "RoomState": {
+      "oneOf": [
+        { "$ref": "#/definitions/ExampleRoom1" }
+      ]
+    }
+  },
   "title": "GameState",
   "type": "object",
   "properties": {
-    "currentRoomId": {
-      "type": "null"
-    }
+    "roomState": { "$ref": "#/definitions/RoomState" }
   },
-  "required": ["currentRoomId"],
+  "required": ["roomState"],
   "additionalProperties": false
 }

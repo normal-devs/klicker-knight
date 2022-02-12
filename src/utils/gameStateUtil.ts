@@ -3,6 +3,7 @@ import type { GameState } from './types';
 import { databaseUtil } from './databaseUtil';
 import gameStateSchema from './types/gameState.schema.json';
 import { DeveloperError } from './developerError';
+import { roomUtil } from './roomUtil';
 
 const ajv = new Ajv();
 const validateGameState = ajv.compile(gameStateSchema);
@@ -10,9 +11,13 @@ const validateGameState = ajv.compile(gameStateSchema);
 const isGameState = (unknownState: unknown): unknownState is GameState =>
   validateGameState(unknownState);
 
-const init = (): GameState => ({
-  currentRoomId: null,
-});
+const init = (): GameState => {
+  const newGameState: GameState = {
+    roomState: roomUtil.getRandomInitialRoomState(),
+  };
+
+  return newGameState;
+};
 
 export const gameStateUtil = {
   load: (): GameState => {

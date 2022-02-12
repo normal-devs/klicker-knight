@@ -1,3 +1,11 @@
-process.stdout.write(
-  '\nYou helplessly stare into the void as you try to gain your bearings. Your foot catches on what you believe to be a loose flagstone. You fall and break your neck. You are dead.',
-);
+import { formatGameOutput } from './utils/formatGameOutput';
+import { gameUtil } from './utils/gameUtil';
+import { Command, DEFAULT_COMMAND } from './utils/types';
+
+const [input] = process.argv.slice(2);
+const command: Command = input ?? DEFAULT_COMMAND;
+
+const gameOutput = gameUtil.run(command);
+const serializedOutput = formatGameOutput(gameOutput);
+
+process.stdout.write(serializedOutput);
