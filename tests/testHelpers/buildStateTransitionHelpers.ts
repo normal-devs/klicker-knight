@@ -4,6 +4,7 @@ import { RoomHandler } from '../../src/roomHandlers/roomHandler';
 import { DeveloperError } from '../../src/utils/developerError';
 import {
   CommandResult,
+  DEFAULT_COMMAND,
   NarrowedRoomState,
   RoomType,
 } from '../../src/utils/types';
@@ -11,11 +12,14 @@ import {
   generateNarrowedRoomState,
   NarrowedRoomStateOverride,
 } from './generateGameState';
+import { INVALID_COMMAND } from './invalidCommand';
 
 const isNil = (value: unknown): value is null | undefined =>
   value === null || value === undefined;
 
 type StateTransitionHelpers<TRoomType extends RoomType> = {
+  testDefaultCommandAtEntrance: () => void;
+  testInvalidCommandAtEntrance: () => void;
   testStateTransition: StateTransitionScenarioRegistrant<TRoomType>;
 };
 
@@ -140,7 +144,61 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
       });
   };
 
+  const generateRoomStateAtEntrance = () =>
+    generateNarrowedRoomState({
+      type: roomType,
+      playerState: 'AtEntrance',
+    } as unknown as NarrowedRoomStateOverride<TRoomType>);
+
+  const testDefaultCommandAtEntrance = () => {
+    testScenario('with the default command at the entrance')
+      .arrange(() => {
+        const inputRoomState = generateRoomStateAtEntrance();
+        return { inputRoomState };
+      })
+      .act(({ inputRoomState }) =>
+        roomHandler.run(inputRoomState, DEFAULT_COMMAND),
+      )
+      .assert(
+        'returns the input room state and no command description',
+        ({ inputRoomState }, result) => {
+          const expectedResult: CommandResult<TRoomType> = {
+            commandDescription: null,
+            roomState: inputRoomState,
+          };
+
+          expect(result).to.eql(expectedResult);
+          expect(result.roomState).to.eq(inputRoomState);
+        },
+      );
+  };
+
+  const testInvalidCommandAtEntrance = () => {
+    testScenario('with an invalid command at the entrance')
+      .arrange(() => {
+        const inputRoomState = generateRoomStateAtEntrance();
+        return { inputRoomState };
+      })
+      .act(({ inputRoomState }) =>
+        roomHandler.run(inputRoomState, INVALID_COMMAND),
+      )
+      .assert(
+        'returns the input room state with the invalid command description',
+        ({ inputRoomState }, result) => {
+          const expectedResult: CommandResult<TRoomType> = {
+            commandDescription: 'You cannot do that',
+            roomState: inputRoomState,
+          };
+
+          expect(result).to.eql(expectedResult);
+          expect(result.roomState).to.eq(inputRoomState);
+        },
+      );
+  };
+
   return {
+    testDefaultCommandAtEntrance,
+    testInvalidCommandAtEntrance,
     testStateTransition,
   };
 };

@@ -13,11 +13,19 @@ testSingletonModule(
   'roomHandlers/ExampleRoom1Handler',
   ({ testIntegration }) => {
     testIntegration('run', ({ testScenario }) => {
-      const { testStateTransition } = buildStateTransitionHelpers(
+      const {
+        testDefaultCommandAtEntrance,
+        testInvalidCommandAtEntrance,
+        testStateTransition,
+      } = buildStateTransitionHelpers(
         testScenario,
         roomType,
         new ExampleRoom1Handler(),
       );
+
+      testDefaultCommandAtEntrance();
+
+      testInvalidCommandAtEntrance();
 
       testStateTransition(
         'AtEntrance --> [*]: leave',
