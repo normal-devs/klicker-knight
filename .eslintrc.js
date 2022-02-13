@@ -16,6 +16,12 @@ module.exports = {
         'sort-keys': 'error',
       },
     },
+    {
+      files: ['src/utils/types/index.ts'],
+      rules: {
+        'import/no-restricted-paths': 'off',
+      },
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
