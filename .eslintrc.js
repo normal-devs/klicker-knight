@@ -1,6 +1,3 @@
-/* eslint sort-keys: 'error' */
-
-// eslint-disable-next-line import/no-commonjs
 module.exports = {
   extends: [
     'airbnb-base',
@@ -9,6 +6,22 @@ module.exports = {
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:prettier/recommended',
     'plugin:mocha/recommended',
+  ],
+  overrides: [
+    {
+      files: ['**/*.js'],
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+        'import/no-commonjs': 'off',
+        'sort-keys': 'error',
+      },
+    },
+    {
+      files: ['src/utils/types/index.ts'],
+      rules: {
+        'import/no-restricted-paths': 'off',
+      },
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
