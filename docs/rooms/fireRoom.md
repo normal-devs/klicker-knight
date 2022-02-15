@@ -17,6 +17,13 @@ The goal of this room is to save the person.
 - **EmptyPath**: There is nothing here. Better luck next time.
 - **Flameless**: You already put out the fire here...
 
+## RoomState
+
+- **waterBuckets**: The number of buckets that still have water in them.
+- **fireForward**: Boolean for if there is a fire in front of you.
+- **fireLeft**: Boolean for if there is a fire to the left of you.
+- **fireRight**: Boolean for if there is a fire to the right of you.
+
 ## Commands
 
 - **leave**: You leave through the only available door.
