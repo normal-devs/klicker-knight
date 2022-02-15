@@ -1,5 +1,5 @@
 import { ExampleRoom1Handler } from '../roomHandlers/exampleRoom1Handler';
-import { RoomHandler } from '../roomHandlers/roomHandler';
+import { ExampleRoom2Handler } from '../roomHandlers/exampleRoom2Handler';
 import { DeveloperError } from './developerError';
 import {
   ROOM_TYPES_TUPLE,
@@ -11,6 +11,7 @@ import {
 
 const allRoomHandlersByRoomType: AllRoomHandlersByRoomType = {
   exampleRoom1: new ExampleRoom1Handler(),
+  exampleRoom2: new ExampleRoom2Handler(),
 };
 
 export const roomUtil = {
@@ -25,7 +26,7 @@ export const roomUtil = {
     return roomHandler.createRoomState();
   },
 
-  getRandomRoomHandler: (): RoomHandler<RoomType> => {
+  getRandomRoomHandler: (): AllRoomHandlersByRoomType[RoomType] => {
     const randomIndex = Math.floor(Math.random() * ROOM_TYPES_TUPLE.length);
     const randomRoomType = ROOM_TYPES_TUPLE[randomIndex];
 
@@ -42,7 +43,10 @@ export const roomUtil = {
     return roomUtil.getRandomRoomHandler().createRoomState();
   },
 
-  getRoomHandlerByRoomType: (roomType: RoomType): RoomHandler<RoomType> => {
-    return allRoomHandlersByRoomType[roomType];
+  getRoomHandlerByRoomType: <TRoomType extends RoomType>(
+    roomType: TRoomType,
+  ): AllRoomHandlersByRoomType[TRoomType] => {
+    const roomHandler = allRoomHandlersByRoomType[roomType];
+    return roomHandler;
   },
 };

@@ -1,31 +1,33 @@
+import { RoomHandler } from './roomHandler';
+
 import {
-  NarrowedRoomState,
   Command,
-  CommandHandler,
+  NarrowedRoomState,
   NullableCommandHandler,
   StateDescriptionAccessor,
 } from '../utils/types';
-import { RoomHandler } from './roomHandler';
 
-const roomType = 'exampleRoom1';
+const roomType = 'exampleRoom2';
 type TRoomType = typeof roomType;
 type TRoomState = NarrowedRoomState<TRoomType>;
-type TCommandHandler = CommandHandler<TRoomType>;
 type TNullableCommandHandler = NullableCommandHandler<TRoomType>;
-
-const leaveHandler: TCommandHandler = () => ({
-  commandDescription: 'You leave example room 1',
-  roomState: null,
-});
 
 const stateDescriptionAccessor: StateDescriptionAccessor<TRoomState> = {
   AtEntrance: {
-    playerStateDescription: 'You are in example room 1',
-    availableCommands: ['leave'],
+    playerStateDescription: 'You are in example room 2',
+    availableCommands: ['leave', 'goTo2A', 'goTo2B'],
+  },
+  State2A: {
+    playerStateDescription: 'You are in state 2A',
+    availableCommands: ['goToEntrance'],
+  },
+  State2B: {
+    playerStateDescription: 'You are in state 2B',
+    availableCommands: ['goToEntrance'],
   },
 };
 
-export class ExampleRoom1Handler extends RoomHandler<TRoomType> {
+export class ExampleRoom2Handler extends RoomHandler<TRoomType> {
   constructor() {
     super(stateDescriptionAccessor);
   }
@@ -42,7 +44,10 @@ export class ExampleRoom1Handler extends RoomHandler<TRoomType> {
     command: Command,
   ): TNullableCommandHandler {
     if (command === 'leave') {
-      return leaveHandler;
+      return () => ({
+        commandDescription: 'You leave example room 2',
+        roomState: null,
+      });
     }
 
     return null;
