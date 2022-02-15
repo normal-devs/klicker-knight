@@ -36,24 +36,24 @@ stateDiagram-v2
   AtEntrance --> Nothing: throwBucket* (if there is no water left)
   AtEntrance --> [*]: leave
 
-  DouseForward --> SavedPerson
-  DouseForward --> ItemRetrieved
   DouseForward --> EmptyPath
   DouseForward --> Flameless
+  DouseForward --> ItemRetrieved
+  DouseForward --> SavedPerson
 
-  DouseLeft --> SavedPerson
-  DouseLeft --> ItemRetrieved
   DouseLeft --> EmptyPath
   DouseLeft --> Flameless
+  DouseLeft --> ItemRetrieved
+  DouseLeft --> SavedPerson
 
-  DouseRight --> SavedPerson
-  DouseRight --> ItemRetrieved
   DouseRight --> EmptyPath
   DouseRight --> Flameless
+  DouseRight --> ItemRetrieved
+  DouseRight --> SavedPerson
 
-  Nothing --> AtEntrance
-  Flameless --> EmptyPath
-  SavedPerson --> AtEntrance
-  ItemRetrieved --> AtEntrance
   EmptyPath --> AtEntrance
+  Flameless --> EmptyPath
+  ItemRetrieved --> AtEntrance
+  Nothing --> AtEntrance
+  SavedPerson --> AtEntrance
 ```
