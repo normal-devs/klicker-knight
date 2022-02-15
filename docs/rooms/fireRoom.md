@@ -7,7 +7,9 @@ The goal of this room is to save the person.
 
 ## PlayerStates
 
-- **AtEntrance**: You are in the main room with x buckets of water.
+- **AtEntrance**: You are in the main room with X buckets of water.
+  There is a fire to your left/right/in front of you.
+  You have/haven't saved the person and you have/haven't retrieved the item.
 - **Douse**: The water from the bucket puts out the fire.
 - **Nothing**: There is no water left. You did nothing.
 - **SavedPerson**: Congratulations!!! You saved the person!!!
