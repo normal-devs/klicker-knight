@@ -49,3 +49,15 @@ Tests use [semantic-mocha](./semantic-mocha/README.md) which is currently being 
 
 As of 2022-02-02 we haven't solidified the architecture of the game,
 so it's difficult to determine where types should live such that there are no circular import dependencies
+
+### Adding a new Room State
+
+1. Add a doc for the room in [docs/rooms/](./docs/rooms/)
+    - Make sure it's consistent with the other docs.
+1. Update [gameState.schema.json](./src/utils/types/gameState.schema.json):
+    1. Add a new schema to the "definitions" object for your room state
+    1. Add a $ref to "definitions.RoomState" that points to the new schema
+1. Compile the game state schemas with `npm run compile:gameStateSchema`
+1. Create a new subclass of [RoomHandler](./src/roomHandlers/roomHandler.ts)
+    1. Create a type alias to reference the room type within the sublcass (for easier maintenance)
+1. Update the "allRoomHandlersByRoomType" in [roomUtil](./src/utils/roomUtil.ts) to include the new room handler

@@ -5,7 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type RoomState = ExampleRoom1;
+export type RoomState = ExampleRoom1 | ExampleRoom2;
 
 export interface GameState {
   roomState: RoomState;
@@ -13,4 +13,8 @@ export interface GameState {
 export interface ExampleRoom1 {
   type: 'exampleRoom1';
   playerState: 'AtEntrance';
+}
+export interface ExampleRoom2 {
+  type: 'exampleRoom2';
+  playerState: 'AtEntrance' | 'State2A' | 'State2B';
 }
