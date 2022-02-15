@@ -1,7 +1,7 @@
 # Fire Room
 
 A room with three different paths.
-One path leads to a person, the second path leads to a item and the third path leads no where.
+One path leads to a person, the second path leads to a item and the third path leads nowhere.
 Each path is on fire but the player is given two buckets of water.
 The goal of this room is to save the person.
 
