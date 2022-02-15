@@ -8,9 +8,7 @@ The goal of this room is to save the person.
 ## PlayerStates
 
 - **AtEntrance**: You are in the main room with x buckets of water.
-- **DouseForward**: The water from the bucket puts out the fire in front of you.
-- **DouseLeft**: The water from the bucket puts out the fire to the left of you.
-- **DouseRight**: The water from the bucket puts out the fire to the right of you.
+- **Douse**: The water from the bucket puts out the fire.
 - **Nothing**: There is no water left. You did nothing.
 - **SavedPerson**: Congratulations!!! You saved the person!!!
 - **ItemRetrieved**: Congratulations!!! You got a cool item!!!
@@ -27,9 +25,10 @@ The goal of this room is to save the person.
 ## Commands
 
 - **leave**: You leave through the only available door.
-- **throwBucketForward**: You throw the bucket of water.
-- **throwBucketLeft**: You throw the bucket of water.
-- **throwBucketRight**: You throw the bucket of water.
+- **throwBucket**: You throw the bucket of water
+  - **forward (default)**: in front of you.
+  - **left**: to the left of you
+  - **right**: to the right of you.
 
 ## Diagram
 
@@ -37,26 +36,14 @@ The goal of this room is to save the person.
 stateDiagram-v2
   [*] --> AtEntrance
 
-  AtEntrance --> DouseForward: throwBucketForward (if there is water left)
-  AtEntrance --> DouseLeft: throwBucketLeft (if there is water left)
-  AtEntrance --> DouseRight: throwBucketRight (if there is water left)
-  AtEntrance --> Nothing: throwBucket* (if there is no water left)
+  AtEntrance --> Douse: throwBucket (if there is water left)
+  AtEntrance --> Nothing: throwBucket (if there is no water left)
   AtEntrance --> [*]: leave
 
-  DouseForward --> EmptyPath
-  DouseForward --> Flameless
-  DouseForward --> ItemRetrieved
-  DouseForward --> SavedPerson
-
-  DouseLeft --> EmptyPath
-  DouseLeft --> Flameless
-  DouseLeft --> ItemRetrieved
-  DouseLeft --> SavedPerson
-
-  DouseRight --> EmptyPath
-  DouseRight --> Flameless
-  DouseRight --> ItemRetrieved
-  DouseRight --> SavedPerson
+  Douse --> EmptyPath
+  Douse --> Flameless
+  Douse --> ItemRetrieved
+  Douse --> SavedPerson
 
   EmptyPath --> AtEntrance
   Flameless --> EmptyPath
