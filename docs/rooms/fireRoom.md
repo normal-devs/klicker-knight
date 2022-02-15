@@ -21,10 +21,14 @@ The goal of this room is to save the person.
 - **fireForward**: Boolean for if there is a fire in front of you.
 - **fireLeft**: Boolean for if there is a fire to the left of you.
 - **fireRight**: Boolean for if there is a fire to the right of you.
+- **personSaved**: Boolean for if the person was saved.
+- **itemRetrieved**: Boolean for if the item was found.
 
 ## Commands
 
 - **leave**: You leave through the only available door.
+  X of the fires were put out and there was X number of water buckets left.
+  The person was/wasn't saved and you did/didn't find the item.
 - **throwBucket**: You throw the bucket of water
   - **forward (default)**: in front of you.
   - **left**: to the left of you
