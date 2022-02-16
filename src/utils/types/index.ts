@@ -1,8 +1,5 @@
-/* eslint-disable import/no-restricted-paths */
 import type { RoomState } from './gameState';
 import type { RoomType, NarrowedRoomState } from './roomTypesTuple';
-/* eslint-enable import/no-restricted-paths */
-
 import type { RoomHandler } from '../../roomHandlers/roomHandler';
 
 // Game State

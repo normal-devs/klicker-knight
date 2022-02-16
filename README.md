@@ -60,4 +60,4 @@ so it's difficult to determine where types should live such that there are no ci
 1. Compile the game state schemas with `npm run compile:gameStateSchema`
 1. Create a new subclass of [RoomHandler](./src/roomHandlers/roomHandler.ts)
     1. Create a type alias to reference the room type within the sublcass (for easier maintenance)
-1. Update the "allRoomHandlersByRoomType" in [roomUtil](./src/utils//roomUtil.ts) to include the new room handler
+1. Update the "allRoomHandlersByRoomType" in [roomUtil](./src/utils/roomUtil.ts) to include the new room handler
