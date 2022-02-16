@@ -10,9 +10,10 @@ import {
 const roomType = 'exampleRoom2';
 type TRoomType = typeof roomType;
 type TRoomState = NarrowedRoomState<TRoomType>;
+type TStateDescriptionAccessor = StateDescriptionAccessor<TRoomState>;
 type TNullableCommandHandler = NullableCommandHandler<TRoomType>;
 
-const stateDescriptionAccessor: StateDescriptionAccessor<TRoomState> = {
+const stateDescriptionAccessor: TStateDescriptionAccessor = {
   AtEntrance: {
     playerStateDescription: 'You are in example room 2',
     availableCommands: ['leave', 'goTo2A', 'goTo2B'],
