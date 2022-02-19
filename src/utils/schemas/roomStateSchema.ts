@@ -1,5 +1,5 @@
-import { ValuesOf } from './index';
-import gameStateSchema from './gameState.schema.json';
+import { ValuesOf } from '../types/index';
+import gameStateSchema from './gameState.json';
 
 // The "RoomState" schema is a list of the individual room state schemas, so it can be safely omitted
 type RoomStateDefinitions = Omit<

@@ -66,7 +66,7 @@ to make sure that the compilation scripts are valid before they are run, but tha
 
 1. Add a doc for the room in [docs/rooms/](./docs/rooms/)
     - Make sure it's consistent with the other docs.
-1. Update [gameState.schema.json](./src/utils/types/gameState.schema.json):
+1. Update [gameState.json](./src/utils/schemas/gameState.json):
     1. Add a new schema to the "definitions" object for your room state
     1. Add a $ref to "definitions.RoomState" that points to the new schema
 1. Compile the game state schemas with `npm run compile:gameStateSchema`

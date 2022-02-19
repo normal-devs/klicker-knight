@@ -1,7 +1,7 @@
 import Ajv from 'ajv';
 import type { GameState } from './types';
 import { databaseUtil } from './databaseUtil';
-import gameStateSchema from './types/gameState.schema.json';
+import gameStateSchema from './schemas/gameState.json';
 import { DeveloperError } from './developerError';
 import { roomUtil } from './roomUtil';
 

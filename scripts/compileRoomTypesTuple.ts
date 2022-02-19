@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { roomStateDefinitionNameValueTuples } from '../src/utils/types/roomStateSchema';
+import { roomStateDefinitionNameValueTuples } from '../src/utils/schemas/roomStateSchema';
 
 const schemaTypeScriptTypes = roomStateDefinitionNameValueTuples.map(
   ([schemaName, schema]) => ({

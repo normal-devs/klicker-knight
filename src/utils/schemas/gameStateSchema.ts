@@ -1,4 +1,4 @@
-import gameStateSchemaWithReferences from './gameState.schema.json';
+import gameStateSchemaWithReferences from './gameState.json';
 
 const { definitions } = gameStateSchemaWithReferences;
 type Definitions = typeof definitions;

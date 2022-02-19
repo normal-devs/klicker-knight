@@ -1,6 +1,6 @@
 import { schemaToGenerator } from '@randograms/schema-to-generator';
-import { gameStateSchema } from '../../src/utils/types/gameStateSchema';
-import { roomStateSchema } from '../../src/utils/types/roomStateSchema';
+import { gameStateSchema } from '../../src/utils/schemas/gameStateSchema';
+import { roomStateSchema } from '../../src/utils/schemas/roomStateSchema';
 import { GameState, RoomState } from '../../src/utils/types';
 
 export const generateGameState = schemaToGenerator<GameState>(
