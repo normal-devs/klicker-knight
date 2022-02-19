@@ -57,6 +57,11 @@ so it's difficult to determine where types should live such that there are no ci
 Some devs create a lot of commits and don't want to have to type `--no-verify` all the time.
 They also push up a lot of wip code. Additionally, the CI workflow is fast and basically free.
 
+#### Why are compiled files committed to the repository?
+
+Ideally the project should lint/typecheck from a clean clone. The linting steps can be broken down
+to make sure that the compilation scripts are valid before they are run, but that hasn't been done yet.
+
 ### Adding a new Room State
 
 1. Add a doc for the room in [docs/rooms/](./docs/rooms/)

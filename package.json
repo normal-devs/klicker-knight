@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "clean:game": "rm -r saves/*.json",
-    "compile:gameStateSchema": "json2ts src/utils/types/gameState.schema.json > src/utils/types/gameState.d.ts && ts-node scripts/compileRoomTypesTuple.ts",
+    "compile:gameStateSchema": "json2ts src/utils/types/gameState.schema.json > src/utils/types/gameState.d.ts && ts-node scripts/compileRoomTypesTuple.ts && prettier --loglevel silent --write src/utils/types/gameState.d.ts src/utils/types/roomTypesTuple.ts",
     "dev:analyze": "npm run compile:gameStateSchema && npm run lint:ts && npm run typecheck",
     "dev:test": "npm run compile:gameStateSchema && npm run test:src && npm run test:e2e",
     "klicker-knight": "ts-node src/klickerKnight",
