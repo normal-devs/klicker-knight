@@ -1,10 +1,11 @@
 import fs from 'fs';
-import { roomStateDefinitionNameValueTuples } from '../src/utils/schemas/roomStateSchema';
+import roomStateSchema from '../src/utils/schemas/normalized/roomState.json';
 
-const schemaTypeScriptTypes = roomStateDefinitionNameValueTuples.map(
-  ([schemaName, schema]) => ({
-    roomStateTypeIdentifier: schemaName,
-    roomTypeType: `'${schema.properties.type.const}'`,
+// TODO: Make this dynamic after solving how to denormalize the schema
+const schemaTypeScriptTypes = roomStateSchema.oneOf.map(
+  (referenceSchema, index) => ({
+    roomStateTypeIdentifier: `ExampleRoom${index + 1}`,
+    roomTypeType: `'exampleRoom${index + 1}'`,
   }),
 );
 
