@@ -45,10 +45,17 @@ Tests use [semantic-mocha](./semantic-mocha/README.md) which is currently being 
 
 ### Developer FAQ
 
-**Why are all of the types in one file?**
+All answers are subject to change.
+
+#### Why are all of the types in one file?
 
 As of 2022-02-02 we haven't solidified the architecture of the game,
 so it's difficult to determine where types should live such that there are no circular import dependencies
+
+#### Why aren't there pre-commit or pre-push hooks?
+
+Some devs create a lot of commits and don't want to have to type `--no-verify` all the time.
+They also push up a lot of wip code. Additionally, the CI workflow is fast and basically free.
 
 ### Adding a new Room State
 

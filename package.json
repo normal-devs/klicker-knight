@@ -4,11 +4,12 @@
   "scripts": {
     "clean:game": "rm -r saves/*.json",
     "compile:gameStateSchema": "json2ts src/utils/types/gameState.schema.json > src/utils/types/gameState.d.ts && ts-node scripts/compileRoomTypesTuple.ts",
+    "dev:analyze": "npm run compile:gameStateSchema && npm run lint:ts && npm run typecheck",
+    "dev:test": "npm run compile:gameStateSchema && npm run test:src && npm run test:e2e",
     "klicker-knight": "ts-node src/klickerKnight",
     "lint:md": "markdownlint **/*.md --ignore node_modules",
     "lint:ts": "eslint --color --ext .ts,.js .",
     "lint:yaml": "yamllint --ignore=node_modules/**/*.yaml **/*.yaml",
-    "test": "npm run compile:gameStateSchema && npm run test:src && npm run test:e2e",
     "test:custom-eslint-rules": "mocha -c --config eslint-local-rules/tests/.mocharc.js \"eslint-local-rules/tests/rules/**/*.test.ts\"",
     "test:e2e": "mocha -c \"tests/e2e/**/*.test.ts\"",
     "test:semantic-mocha": "nyc --extension .ts mocha -c --config semantic-mocha/tests/.mocharc.js \"semantic-mocha/tests/**/*.test.ts\"",
