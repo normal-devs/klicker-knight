@@ -1,5 +1,5 @@
 // THIS FILE WAS AUTOMATICALLY GENERATED
-// Use "npm run compile:gameStateSchema" to rebuild
+// Use "npm run compile:schemas" to rebuild
 
 // eslint-disable-next-line import/no-restricted-paths
 import { ExampleRoom1, ExampleRoom2 } from './gameState';

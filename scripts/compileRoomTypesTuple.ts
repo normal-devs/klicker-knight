@@ -1,13 +1,10 @@
 import fs from 'fs';
-import roomStateSchema from '../src/utils/schemas/normalized/roomState.json';
+import roomStateSchema from '../src/utils/schemas/denormalized/roomState.json';
 
-// TODO: Make this dynamic after solving how to denormalize the schema
-const schemaTypeScriptTypes = roomStateSchema.oneOf.map(
-  (referenceSchema, index) => ({
-    roomStateTypeIdentifier: `ExampleRoom${index + 1}`,
-    roomTypeType: `'exampleRoom${index + 1}'`,
-  }),
-);
+const schemaTypeScriptTypes = roomStateSchema.oneOf.map((schema) => ({
+  roomStateTypeIdentifier: schema.title,
+  roomTypeType: `'${schema.properties.type.const}'`,
+}));
 
 const typeScriptTypeImportList = schemaTypeScriptTypes
   .map(({ roomStateTypeIdentifier }) => roomStateTypeIdentifier)
@@ -19,7 +16,7 @@ const roomTypeTypes: string[] = schemaTypeScriptTypes.map(
 
 const output = [
   '// THIS FILE WAS AUTOMATICALLY GENERATED',
-  '// Use "npm run compile:gameStateSchema" to rebuild',
+  '// Use "npm run compile:schemas" to rebuild',
   '',
   '// eslint-disable-next-line import/no-restricted-paths',
   `import { ${typeScriptTypeImportList} } from './gameState';`,

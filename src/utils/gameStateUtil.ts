@@ -1,11 +1,10 @@
 import Ajv from 'ajv';
 import type { GameState } from './types';
 import { databaseUtil } from './databaseUtil';
-import gameStateSchema from './schemas/normalized/gameState.json';
+import gameStateSchema from './schemas/denormalized/gameState.json';
 import { DeveloperError } from './developerError';
 import { roomUtil } from './roomUtil';
 
-// TODO: ajv can't resolve the relative refs, so this needs a denormalized schema
 const ajv = new Ajv();
 const validateGameState = ajv.compile(gameStateSchema);
 

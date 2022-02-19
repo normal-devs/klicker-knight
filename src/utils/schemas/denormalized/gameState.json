@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GameState",
+  "type": "object",
+  "properties": {
+    "roomState": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "RoomState",
+      "type": "object",
+      "oneOf": [
+        {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "title": "ExampleRoom1",
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "exampleRoom1"
+            },
+            "playerState": {
+              "enum": [
+                "AtEntrance"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "playerState"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "title": "ExampleRoom2",
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "exampleRoom2"
+            },
+            "playerState": {
+              "enum": [
+                "AtEntrance",
+                "State2A",
+                "State2B"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "playerState"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "roomState"
+  ],
+  "additionalProperties": false
+}

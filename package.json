@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "clean:game": "rm -r saves/*.json",
-    "compile:gameStateSchema": "json2ts --cwd=src/utils/schemas/normalized/ src/utils/schemas/normalized/gameState.json > src/utils/types/gameState.d.ts && ts-node scripts/compileRoomTypesTuple.ts && prettier --loglevel silent --write src/utils/types/gameState.d.ts src/utils/types/roomTypesTuple.ts",
-    "dev:analyze": "npm run compile:gameStateSchema && npm run lint:ts && npm run typecheck",
-    "dev:test": "npm run compile:gameStateSchema && npm run test:src && npm run test:e2e",
+    "compile:schemas": "ts-node scripts/denormalizeSchemas.ts && json2ts --cwd=src/utils/schemas/normalized/ src/utils/schemas/normalized/gameState.json > src/utils/types/gameState.d.ts && ts-node scripts/compileRoomTypesTuple.ts && prettier --loglevel silent --write src/utils/types/gameState.d.ts src/utils/types/roomTypesTuple.ts",
+    "dev:analyze": "npm run compile:schemas && npm run lint:ts && npm run typecheck",
+    "dev:test": "npm run compile:schemas && npm run test:src && npm run test:e2e",
     "klicker-knight": "ts-node src/klickerKnight",
     "lint:md": "markdownlint **/*.md --ignore node_modules",
     "lint:ts": "eslint --color --ext .ts,.js .",
@@ -21,6 +21,7 @@
     "tslib": "^2.3.1"
   },
   "devDependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@randograms/schema-to-generator": "^0.5.1",
     "@tsconfig/node16": "^1.0.2",
     "@types/chai": "^4.2.22",
