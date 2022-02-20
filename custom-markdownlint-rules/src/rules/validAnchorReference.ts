@@ -1,10 +1,10 @@
-import { Rule } from 'markdownlint';
 import { URL } from 'url';
 import { getFlattenedTokens } from '../utils/getFlattenedTokens';
 import { getInputFileData } from '../utils/getInputFileData';
 import { AnchorLintData, getLinkLintData } from '../utils/getLinkLintData';
+import { CustomRule } from '../utils/types';
 
-export const validAnchorReference: Rule = {
+export const validAnchorReference: CustomRule = {
   names: ['valid-anchor-reference'],
   description: 'Anchor references must be valid.',
   information: new URL(
