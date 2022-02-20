@@ -1,0 +1,11 @@
+{
+  "ts-node": {
+    "transpileOnly": true
+  },
+  "extends": "../tsconfig",
+  "include": [
+    "../src/**/*.ts",
+    "./**/*.test.ts",
+    "./registerTests.js",
+  ]
+}

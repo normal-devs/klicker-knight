@@ -10,6 +10,7 @@
     "lint:yaml": "yamllint --ignore=node_modules/**/*.yaml **/*.yaml",
     "test": "npm run compile:gameStateSchema && npm run test:src && npm run test:e2e",
     "test:custom-eslint-rules": "mocha -c --config eslint-local-rules/tests/.mocharc.js \"eslint-local-rules/tests/rules/**/*.test.ts\"",
+    "test:custom-markdownlint-rules": "mocha -c --config custom-markdownlint-rules/tests/.mocharc.js \"custom-markdownlint-rules/tests/rules/**/*.test.ts\"",
     "test:e2e": "mocha -c \"tests/e2e/**/*.test.ts\"",
     "test:semantic-mocha": "nyc --extension .ts mocha -c --config semantic-mocha/tests/.mocharc.js \"semantic-mocha/tests/**/*.test.ts\"",
     "test:src": "nyc --extension .ts mocha -c \"tests/src/**/*.test.ts\"",
