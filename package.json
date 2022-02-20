@@ -5,7 +5,7 @@
     "clean:game": "rm -r saves/*.json",
     "compile:gameStateSchema": "json2ts src/utils/types/gameState.schema.json > src/utils/types/gameState.d.ts && ts-node scripts/compileRoomTypesTuple.ts",
     "klicker-knight": "ts-node src/klickerKnight",
-    "lint:md": "markdownlint **/*.md --ignore node_modules --rules ./custom-markdownlint-rules/index.js",
+    "lint:md": "markdownlint **/*.md --ignore node_modules/ custom-markdownlint-rules/tests/test-input/ --rules ./custom-markdownlint-rules/index.js",
     "lint:ts": "eslint --color --ext .ts,.js .",
     "lint:yaml": "yamllint --ignore=node_modules/**/*.yaml **/*.yaml",
     "test": "npm run compile:gameStateSchema && npm run test:src && npm run test:e2e",

@@ -1,10 +1,10 @@
-import { Rule } from 'markdownlint';
 import { URL } from 'url';
 import { getFlattenedTokens } from '../utils/getFlattenedTokens';
 import { getInputFileData } from '../utils/getInputFileData';
 import { getLinkLintData } from '../utils/getLinkLintData';
+import { CustomRule } from '../utils/types';
 
-export const directoryLinkHasTrailingSlash: Rule = {
+export const directoryLinkHasTrailingSlash: CustomRule = {
   names: ['directory-link-has-trailing-slash'],
   description: 'Links to directories must have a trailing slash.',
   information: new URL(
