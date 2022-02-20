@@ -1,10 +1,10 @@
-import { Rule } from 'markdownlint';
 import { URL } from 'url';
 import { getFlattenedTokens } from '../utils/getFlattenedTokens';
 import { getInputFileData } from '../utils/getInputFileData';
 import { getLinkLintData } from '../utils/getLinkLintData';
+import { CustomRule } from '../utils/types';
 
-export const validFileReference: Rule = {
+export const validFileReference: CustomRule = {
   names: ['valid-file-reference'],
   description: 'Relative file references must be valid.',
   information: new URL(

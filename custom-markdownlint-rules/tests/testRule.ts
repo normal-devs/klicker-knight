@@ -34,7 +34,10 @@ export const testRule = (
 
   const validCases = getCases(`${testInputDirectory}valid/`);
   const invalidCases = getCases(`${testInputDirectory}invalid/`);
-  const ignoredCases = getCases(`${testInputDirectory}ignored/`);
+  const ignoredCases = (() => {
+    const directoryPath = `${testInputDirectory}ignored/`;
+    return fs.existsSync(directoryPath) ? getCases(directoryPath) : [];
+  })();
 
   const getFileErrors = (filePath: string): LintError[] => {
     const lintResults = markdownlint.sync({
