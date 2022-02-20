@@ -20,6 +20,9 @@ jobs:
       - name: Test Custom Eslint
         if: always()
         run: npm run test:custom-eslint-rules
+      - name: Test Custom Markdownlint
+        if: always()
+        run: npm run test:custom-markdownlint-rules
       - name: Lint Code
         if: always()
         run: npm run lint:ts
