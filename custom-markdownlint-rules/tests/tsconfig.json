@@ -5,7 +5,7 @@
   "extends": "../tsconfig",
   "include": [
     "../src/**/*.ts",
-    "./**/*.test.ts",
+    "./**/*.ts",
     "./registerTests.js",
   ]
 }
