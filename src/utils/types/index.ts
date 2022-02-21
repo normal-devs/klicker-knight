@@ -40,8 +40,18 @@ export type AllRoomHandlersByRoomType = {
 
 export type StateDescriptionAccessor<TRoomState extends RoomState> = Record<
   TRoomState['playerState'],
-  RoomStateDescription
+  RoomStateDescription | RoomStateDescriptionHandler<TRoomState>
 >;
+
+type RoomStateDescriptionHandler<TRoomState extends RoomState> = (
+  roomState: TRoomState,
+) => RoomStateDescription;
+
+export type CommandHandlersByCommandByPlayerStates<TRoomType extends RoomType> =
+  Record<
+    NarrowedRoomState<TRoomType>['playerState'],
+    Record<string, NullableCommandHandler<TRoomType>>
+  >;
 
 export type CommandHandler<TRoomType extends RoomType> = (
   roomState: NarrowedRoomState<TRoomType>,
@@ -63,3 +73,6 @@ export type CommandResult<TRoomType extends RoomType> = {
 
 // Util
 export type ValuesOf<T> = T[keyof T];
+
+export const isNil = (value: unknown): value is null | undefined =>
+  value === null || value === undefined;
