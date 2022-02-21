@@ -66,10 +66,15 @@ to make sure that the compilation scripts are valid before they are run, but tha
 
 1. Add a doc for the room in [docs/rooms/](./docs/rooms/)
     - Make sure it's consistent with the other docs.
-1. Update [gameState.json](./src/utils/schemas/gameState.json):
-    1. Add a new schema to the "definitions" object for your room state
-    1. Add a $ref to "definitions.RoomState" that points to the new schema
+1. Add a schema file for the new room state in [./src/utils/schemas/normalized/](./src/utils/schemas/normalized/)
+1. Update the "oneOf" in [./src/utils/schemas/normalized/roomState.json](./src/utils/schemas/normalized/roomState.json)
+to have a "$ref" pointing to the new room state
 1. Compile the game state schemas with `npm run compile:schemas`
 1. Create a new subclass of [RoomHandler](./src/roomHandlers/roomHandler.ts)
     1. Create a type alias to reference the room type within the sublcass (for easier maintenance)
 1. Update the "allRoomHandlersByRoomType" in [roomUtil](./src/utils/roomUtil.ts) to include the new room handler
+1. Add a test to [./tests/src/roomHandlers/](./tests/src/roomHandlers/)
+    - Use the [state transition helpers](./tests/testHelpers/buildStateTransitionHelpers.ts)
+1. If you are using vs code you might need to:
+    - Open a `ts` file and run the `TypeScript: Restart TS Server` command
+    - Run the `ESLint: Restart ESLint Server` command
