@@ -34,6 +34,7 @@ testSingletonModule(
           startingRoomState: {
             laps: 0,
           },
+          stateAssertionDescription: null,
           expectedResult: {
             commandDescription: 'You move to State3A',
             roomState: {
@@ -49,6 +50,7 @@ testSingletonModule(
           startingRoomState: {
             laps: 0,
           },
+          stateAssertionDescription: null,
           expectedResult: {
             commandDescription: 'You move to State3B',
             roomState: {
@@ -64,6 +66,7 @@ testSingletonModule(
           startingRoomState: {
             laps: 2,
           },
+          stateAssertionDescription: 'increments the lap count',
           expectedResult: {
             commandDescription: 'You move back to the entrance',
             roomState: {
@@ -77,6 +80,7 @@ testSingletonModule(
         startingRoomState: {
           laps: 0,
         },
+        stateAssertionDescription: null,
         expectedResult: {
           commandDescription: 'You leave example room 3',
           roomState: null,

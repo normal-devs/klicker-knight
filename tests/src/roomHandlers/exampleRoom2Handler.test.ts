@@ -31,6 +31,7 @@ testSingletonModule(
         'AtEntrance --> State2A: goTo2A',
         (): TArrangedTransitionData => ({
           startingRoomState: {},
+          stateAssertionDescription: null,
           expectedResult: {
             commandDescription: 'You move to State2A',
             roomState: {},
@@ -42,6 +43,7 @@ testSingletonModule(
         'AtEntrance --> State2B: goTo2B',
         (): TArrangedTransitionData => ({
           startingRoomState: {},
+          stateAssertionDescription: null,
           expectedResult: {
             commandDescription: 'You move to State2B',
             roomState: {},
@@ -53,6 +55,7 @@ testSingletonModule(
         'AtEntrance --> [*]: leave',
         (): TArrangedTransitionData => ({
           startingRoomState: {},
+          stateAssertionDescription: null,
           expectedResult: {
             commandDescription: 'You leave example room 2',
             roomState: null,
@@ -64,6 +67,7 @@ testSingletonModule(
         'State2A --> AtEntrance: goToEntrance',
         (): TArrangedTransitionData => ({
           startingRoomState: {},
+          stateAssertionDescription: null,
           expectedResult: {
             commandDescription: 'You move back to the entrance',
             roomState: {},
@@ -75,6 +79,7 @@ testSingletonModule(
         'State2B --> AtEntrance: goToEntrance',
         (): TArrangedTransitionData => ({
           startingRoomState: {},
+          stateAssertionDescription: null,
           expectedResult: {
             commandDescription: 'You move back to the entrance',
             roomState: {},

@@ -31,6 +31,7 @@ type OnArrangeAccessor<TRoomType extends RoomType> =
 
 export type ArrangedTransitionData<TRoomType extends RoomType> = {
   startingRoomState: OmitKnownKeys<TRoomType>;
+  stateAssertionDescription: string | null;
   expectedResult: {
     commandDescription: Exclude<
       CommandResult<TRoomType>['commandDescription'],
@@ -49,6 +50,48 @@ type OmitKnownKeys<TRoomType extends RoomType> = TRoomType extends
   ? Record<string, never>
   : Omit<NarrowedRoomState<TRoomType>, 'type' | 'playerState'>;
 
+const getStateAssertionDescription = (
+  isExitTransition: boolean,
+  isPlayerStateTransition: boolean,
+  inputStateAssertionDescription: string | null,
+): string => {
+  const isInputAString = typeof inputStateAssertionDescription === 'string';
+  const isInputNull = inputStateAssertionDescription === null;
+  const isInputEmptyString = inputStateAssertionDescription === '';
+
+  if (isExitTransition) {
+    if (isInputAString) {
+      throw new DeveloperError(
+        '"stateAssertionDescription" must be null for an exit transition',
+      );
+    }
+
+    return 'clears the room state';
+  }
+
+  if (isPlayerStateTransition) {
+    if (isInputEmptyString) {
+      throw new DeveloperError(
+        '"stateAssertionDescription" must be null or non-empty for a player state transition',
+      );
+    }
+
+    if (isInputNull) {
+      return 'updates the player state';
+    }
+
+    return `updates the player state and ${inputStateAssertionDescription}`;
+  }
+
+  if (isInputNull || isInputEmptyString) {
+    throw new DeveloperError(
+      '"stateAssertionDescription" must be non-empty if the player state did not change',
+    );
+  }
+
+  return inputStateAssertionDescription;
+};
+
 export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
   testScenario: ScenarioRegistrant,
   roomType: TRoomType,
@@ -58,27 +101,36 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
     mermaidTransition: string,
     onArrange: OnArrangeAccessor<TRoomType>,
   ) => {
-    let arrangeResult: ArrangedTransitionData<TRoomType> | null = null;
+    const match = mermaidTransition.match(/^([^\s]*) --> ([^\s]*): ([^\s]*)$/);
+
+    const [, startingPlayerState, endingPlayerState, command] = match ?? [
+      null,
+      null,
+      null,
+      null,
+    ];
+
+    const isExitTransition = endingPlayerState === EXIT_CODE;
+    const isPlayerStateTransition = endingPlayerState !== startingPlayerState;
+
+    let arrangeResult: ArrangedTransitionData<TRoomType> | null;
+    let stateAssertionDescription: string | null;
     let arrangeError: unknown = null;
     try {
       arrangeResult = onArrange();
+      stateAssertionDescription = getStateAssertionDescription(
+        isExitTransition,
+        isPlayerStateTransition,
+        arrangeResult.stateAssertionDescription,
+      );
     } catch (error) {
+      arrangeResult = null;
+      stateAssertionDescription = null;
       arrangeError = error;
     }
 
     testScenario(mermaidTransition)
       .arrange(() => {
-        const match = mermaidTransition.match(
-          /^([^\s]*) --> ([^\s]*): ([^\s]*)$/,
-        );
-
-        const [, startingPlayerState, endingPlayerState, command] = match ?? [
-          null,
-          null,
-          null,
-          null,
-        ];
-
         // Validates values instead of "match" to eliminate "undefined" as a possibility
         if (
           isNil(startingPlayerState) ||
@@ -109,19 +161,13 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
         );
 
         let expectedRoomState: CommandResult<TRoomType>['roomState'];
-        if (
-          partialExpectedResult.roomState !== null &&
-          endingPlayerState === EXIT_CODE
-        ) {
+        if (partialExpectedResult.roomState !== null && isExitTransition) {
           throw new DeveloperError(
             '"expectedResult.roomState" must be null when testing an exit transition',
           );
         }
 
-        if (
-          partialExpectedResult.roomState === null &&
-          endingPlayerState !== EXIT_CODE
-        ) {
+        if (partialExpectedResult.roomState === null && !isExitTransition) {
           throw new DeveloperError(
             '"expectedResult.roomState" cannot be null when testing an inner-room transition',
           );
@@ -153,10 +199,10 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
           );
         }
 
-        return { inputRoomState, command, expectedResult };
+        return { inputRoomState, expectedResult, inputCommand: command };
       })
-      .act(({ inputRoomState, command }) =>
-        roomHandler.run(inputRoomState, command),
+      .act(({ inputRoomState, inputCommand }) =>
+        roomHandler.run(inputRoomState, inputCommand),
       )
       .assert(
         arrangeResult === null
@@ -168,10 +214,14 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
           );
         },
       )
-      // TODO: allow overriding this description
-      .assert('updates the room state', ({ expectedResult }, result) => {
-        expect(result.roomState).to.eql(expectedResult.roomState);
-      });
+      .assert(
+        stateAssertionDescription === null
+          ? 'ARRANGE_ERROR'
+          : stateAssertionDescription,
+        ({ expectedResult }, result) => {
+          expect(result.roomState).to.eql(expectedResult.roomState);
+        },
+      );
   };
 
   const generateRoomStateAtEntrance = () =>
