@@ -14,7 +14,8 @@ const cleanupSave = () => databaseUtil.delete();
 const availableCommandsRegex =
   /Available Commands: ([0-9A-Za-z]+)(, [0-9A-za-z]*)*/;
 
-testIntegration('klicker-knight', ({ testScenario }) => {
+// TODO: Figure out how to scale E2E tests https://github.com/normal-devs/klicker-knight/issues/39
+testIntegration.skip('klicker-knight', ({ testScenario }) => {
   testScenario('without a command')
     .annihilate(cleanupSave)
     .act(() => run(''))
