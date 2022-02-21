@@ -8,7 +8,7 @@ This room will go away when other rooms are implemented.
 
 ## PlayerState
 
-- **AtEntrance**: You are at the entrance of example room 3 and have completed n laps
+- **AtEntrance**: You are in example room 3 and have completed n laps
 - **State3A**: You are in state 3A
 - **State3B**: You are in state 3B
 

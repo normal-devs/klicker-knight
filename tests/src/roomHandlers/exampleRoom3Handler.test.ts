@@ -1,16 +1,17 @@
 import { testSingletonModule } from '../../testHelpers/semanticMocha';
-import { ExampleRoom2Handler } from '../../../src/roomHandlers/exampleRoom2Handler';
+import { ExampleRoom3Handler } from '../../../src/roomHandlers/exampleRoom3Handler';
 import {
   buildStateTransitionHelpers,
   ArrangedTransitionData,
 } from '../../testHelpers/buildStateTransitionHelpers';
+import { RoomType } from '../../../src/utils/types';
 
-const roomType = 'exampleRoom2';
+const roomType: RoomType = 'exampleRoom3';
 type TRoomType = typeof roomType;
 type TArrangedTransitionData = ArrangedTransitionData<TRoomType>;
 
 testSingletonModule(
-  'roomHandlers/ExampleRoom2Handler',
+  'roomHandlers/ExampleRoom3Handler',
   ({ testIntegration }) => {
     testIntegration('run', ({ testScenario }) => {
       const {
@@ -20,7 +21,7 @@ testSingletonModule(
       } = buildStateTransitionHelpers(
         testScenario,
         roomType,
-        new ExampleRoom2Handler(),
+        new ExampleRoom3Handler(),
       );
 
       testDefaultCommandAtEntrance();
@@ -28,59 +29,59 @@ testSingletonModule(
       testInvalidCommandAtEntrance();
 
       testStateTransition(
-        'AtEntrance --> State2A: goTo2A',
+        'AtEntrance --> State3A: goTo3A',
         (): TArrangedTransitionData => ({
-          startingRoomState: {},
+          startingRoomState: {
+            laps: 0,
+          },
           expectedResult: {
-            commandDescription: 'You move to State2A',
-            roomState: {},
+            commandDescription: 'You move to State3A',
+            roomState: {
+              laps: 0,
+            },
           },
         }),
       );
 
       testStateTransition(
-        'AtEntrance --> State2B: goTo2B',
+        'State3A --> State3B: goTo3B',
         (): TArrangedTransitionData => ({
-          startingRoomState: {},
+          startingRoomState: {
+            laps: 0,
+          },
           expectedResult: {
-            commandDescription: 'You move to State2B',
-            roomState: {},
+            commandDescription: 'You move to State3B',
+            roomState: {
+              laps: 0,
+            },
           },
         }),
       );
 
       testStateTransition(
-        'AtEntrance --> [*]: leave',
+        'State3B --> AtEntrance: goToEntrance',
         (): TArrangedTransitionData => ({
-          startingRoomState: {},
-          expectedResult: {
-            commandDescription: 'You leave example room 2',
-            roomState: null,
+          startingRoomState: {
+            laps: 2,
           },
-        }),
-      );
-
-      testStateTransition(
-        'State2A --> AtEntrance: goToEntrance',
-        (): TArrangedTransitionData => ({
-          startingRoomState: {},
           expectedResult: {
             commandDescription: 'You move back to the entrance',
-            roomState: {},
+            roomState: {
+              laps: 3,
+            },
           },
         }),
       );
 
-      testStateTransition(
-        'State2B --> AtEntrance: goToEntrance',
-        (): TArrangedTransitionData => ({
-          startingRoomState: {},
-          expectedResult: {
-            commandDescription: 'You move back to the entrance',
-            roomState: {},
-          },
-        }),
-      );
+      testStateTransition('State3B --> [*]: leave', () => ({
+        startingRoomState: {
+          laps: 0,
+        },
+        expectedResult: {
+          commandDescription: 'You leave example room 3',
+          roomState: null,
+        },
+      }));
     });
   },
 );
