@@ -32,7 +32,10 @@ type OnArrangeAccessor<TRoomType extends RoomType> =
 export type ArrangedTransitionData<TRoomType extends RoomType> = {
   startingRoomState: OmitKnownKeys<TRoomType>;
   expectedResult: {
-    commandDescription: CommandResult<TRoomType>['commandDescription'];
+    commandDescription: Exclude<
+      CommandResult<TRoomType>['commandDescription'],
+      null
+    >;
     roomState: null | OmitKnownKeys<TRoomType>;
   };
 };
@@ -55,6 +58,14 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
     mermaidTransition: string,
     onArrange: OnArrangeAccessor<TRoomType>,
   ) => {
+    let arrangeResult: ArrangedTransitionData<TRoomType> | null = null;
+    let arrangeError: unknown = null;
+    try {
+      arrangeResult = onArrange();
+    } catch (error) {
+      arrangeError = error;
+    }
+
     testScenario(mermaidTransition)
       .arrange(() => {
         const match = mermaidTransition.match(
@@ -79,8 +90,12 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
           );
         }
 
+        if (arrangeResult === null) {
+          throw arrangeError;
+        }
+
         const { startingRoomState, expectedResult: partialExpectedResult } =
-          onArrange();
+          arrangeResult;
 
         // deferring type check to data generator schema check
         const inputRoomStateOverride = {
@@ -132,13 +147,30 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
           roomState: expectedRoomState,
         };
 
+        if (Object.keys(expectedResult).length !== 2) {
+          throw new DeveloperError(
+            'Unexpected number of keys on "CommandResult". Update this test to have one assertion per key',
+          );
+        }
+
         return { inputRoomState, command, expectedResult };
       })
       .act(({ inputRoomState, command }) =>
         roomHandler.run(inputRoomState, command),
       )
-      .assert('returns a CommandResult', ({ expectedResult }, result) => {
-        expect(result).to.eql(expectedResult);
+      .assert(
+        arrangeResult === null
+          ? 'ARRANGE_ERROR'
+          : `outputs: "${arrangeResult.expectedResult.commandDescription}"`,
+        ({ expectedResult }, result) => {
+          expect(result.commandDescription).to.eql(
+            expectedResult.commandDescription,
+          );
+        },
+      )
+      // TODO: allow overriding this description
+      .assert('updates the room state', ({ expectedResult }, result) => {
+        expect(result.roomState).to.eql(expectedResult.roomState);
       });
   };
 
