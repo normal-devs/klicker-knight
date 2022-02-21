@@ -1,18 +1,16 @@
 import type { RoomState } from './gameState';
-import type { ROOM_TYPES_TUPLE } from './roomTypesTuple';
-
+import type { RoomType, NarrowedRoomState } from './roomTypesTuple';
 import type { RoomHandler } from '../../roomHandlers/roomHandler';
 
 // Game State
-export type { GameState, RoomState, ExampleRoom1 } from './gameState';
+export type { GameState, RoomState } from './gameState'; // eslint-disable-line import/no-restricted-paths
 
-export { ROOM_TYPES_TUPLE } from './roomTypesTuple';
-export type RoomTypesTuple = typeof ROOM_TYPES_TUPLE;
-export type RoomType = RoomTypesTuple[number];
-
-export type NarrowedRoomState<TRoomType extends RoomType> = RoomState & {
-  type: TRoomType;
-};
+export {
+  ROOM_TYPES_TUPLE,
+  RoomTypesTuple,
+  RoomType,
+  NarrowedRoomState,
+} from './roomTypesTuple'; // eslint-disable-line import/no-restricted-paths
 
 // Game I/O
 export type Command = DefaultCommand | string;
