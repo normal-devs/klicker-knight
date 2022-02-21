@@ -1,8 +1,12 @@
 // THIS FILE WAS AUTOMATICALLY GENERATED
 // Use "npm run compile:schemas" to rebuild
 
-// eslint-disable-next-line import/no-restricted-paths
-import { ExampleRoom1, ExampleRoom2, ExampleRoom3 } from './gameState';
+import {
+  ExampleRoom1,
+  ExampleRoom2,
+  ExampleRoom3,
+  // eslint-disable-next-line import/no-restricted-paths
+} from './gameState';
 
 export const ROOM_TYPES_TUPLE = [
   'exampleRoom1',

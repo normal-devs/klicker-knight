@@ -6,9 +6,9 @@ const schemaTypeScriptTypes = roomStateSchema.oneOf.map((schema) => ({
   roomTypeType: `'${schema.properties.type.const}'`,
 }));
 
-const typeScriptTypeImportList = schemaTypeScriptTypes
-  .map(({ roomStateTypeIdentifier }) => roomStateTypeIdentifier)
-  .join(', ');
+const typeScriptTypeImports = schemaTypeScriptTypes.map(
+  ({ roomStateTypeIdentifier }) => `  ${roomStateTypeIdentifier},`,
+);
 
 const roomTypeTypes: string[] = schemaTypeScriptTypes.map(
   ({ roomTypeType }) => roomTypeType,
@@ -18,8 +18,10 @@ const output = [
   '// THIS FILE WAS AUTOMATICALLY GENERATED',
   '// Use "npm run compile:schemas" to rebuild',
   '',
-  '// eslint-disable-next-line import/no-restricted-paths',
-  `import { ${typeScriptTypeImportList} } from './gameState';`,
+  'import {',
+  ...typeScriptTypeImports,
+  '  // eslint-disable-next-line import/no-restricted-paths',
+  "} from './gameState';",
   '',
   'export const ROOM_TYPES_TUPLE = [',
   ...roomTypeTypes.map((roomTypeType) => `  ${roomTypeType},`),
