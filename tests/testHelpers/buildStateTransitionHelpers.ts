@@ -47,6 +47,7 @@ const EXIT_CODE = '[*]';
 type OmitKnownKeys<TRoomType extends RoomType> = TRoomType extends
   | 'exampleRoom1'
   | 'exampleRoom2'
+  | 'roomceptionRoom'
   ? Record<string, never>
   : Omit<NarrowedRoomState<TRoomType>, 'type' | 'playerState'>;
 
