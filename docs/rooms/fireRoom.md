@@ -10,12 +10,6 @@ The goal of this room is to save the person.
 - **AtEntrance**: You are in the main room with X buckets of water.
   There is a fire to your left/right/in front of you.
   You have/haven't saved the person and you have/haven't retrieved the item.
-- **Douse**: The water from the bucket puts out the fire.
-- **Nothing**: There is no water left. You did nothing.
-- **SavedPerson**: Congratulations!!! You saved the person!!!
-- **ItemRetrieved**: Congratulations!!! You got a cool item!!!
-- **EmptyPath**: There is nothing here. Better luck next time.
-- **Flameless**: You already put out the fire here...
 
 ## RoomState
 
@@ -42,18 +36,6 @@ The goal of this room is to save the person.
 stateDiagram-v2
   [*] --> AtEntrance
 
-  AtEntrance --> Douse: throwBucket (if there is water left)
-  AtEntrance --> Nothing: throwBucket (if there is no water left)
+  AtEntrance --> AtEntrance: throwBucket (forward/left/right)
   AtEntrance --> [*]: leave
-
-  Douse --> EmptyPath
-  Douse --> Flameless
-  Douse --> ItemRetrieved
-  Douse --> SavedPerson
-
-  EmptyPath --> AtEntrance
-  Flameless --> EmptyPath
-  ItemRetrieved --> AtEntrance
-  Nothing --> AtEntrance
-  SavedPerson --> AtEntrance
 ```
