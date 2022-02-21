@@ -2,9 +2,15 @@
 // Use "npm run compile:gameStateSchema" to rebuild
 
 // eslint-disable-next-line import/no-restricted-paths
-import { ExampleRoom1, ExampleRoom2, ExampleRoom3 } from './gameState';
+import {
+  DecisionRoom,
+  ExampleRoom1,
+  ExampleRoom2,
+  ExampleRoom3,
+} from './gameState';
 
 export const ROOM_TYPES_TUPLE = [
+  'decisionRoom',
   'exampleRoom1',
   'exampleRoom2',
   'exampleRoom3',
@@ -15,7 +21,9 @@ export type RoomTypesTuple = typeof ROOM_TYPES_TUPLE;
 export type RoomType = RoomTypesTuple[number];
 
 export type NarrowedRoomState<TRoomType extends RoomType> =
-  TRoomType extends 'exampleRoom1'
+  TRoomType extends 'decisionRoom'
+    ? DecisionRoom
+    : TRoomType extends 'exampleRoom1'
     ? ExampleRoom1
     : TRoomType extends 'exampleRoom2'
     ? ExampleRoom2
