@@ -2,7 +2,6 @@ import { RoomHandler } from './roomHandler';
 
 import {
   Command,
-  CommandHandler,
   CommandHandlersByCommandByPlayerStates,
   DEFAULT_COMMAND,
   NarrowedRoomState,
@@ -10,77 +9,79 @@ import {
   StateDescriptionAccessor,
 } from '../utils/types';
 
-const roomType = 'exampleRoom2';
+const roomType = 'exampleRoom3';
 type TRoomType = typeof roomType;
 type TRoomState = NarrowedRoomState<TRoomType>;
 type TStateDescriptionAccessor = StateDescriptionAccessor<TRoomState>;
-type TCommandHandler = CommandHandler<TRoomType>;
 type TCommandHandlersByCommandByPlayerStates =
   CommandHandlersByCommandByPlayerStates<TRoomType>;
 type TNullableCommandHandler = NullableCommandHandler<TRoomType>;
 
 const stateDescriptionAccessor: TStateDescriptionAccessor = {
-  AtEntrance: {
-    playerStateDescription: 'You are in example room 2',
-    availableCommands: ['leave', 'goTo2A', 'goTo2B'],
+  AtEntrance: ({ laps }) => {
+    const lapsText = laps === 1 ? 'lap' : 'laps';
+
+    return {
+      playerStateDescription: `You are in example room 3 and have completed ${laps} ${lapsText}`,
+      availableCommands: ['goTo3A'],
+    };
   },
-  State2A: {
-    playerStateDescription: 'You are in state 2A',
-    availableCommands: ['goToEntrance'],
+  State3A: {
+    playerStateDescription: 'You are in state 3A',
+    availableCommands: ['goTo3B'],
   },
-  State2B: {
-    playerStateDescription: 'You are in state 2B',
-    availableCommands: ['goToEntrance'],
+  State3B: {
+    playerStateDescription: 'You are in state 3B',
+    availableCommands: ['goToEntrance', 'leave'],
   },
 };
-
-const goToEntrance: TCommandHandler = (roomState) => ({
-  commandDescription: 'You move back to the entrance',
-  roomState: {
-    ...roomState,
-    playerState: 'AtEntrance',
-  },
-});
 
 const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerStates =
   {
     AtEntrance: {
-      goTo2A: (roomState) => ({
-        commandDescription: 'You move to State2A',
+      goTo3A: (roomState) => ({
+        commandDescription: 'You move to State3A',
         roomState: {
           ...roomState,
-          playerState: 'State2A',
+          playerState: 'State3A',
         },
       }),
-      goTo2B: (roomState) => ({
-        commandDescription: 'You move to State2B',
+    },
+    State3A: {
+      goTo3B: (roomState) => ({
+        commandDescription: 'You move to State3B',
         roomState: {
           ...roomState,
-          playerState: 'State2B',
+          playerState: 'State3B',
+        },
+      }),
+    },
+    State3B: {
+      goToEntrance: (roomState) => ({
+        commandDescription: 'You move back to the entrance',
+        roomState: {
+          ...roomState,
+          playerState: 'AtEntrance',
+          laps: roomState.laps + 1,
         },
       }),
       leave: () => ({
-        commandDescription: 'You leave example room 2',
+        commandDescription: 'You leave example room 3',
         roomState: null,
       }),
     },
-    State2A: {
-      goToEntrance,
-    },
-    State2B: {
-      goToEntrance,
-    },
   };
 
-export class ExampleRoom2Handler extends RoomHandler<TRoomType> {
+export class ExampleRoom3Handler extends RoomHandler<TRoomType> {
   constructor() {
     super(stateDescriptionAccessor);
   }
 
   createRoomState(): TRoomState {
     return {
-      type: roomType,
+      type: 'exampleRoom3',
       playerState: 'AtEntrance',
+      laps: 0,
     };
   }
 
