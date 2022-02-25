@@ -31,6 +31,7 @@ testSingletonModule(
         'AtEntrance --> [*]: leave',
         (): TArrangedTransitionData => ({
           startingRoomState: {},
+          stateAssertionDescription: null,
           expectedResult: {
             commandDescription: 'You leave example room 1',
             roomState: null,
