@@ -15,6 +15,34 @@ npm run --silent klicker-knight
 npm run clean:game
 ```
 
+### Project Integrity
+
+After running any steps listed below, it can be benifical to restart the TypeScript and ESLint servers
+
+- Open the vscode command palette from a ts file and run `TypeScript: Restart TS Server`
+- Open the vscode command palette from anywhere and run `ESLint: Restart ESLint Server`
+
+#### Verifying the Project State from Scratch
+
+```bash
+npm ci
+
+npm run lint:ts:dev-ci
+
+# runs most of the commands in the ci.yaml github action workflow
+npm run dev:ci
+```
+
+#### Verifying a WIP Project State
+
+```bash
+# updates the schemas, lints, and typechecks
+npm run dev:analyze
+
+# updates the schemas, and runs all tests
+npm run dev:test
+```
+
 ### Configuring Vscode Formatting
 
 - install eslint vscode extension

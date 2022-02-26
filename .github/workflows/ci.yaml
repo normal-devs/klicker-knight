@@ -26,7 +26,7 @@ jobs:
 
       - name: Lint Code
         if: always()
-        run: npm run lint:ts
+        run: npm run lint:ts:all
 
       - name: Lint Docs
         if: always()
