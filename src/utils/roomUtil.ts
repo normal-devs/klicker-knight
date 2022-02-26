@@ -2,6 +2,7 @@ import { DecisionRoomHandler } from '../roomHandlers/decisionRoomHandler';
 import { ExampleRoom1Handler } from '../roomHandlers/exampleRoom1Handler';
 import { ExampleRoom2Handler } from '../roomHandlers/exampleRoom2Handler';
 import { ExampleRoom3Handler } from '../roomHandlers/exampleRoom3Handler';
+import { RoomceptionRoomHandler } from '../roomHandlers/roomceptionRoomHandler';
 import { DeveloperError } from './developerError';
 import {
   ROOM_TYPES_TUPLE,
@@ -16,6 +17,7 @@ const allRoomHandlersByRoomType: AllRoomHandlersByRoomType = {
   exampleRoom1: new ExampleRoom1Handler(),
   exampleRoom2: new ExampleRoom2Handler(),
   exampleRoom3: new ExampleRoom3Handler(),
+  roomceptionRoom: new RoomceptionRoomHandler(),
 };
 
 export const roomUtil = {

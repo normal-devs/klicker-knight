@@ -9,7 +9,8 @@ export type RoomState =
   | DecisionRoom
   | ExampleRoom1
   | ExampleRoom2
-  | ExampleRoom3;
+  | ExampleRoom3
+  | RoomceptionRoom;
 export type DecisionRoom =
   | {
       type: 'decisionRoom';
@@ -37,4 +38,8 @@ export interface ExampleRoom3 {
   type: 'exampleRoom3';
   playerState: 'AtEntrance' | 'State3A' | 'State3B';
   laps: number;
+}
+export interface RoomceptionRoom {
+  type: 'roomceptionRoom';
+  playerState: 'AtEntrance';
 }
