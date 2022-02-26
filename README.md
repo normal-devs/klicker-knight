@@ -7,7 +7,7 @@ The spearhead thrust into the untapped market of npm cli games
 ```bash
 npm install
 
-npm run compile:schemas
+npm run schemas:update
 
 npm run --silent klicker-knight
 
@@ -69,7 +69,7 @@ to make sure that the compilation scripts are valid before they are run, but tha
 1. Add a schema file for the new room state in [./src/utils/schemas/normalized/](./src/utils/schemas/normalized/)
 1. Update the "oneOf" in [./src/utils/schemas/normalized/roomState.json](./src/utils/schemas/normalized/roomState.json)
 to have a "$ref" pointing to the new room state
-1. Compile the game state schemas with `npm run compile:schemas`
+1. Update the game state schemas with `npm run schemas:update`
 1. Create a new subclass of [RoomHandler](./src/roomHandlers/roomHandler.ts)
     1. Create a type alias to reference the room type within the sublcass (for easier maintenance)
 1. Update the "allRoomHandlersByRoomType" in [roomUtil](./src/utils/roomUtil.ts) to include the new room handler

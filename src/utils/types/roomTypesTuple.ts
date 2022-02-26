@@ -1,5 +1,5 @@
 // THIS FILE WAS AUTOMATICALLY GENERATED
-// Use "npm run compile:schemas" to rebuild
+// Use "npm run schemas:update" to rebuild
 
 import {
   DecisionRoom,
