@@ -10,6 +10,8 @@
     "lint:md": "markdownlint **/*.md --ignore node_modules",
     "lint:ts": "eslint --color --ext .ts,.js",
     "lint:ts:all": "npm run lint:ts .",
+    "lint:ts:compile-custom-types": "npm run lint:ts ./scripts/compileCustomTypes.ts",
+    "lint:ts:denormalize-schemas": "npm run lint:ts ./scripts/denormalizeSchemas.ts",
     "lint:ts:dev-ci": "npm run lint:ts ./scripts/devCi.ts",
     "lint:yaml": "yamllint --ignore=node_modules/**/*.yaml **/*.yaml",
     "schemas:compile-base-types": "json2ts --cwd=src/utils/schemas/normalized/ src/utils/schemas/normalized/gameState.json > src/utils/types/gameState.d.ts",

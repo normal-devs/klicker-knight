@@ -20,6 +20,24 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Lint the Denormalize Schemas Script
+        if: always()
+        run: npm run lint:ts:denormalize-schemas
+
+      - name: Denormalize Schemas
+        if: always()
+        run: npm run schemas:denormalize
+
+        # Depends on "Denormalize Schemas"
+      - name: Lint the Compile Custom Types Script
+        if: always()
+        run: npm run lint:ts:compile-custom-types
+
+        # This technically denormalizes the schemas again, but we want this command to be verified by the CI
+      - name: Update Schemas and Compile Types
+        if: always()
+        run: npm run schemas:update
+
       - name: Test Custom Eslint Rules
         if: always()
         run: npm run test:custom-eslint-rules
