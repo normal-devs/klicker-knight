@@ -39,4 +39,4 @@ const output = [
   '  never;',
 ].join('\n');
 
-fs.writeFileSync('src/utils/types/roomTypesTuple.ts', output);
+fs.writeFileSync('src/utils/types/customTypes.ts', output);
