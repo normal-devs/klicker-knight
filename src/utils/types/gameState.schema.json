@@ -54,12 +54,28 @@
       "required": ["type", "playerState", "laps"],
       "additionalProperties": false
     },
+    "RoomceptionRoom": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "roomceptionRoom"
+        },
+        "playerState": {
+          "enum": [
+            "AtEntrance"
+          ]
+        }
+      },
+      "required": ["type", "playerState"],
+      "additionalProperties": false
+    },
     "RoomState": {
       "type": "object",
       "oneOf": [
         { "$ref": "#/definitions/ExampleRoom1" },
         { "$ref": "#/definitions/ExampleRoom2" },
-        { "$ref": "#/definitions/ExampleRoom3" }
+        { "$ref": "#/definitions/ExampleRoom3" },
+        { "$ref": "#/definitions/RoomceptionRoom" }
       ]
     }
   },

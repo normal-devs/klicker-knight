@@ -1,17 +1,18 @@
 # Roomception Room
 
+- **roomType**: roomceptionRoom
+
 A room with a closed off room inside. The main room is basically a hallway that wraps around an innner room.
 The player can explore the main room (the hallway) or enter the inner room (which constitutes **leaving** the main room).
 
 ## PlayerStates
 
-- **AtEntrance**: The player is in a room with a room inside
-- **Exploring**: The player confirms that there is a room in this room and nothing else
+- **AtEntrance**: You are in a hallway with a lone door.
 
 ## Commands
 
-- **leave**: The player leaves through the only available door
-- **explore**: The player wanders the hallway
+- **explore**: You wander the lengths of the hallway only to return to where you started.
+- **leave**: You leave through the only available door.
 
 ## Diagrams
 
@@ -19,9 +20,6 @@ The player can explore the main room (the hallway) or enter the inner room (whic
 stateDiagram-v2
   [*] --> AtEntrance
 
-  AtEntrance --> Exploring: explore
+  AtEntrance --> AtEntrance: explore
   AtEntrance --> [*]: leave
-
-  Exploring --> AtEntrance: default
-  Exploring --> [*]: leave
 ```
