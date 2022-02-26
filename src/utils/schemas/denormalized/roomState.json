@@ -5,6 +5,65 @@
   "oneOf": [
     {
       "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "DecisionRoom",
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "decisionRoom"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "decisionRoom"
+            },
+            "playerState": {
+              "enum": [
+                "AtEntrance"
+              ]
+            },
+            "isSheeple": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "playerState",
+            "isSheeple"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "decisionRoom"
+            },
+            "playerState": {
+              "enum": [
+                "AttemptingToLeave"
+              ]
+            },
+            "isSheeple": {
+              "const": false
+            }
+          },
+          "required": [
+            "type",
+            "playerState",
+            "isSheeple"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    {
+      "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "ExampleRoom1",
       "type": "object",
       "properties": {
@@ -69,6 +128,26 @@
         "type",
         "playerState",
         "laps"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "RoomceptionRoom",
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "roomceptionRoom"
+        },
+        "playerState": {
+          "enum": [
+            "AtEntrance"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "playerState"
       ],
       "additionalProperties": false
     }

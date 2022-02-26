@@ -5,7 +5,23 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type RoomState = ExampleRoom1 | ExampleRoom2 | ExampleRoom3;
+export type RoomState =
+  | DecisionRoom
+  | ExampleRoom1
+  | ExampleRoom2
+  | ExampleRoom3
+  | RoomceptionRoom;
+export type DecisionRoom =
+  | {
+      type: 'decisionRoom';
+      playerState: 'AtEntrance';
+      isSheeple: boolean;
+    }
+  | {
+      type: 'decisionRoom';
+      playerState: 'AttemptingToLeave';
+      isSheeple: false;
+    };
 
 export interface GameState {
   roomState: RoomState;
@@ -22,4 +38,8 @@ export interface ExampleRoom3 {
   type: 'exampleRoom3';
   playerState: 'AtEntrance' | 'State3A' | 'State3B';
   laps: number;
+}
+export interface RoomceptionRoom {
+  type: 'roomceptionRoom';
+  playerState: 'AtEntrance';
 }

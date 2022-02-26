@@ -3,8 +3,10 @@
   "title": "RoomState",
   "type": "object",
   "oneOf": [
+    { "$ref": "./decisionRoom.json" },
     { "$ref": "./exampleRoom1.json" },
     { "$ref": "./exampleRoom2.json" },
-    { "$ref": "./exampleRoom3.json" }
+    { "$ref": "./exampleRoom3.json" },
+    { "$ref": "./roomceptionRoom.json" }
   ]
 }
