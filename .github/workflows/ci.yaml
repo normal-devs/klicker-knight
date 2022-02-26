@@ -11,33 +11,43 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Setup Node 16.x
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
+
       - name: Install
         run: npm ci
-      - name: Test Custom Eslint
+
+      - name: Test Custom Eslint Rules
         if: always()
         run: npm run test:custom-eslint-rules
+
       - name: Lint Code
         if: always()
         run: npm run lint:ts
+
       - name: Lint Docs
         if: always()
         run: npm run lint:md
+
       - name: Lint Yaml
         if: always()
         run: npm run lint:yaml
+
       - name: Typecheck
         if: always()
         run: npm run typecheck
+
       - name: Test Semantic-Mocha
         if: always()
         run: npm run test:semantic-mocha
+
       - name: Test Src
         if: always()
         run: npm run test:src
+
       - name: Test E2E
         if: always()
         run: npm run test:e2e
