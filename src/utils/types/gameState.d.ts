@@ -6,10 +6,22 @@
  */
 
 export type RoomState =
+  | DecisionRoom
   | ExampleRoom1
   | ExampleRoom2
   | ExampleRoom3
   | RoomceptionRoom;
+export type DecisionRoom =
+  | {
+      type: 'decisionRoom';
+      playerState: 'AtEntrance';
+      isSheeple: boolean;
+    }
+  | {
+      type: 'decisionRoom';
+      playerState: 'AttemptingToLeave';
+      isSheeple: false;
+    };
 
 export interface GameState {
   roomState: RoomState;
