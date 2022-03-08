@@ -1,5 +1,5 @@
 import type { RoomState } from './gameState';
-import type { RoomType, NarrowedRoomState } from './roomTypesTuple';
+import type { RoomType, NarrowedRoomState } from './customTypes';
 import type { RoomHandler } from '../../roomHandlers/roomHandler';
 
 // Game State
@@ -10,7 +10,7 @@ export {
   RoomTypesTuple,
   RoomType,
   NarrowedRoomState,
-} from './roomTypesTuple'; // eslint-disable-line import/no-restricted-paths
+} from './customTypes'; // eslint-disable-line import/no-restricted-paths
 
 // Game I/O
 export type Command = DefaultCommand | string;

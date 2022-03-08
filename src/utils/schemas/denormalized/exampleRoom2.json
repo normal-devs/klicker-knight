@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExampleRoom2",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "exampleRoom2"
+    },
+    "playerState": {
+      "enum": [
+        "AtEntrance",
+        "State2A",
+        "State2B"
+      ]
+    }
+  },
+  "required": [
+    "type",
+    "playerState"
+  ],
+  "additionalProperties": false
+}

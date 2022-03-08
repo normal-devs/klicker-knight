@@ -1,12 +1,10 @@
 import fs from 'fs';
-import { roomStateDefinitionNameValueTuples } from '../src/utils/types/roomStateSchema';
+import roomStateSchema from '../src/utils/schemas/denormalized/roomState.json';
 
-const schemaTypeScriptTypes = roomStateDefinitionNameValueTuples.map(
-  ([schemaName, schema]) => ({
-    roomStateTypeIdentifier: schemaName,
-    roomTypeType: `'${schema.properties.type.const}'`,
-  }),
-);
+const schemaTypeScriptTypes = roomStateSchema.oneOf.map((schema) => ({
+  roomStateTypeIdentifier: schema.title,
+  roomTypeType: `'${schema.properties.type.const}'`,
+}));
 
 const typeScriptTypeImports = schemaTypeScriptTypes.map(
   ({ roomStateTypeIdentifier }) => `  ${roomStateTypeIdentifier},`,
@@ -18,7 +16,7 @@ const roomTypeTypes: string[] = schemaTypeScriptTypes.map(
 
 const output = [
   '// THIS FILE WAS AUTOMATICALLY GENERATED',
-  '// Use "npm run compile:gameStateSchema" to rebuild',
+  '// Use "npm run schemas:update" to rebuild',
   '',
   'import {',
   ...typeScriptTypeImports,
@@ -41,4 +39,4 @@ const output = [
   '  never;',
 ].join('\n');
 
-fs.writeFileSync('src/utils/types/roomTypesTuple.ts', output);
+fs.writeFileSync('src/utils/types/customTypes.ts', output);

@@ -1,14 +1,20 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "definitions": {
-    "DecisionRoom": {
+  "title": "RoomState",
+  "type": "object",
+  "oneOf": [
+    {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "DecisionRoom",
       "type": "object",
       "properties": {
         "type": {
           "const": "decisionRoom"
         }
       },
-      "required": ["type"],
+      "required": [
+        "type"
+      ],
       "oneOf": [
         {
           "type": "object",
@@ -25,7 +31,11 @@
               "type": "boolean"
             }
           },
-          "required": ["type", "playerState", "isSheeple"],
+          "required": [
+            "type",
+            "playerState",
+            "isSheeple"
+          ],
           "additionalProperties": false
         },
         {
@@ -43,12 +53,18 @@
               "const": false
             }
           },
-          "required": ["type", "playerState", "isSheeple"],
+          "required": [
+            "type",
+            "playerState",
+            "isSheeple"
+          ],
           "additionalProperties": false
         }
       ]
     },
-    "ExampleRoom1": {
+    {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ExampleRoom1",
       "type": "object",
       "properties": {
         "type": {
@@ -60,10 +76,15 @@
           ]
         }
       },
-      "required": ["type", "playerState"],
+      "required": [
+        "type",
+        "playerState"
+      ],
       "additionalProperties": false
     },
-    "ExampleRoom2": {
+    {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ExampleRoom2",
       "type": "object",
       "properties": {
         "type": {
@@ -77,10 +98,15 @@
           ]
         }
       },
-      "required": ["type", "playerState"],
+      "required": [
+        "type",
+        "playerState"
+      ],
       "additionalProperties": false
     },
-    "ExampleRoom3": {
+    {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ExampleRoom3",
       "type": "object",
       "properties": {
         "type": {
@@ -98,10 +124,16 @@
           "minimum": 0
         }
       },
-      "required": ["type", "playerState", "laps"],
+      "required": [
+        "type",
+        "playerState",
+        "laps"
+      ],
       "additionalProperties": false
     },
-    "RoomceptionRoom": {
+    {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "RoomceptionRoom",
       "type": "object",
       "properties": {
         "type": {
@@ -113,25 +145,11 @@
           ]
         }
       },
-      "required": ["type", "playerState"],
+      "required": [
+        "type",
+        "playerState"
+      ],
       "additionalProperties": false
-    },
-    "RoomState": {
-      "type": "object",
-      "oneOf": [
-        { "$ref": "#/definitions/DecisionRoom" },
-        { "$ref": "#/definitions/ExampleRoom1" },
-        { "$ref": "#/definitions/ExampleRoom2" },
-        { "$ref": "#/definitions/ExampleRoom3" },
-        { "$ref": "#/definitions/RoomceptionRoom" }
-      ]
     }
-  },
-  "title": "GameState",
-  "type": "object",
-  "properties": {
-    "roomState": { "$ref": "#/definitions/RoomState" }
-  },
-  "required": ["roomState"],
-  "additionalProperties": false
+  ]
 }
