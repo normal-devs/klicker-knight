@@ -2,8 +2,8 @@ import {
   NestedPartial,
   schemaToGenerator,
 } from '@randograms/schema-to-generator';
-import { gameStateSchema } from '../../src/utils/types/gameStateSchema';
-import { roomStateSchema } from '../../src/utils/types/roomStateSchema';
+import gameStateSchema from '../../src/utils/schemas/denormalized/gameState.json';
+import roomStateSchema from '../../src/utils/schemas/denormalized/roomState.json';
 import {
   GameState,
   NarrowedRoomState,
@@ -11,9 +11,7 @@ import {
   RoomType,
 } from '../../src/utils/types';
 
-export const generateGameState = schemaToGenerator<GameState>(
-  gameStateSchema as Record<string, unknown>,
-);
+export const generateGameState = schemaToGenerator<GameState>(gameStateSchema);
 
 export const generateRoomState = schemaToGenerator<RoomState>(roomStateSchema);
 

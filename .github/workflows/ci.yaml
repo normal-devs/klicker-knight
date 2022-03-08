@@ -11,36 +11,65 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Setup Node 16.x
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
+
       - name: Install
         run: npm ci
-      - name: Test Custom Eslint
+
+      - name: Lint the Denormalize Schemas Script
+        if: always()
+        run: npm run lint:ts:denormalize-schemas
+
+      - name: Denormalize Schemas
+        if: always()
+        run: npm run schemas:denormalize
+
+        # Depends on "Denormalize Schemas"
+      - name: Lint the Compile Custom Types Script
+        if: always()
+        run: npm run lint:ts:compile-custom-types
+
+        # This technically denormalizes the schemas again, but we want this command to be verified by the CI
+      - name: Update Schemas and Compile Types
+        if: always()
+        run: npm run schemas:update
+
+      - name: Test Custom Eslint Rules
         if: always()
         run: npm run test:custom-eslint-rules
+
       - name: Test Custom Markdownlint
         if: always()
         run: npm run test:custom-markdownlint-rules
+
       - name: Lint Code
         if: always()
-        run: npm run lint:ts
+        run: npm run lint:ts:all
+
       - name: Lint Docs
         if: always()
         run: npm run lint:md
+
       - name: Lint Yaml
         if: always()
         run: npm run lint:yaml
+
       - name: Typecheck
         if: always()
         run: npm run typecheck
+
       - name: Test Semantic-Mocha
         if: always()
         run: npm run test:semantic-mocha
+
       - name: Test Src
         if: always()
         run: npm run test:src
+
       - name: Test E2E
         if: always()
         run: npm run test:e2e

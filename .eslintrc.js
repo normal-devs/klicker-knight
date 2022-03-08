@@ -55,7 +55,7 @@ module.exports = {
             target: './',
           },
           {
-            from: './src/utils/types/roomTypesTuple.ts',
+            from: './src/utils/types/customTypes.ts',
             message: 'Import from src/utils/types/ instead',
             target: './',
           },
