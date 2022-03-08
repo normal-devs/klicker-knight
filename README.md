@@ -15,6 +15,34 @@ npm run --silent klicker-knight
 npm run clean:game
 ```
 
+### Project Integrity
+
+After running any steps listed below, it can be benifical to restart the TypeScript and ESLint servers
+
+- Open the vscode command palette from a ts file and run `TypeScript: Restart TS Server`
+- Open the vscode command palette from anywhere and run `ESLint: Restart ESLint Server`
+
+#### Verifying the Project State from Scratch
+
+```bash
+npm ci
+
+npm run lint:ts:dev-ci
+
+# runs most of the commands in the ci.yaml github action workflow
+npm run dev:ci
+```
+
+#### Verifying a WIP Project State
+
+```bash
+# updates the schemas, lints, and typechecks
+npm run dev:analyze
+
+# updates the schemas, and runs all tests
+npm run dev:test
+```
+
 ### Configuring Vscode Formatting
 
 - install eslint vscode extension
@@ -56,11 +84,6 @@ so it's difficult to determine where types should live such that there are no ci
 
 Some devs create a lot of commits and don't want to have to type `--no-verify` all the time.
 They also push up a lot of wip code. Additionally, the CI workflow is fast and basically free.
-
-#### Why are compiled files committed to the repository?
-
-Ideally the project should lint/typecheck from a clean clone. The linting steps can be broken down
-to make sure that the compilation scripts are valid before they are run, but that hasn't been done yet.
 
 ### Adding a new Room State
 
