@@ -1,0 +1,16 @@
+{
+  "ts-node": {
+    "transpileOnly": true
+  },
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "strict": true,
+    "target": "es2021",
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}

@@ -14,7 +14,7 @@ The DefaultCommandHandler is run when the `default` command is run. It returns t
 ## InvalidCommandHandler
 
 The InvalidCommandHandler runs when an invalid Command is invoked.
-It returns the input RoomState and the [InvalidCommandDescription](../data/commandDescription#invalidcommanddescription)
+It returns the input RoomState and the [InvalidCommandDescription](../data/commandDescription.md#invalidcommanddescription)
 
 ```mermaid
 sequenceDiagram

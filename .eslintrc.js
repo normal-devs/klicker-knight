@@ -28,6 +28,8 @@ module.exports = {
     project: [
       './tsconfig.configFiles.json',
       'tsconfig.json',
+      'custom-markdownlint-rules/tsconfig.json',
+      'custom-markdownlint-rules/tests/tsconfig.json',
       'eslint-local-rules/tsconfig.json',
       'eslint-local-rules/tests/tsconfig.json',
       'tests/tsconfig.json',
