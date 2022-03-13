@@ -18,23 +18,30 @@ A room with a beach and a boat dock. You can fish from dock or leave. Fishing ma
 - **fix**: You fix your fishing pole so you can fish again.
 - **stop**: You stops fishing.
 
-## Diagram
+## Diagrams
+
+### AtEntrance
 
 ```mermaid
+
 stateDiagram-v2
+  state check_rod <<choice>>
   [*] --> AtEntrance
-
-  AtEntrance --> Fishing: fish (if rod is working)
-  AtEntrance --> BrokenLine: fish (if rod is broken)
+  AtEntrance --> check_rod: fish
+  check_rod --> AtEntrance: brokenRod
+  check_rod --> Fishing: !brokenRod
   AtEntrance --> [*]: leave
+```
 
+### Fishing
+
+```mermaid
+
+stateDiagram-v2
+  state chance <<choice>>
   Fishing --> AtEntrance: stop
-  Fishing --> Caught: fish (if catch)
-  Fishing --> BrokenLine: fish (if break)
-  Fishing --> Fishing: fish (else)
-
-  Caught --> AtEntrance: default
-
-  BrokenLine --> AtEntrance: stop
-  BrokenLine --> AtEntrance: fix
+  Fishing --> chance: continue
+  chance --> AtEntrance: caught
+  chance --> AtEntrance: brokenLine
+  chance --> Fishing: nothing
 ```
