@@ -14,7 +14,7 @@
         "Fishing"
       ]
     },
-    "brokenRod": {
+    "isRodBroken": {
       "type": "boolean"
     },
     "fishCaught": {
@@ -22,6 +22,6 @@
       "minimum": 0
     }
   },
-  "required": ["type", "playerState", "brokenRod", "fishCaught"],
+  "required": ["type", "playerState", "isRodBroken", "fishCaught"],
   "additionalProperties": false
 }

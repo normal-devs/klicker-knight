@@ -18,8 +18,8 @@ type TCommandHandlersByCommandByPlayerStates =
 type TNullableCommandHandler = NullableCommandHandler<TRoomType>;
 
 const stateDescriptionAccessor: TStateDescriptionAccessor = {
-  AtEntrance: ({ fishCaught, brokenRod }) => {
-    const poleText = brokenRod === true ? 'broken' : 'working';
+  AtEntrance: ({ fishCaught, isRodBroken }) => {
+    const poleText = isRodBroken ? 'broken' : 'working';
 
     return {
       playerStateDescription: `You are on a dock with a ${poleText} fishing pole. You have caught ${fishCaught} fish so far!`,
@@ -48,7 +48,8 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
         commandDescription: 'You start to fish.',
         roomState: {
           ...roomState,
-          playerState: roomState.brokenRod === true ? 'BrokenLine' : 'Fishing',
+          playerState:
+            roomState.isRodBroken === true ? 'BrokenLine' : 'Fishing',
         },
       }),
       leave: () => ({
@@ -88,7 +89,7 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
         roomState: {
           ...roomState,
           playerState: 'AtEntrance',
-          brokenRod: true,
+          isRodBroken: true,
         },
       }),
       fix: (roomState) => ({
@@ -96,7 +97,7 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
         roomState: {
           ...roomState,
           playerState: 'AtEntrance',
-          brokenRod: false,
+          isRodBroken: false,
         },
       }),
     },
@@ -111,7 +112,7 @@ export class FishingRoomHandler extends RoomHandler<TRoomType> {
     return {
       type: 'fishingRoom',
       playerState: 'AtEntrance',
-      brokenRod: false,
+      isRodBroken: false,
       fishCaught: 0,
     };
   }
