@@ -13,10 +13,10 @@ A room with a beach and a boat dock. You can fish from dock or leave. Fishing ma
 
 ## Commands
 
-- **leave**: You leaves through the only available door. Total number of fish caught is X.
-- **fish**: You casts your fishing line.
+- **leave**: You leave through the only available door. Total number of fish caught is X.
+- **fish**: You cast your fishing line.
 - **fix**: You fix your fishing pole so you can fish again.
-- **stop**: You stops fishing.
+- **stop**: You stop fishing.
 
 ## Diagrams
 

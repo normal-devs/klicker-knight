@@ -22,7 +22,7 @@ const stateDescriptionAccessor: TStateDescriptionAccessor = {
     const poleText = brokenRod === true ? 'broken' : 'working';
 
     return {
-      playerStateDescription: `You are on a dock with a ${poleText} fishing pole. Total number of fish caught is ${fishCaught} so far!`,
+      playerStateDescription: `You are on a dock with a ${poleText} fishing pole. You have caught ${fishCaught} fish so far!`,
       availableCommands: ['fish', 'leave'],
     };
   },
@@ -45,27 +45,27 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
   {
     AtEntrance: {
       fish: (roomState) => ({
-        commandDescription: 'You start to fish',
+        commandDescription: 'You start to fish.',
         roomState: {
           ...roomState,
           playerState: roomState.brokenRod === true ? 'BrokenLine' : 'Fishing',
         },
       }),
       leave: () => ({
-        commandDescription: 'You leave the fishing room',
+        commandDescription: 'You say goodbye to the fish and leave.',
         roomState: null,
       }),
     },
     Fishing: {
       stop: (roomState) => ({
-        commandDescription: 'You stop to fishing',
+        commandDescription: 'You stop fishing.',
         roomState: {
           ...roomState,
           playerState: 'AtEntrance',
         },
       }),
       fish: (roomState) => ({
-        commandDescription: 'You casts your fishing line.',
+        commandDescription: 'You cast your fishing line.',
         roomState: {
           ...roomState,
           playerState: Math.random() > 0.5 ? 'Caught' : 'BrokenLine',
@@ -74,7 +74,7 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
     },
     Caught: {
       goToEntrance: (roomState) => ({
-        commandDescription: 'You casts your fishing line.',
+        commandDescription: 'You at back on the dock.',
         roomState: {
           ...roomState,
           playerState: 'AtEntrance',
@@ -84,7 +84,7 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
     },
     BrokenLine: {
       stop: (roomState) => ({
-        commandDescription: 'You stop to fishing',
+        commandDescription: 'You stop fishing.',
         roomState: {
           ...roomState,
           playerState: 'AtEntrance',
