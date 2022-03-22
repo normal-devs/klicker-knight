@@ -98,6 +98,7 @@ export class FishingRoomHandler extends RoomHandler<TRoomType> {
       playerState: 'AtEntrance',
       isRodBroken: false,
       fishCaught: 0,
+      randomNumber: Math.floor(Math.random() * 3),
     };
   }
 
