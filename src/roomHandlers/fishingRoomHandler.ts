@@ -23,21 +23,12 @@ const stateDescriptionAccessor: TStateDescriptionAccessor = {
 
     return {
       playerStateDescription: `You are on a dock with a ${poleText} fishing pole. You have caught ${fishCaught} fish so far!`,
-      availableCommands: ['fish', 'leave'],
+      availableCommands: ['fish', 'fix', 'leave'],
     };
   },
   Fishing: {
     playerStateDescription: 'Hopefully the fish are hungry today.',
     availableCommands: ['stop', 'fish'],
-  },
-  Caught: {
-    playerStateDescription: 'Congratulations!!! You caught a fish!!!',
-    availableCommands: ['goToEntrance'],
-  },
-  BrokenLine: {
-    playerStateDescription:
-      'You have a broken fishing line and the fish got away.',
-    availableCommands: ['stop', 'fix'],
   },
 };
 
@@ -45,11 +36,22 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
   {
     AtEntrance: {
       fish: (roomState) => ({
-        commandDescription: 'You start to fish.',
+        commandDescription: `You sit down and start to get ready to fish. ${
+          roomState.isRodBroken
+            ? 'But your rod is broken and you have to fix it.'
+            : 'This is going to be alot of fun!'
+        }`,
         roomState: {
           ...roomState,
-          playerState:
-            roomState.isRodBroken === true ? 'BrokenLine' : 'Fishing',
+          playerState: roomState.isRodBroken ? 'AtEntrance' : 'Fishing',
+        },
+      }),
+      fix: (roomState) => ({
+        commandDescription: 'You fix your fishing line.',
+        roomState: {
+          ...roomState,
+          playerState: 'AtEntrance',
+          isRodBroken: false,
         },
       }),
       leave: () => ({
@@ -66,38 +68,20 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
         },
       }),
       fish: (roomState) => ({
-        commandDescription: 'You cast your fishing line.',
+        commandDescription: `You cast your fishing line. ${
+          roomState.randomNumber === 0
+            ? 'And nothing happen, maybe try again?'
+            : 'And something happen!'
+        }`,
         roomState: {
           ...roomState,
-          playerState: Math.random() > 0.5 ? 'Caught' : 'BrokenLine',
-        },
-      }),
-    },
-    Caught: {
-      goToEntrance: (roomState) => ({
-        commandDescription: 'You at back on the dock.',
-        roomState: {
-          ...roomState,
-          playerState: 'AtEntrance',
-          fishCaught: roomState.fishCaught + 1,
-        },
-      }),
-    },
-    BrokenLine: {
-      stop: (roomState) => ({
-        commandDescription: 'You stop fishing.',
-        roomState: {
-          ...roomState,
-          playerState: 'AtEntrance',
-          isRodBroken: true,
-        },
-      }),
-      fix: (roomState) => ({
-        commandDescription: 'You fix your fishing line.',
-        roomState: {
-          ...roomState,
-          playerState: 'AtEntrance',
-          isRodBroken: false,
+          playerState: roomState.randomNumber === 0 ? 'Fishing' : 'AtEntrance',
+          fishCaught:
+            roomState.randomNumber === 1
+              ? roomState.fishCaught + 1
+              : roomState.fishCaught,
+          isRodBroken: roomState.randomNumber === 2,
+          randomNumber: Math.floor(Math.random() * 3),
         },
       }),
     },

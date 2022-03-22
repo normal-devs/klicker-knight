@@ -9,8 +9,6 @@
     "playerState": {
       "enum": [
         "AtEntrance",
-        "BrokenLine",
-        "Caught",
         "Fishing"
       ]
     },
