@@ -27,6 +27,112 @@ testSingletonModule(
       testDefaultCommandAtEntrance();
 
       testInvalidCommandAtEntrance();
+
+      testStateTransition(
+        'AtEntrance --> AtEntrance: fish',
+        (): TArrangedTransitionData => ({
+          startingRoomState: {
+            fishCaught: 0,
+            isRodBroken: true,
+            randomNumber: 0,
+          },
+          stateAssertionDescription: 'You can not fish with a broken rod',
+          expectedResult: {
+            commandDescription:
+              'You sit down and start to get ready to fish. But your rod is broken and you have to fix it.',
+            roomState: {
+              fishCaught: 0,
+              isRodBroken: true,
+              randomNumber: 0,
+            },
+          },
+        }),
+      );
+
+      testStateTransition(
+        'AtEntrance --> Fishing: fish',
+        (): TArrangedTransitionData => ({
+          startingRoomState: {
+            fishCaught: 0,
+            isRodBroken: false,
+            randomNumber: 0,
+          },
+          stateAssertionDescription: null,
+          expectedResult: {
+            commandDescription:
+              'You sit down and start to get ready to fish. This is going to be alot of fun!',
+            roomState: {
+              fishCaught: 0,
+              isRodBroken: false,
+              randomNumber: 0,
+            },
+          },
+        }),
+      );
+
+      testStateTransition(
+        'Fishing --> Fishing: fish',
+        (): TArrangedTransitionData => ({
+          startingRoomState: {
+            fishCaught: 0,
+            isRodBroken: false,
+            randomNumber: 0,
+          },
+          stateAssertionDescription:
+            'Did not catch any fish and your pole is still working',
+          expectedResult: {
+            commandDescription:
+              'You cast your fishing line. And nothing happen, maybe try again?',
+            roomState: {
+              fishCaught: 0,
+              isRodBroken: false,
+              randomNumber: 0,
+            },
+          },
+        }),
+      );
+
+      testStateTransition(
+        'Fishing --> AtEntrance: fish',
+        (): TArrangedTransitionData => ({
+          startingRoomState: {
+            fishCaught: 0,
+            isRodBroken: false,
+            randomNumber: 1,
+          },
+          stateAssertionDescription: null,
+          expectedResult: {
+            commandDescription:
+              'You cast your fishing line. And something happen!',
+            roomState: {
+              fishCaught: 1,
+              isRodBroken: false,
+              randomNumber: 0,
+            },
+          },
+        }),
+      );
+
+      testStateTransition(
+        'Fishing --> AtEntrance: fish',
+        (): TArrangedTransitionData => ({
+          startingRoomState: {
+            fishCaught: 0,
+            isRodBroken: false,
+            randomNumber: 2,
+          },
+          stateAssertionDescription: null,
+          expectedResult: {
+            commandDescription:
+              'You cast your fishing line. And something happen!',
+            roomState: {
+              fishCaught: 0,
+              isRodBroken: true,
+              randomNumber: 0,
+            },
+          },
+        }),
+      );
     });
   },
 );
