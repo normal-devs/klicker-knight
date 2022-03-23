@@ -21,9 +21,12 @@ const stateDescriptionAccessor: TStateDescriptionAccessor = {
   AtEntrance: ({ fishCaught, isRodBroken }) => {
     const poleText = isRodBroken ? 'broken' : 'working';
 
+    const availableCommands: [string, ...string[]] = ['fish', 'leave'];
+    if (isRodBroken) availableCommands.push('fix');
+
     return {
       playerStateDescription: `You are on a dock with a ${poleText} fishing pole. You have caught ${fishCaught} fish so far!`,
-      availableCommands: ['fish', 'fix', 'leave'],
+      availableCommands,
     };
   },
   Fishing: {
