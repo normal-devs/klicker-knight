@@ -82,15 +82,25 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
           } as const
         )[randomNumber as 0 | 1 | 2];
 
+        const commandDescription: string = [
+          ['You continue fishing...', true],
+          ['        ... but nothing happens', transition === 'NONE'],
+          ['        ', transition === 'NONE'],
+          ['        ', transition === 'NONE'],
+          ['        ', transition === 'CATCH'],
+          ['        ... and you catch a fish!', transition === 'CATCH'],
+          ['        ', transition === 'CATCH'],
+          ['        ', transition === 'BREAK'],
+          ['        ', transition === 'BREAK'],
+          // eslint-disable-next-line prettier/prettier
+          ['        .. but the knot was improperly tied and your line breaks away!', transition === 'BREAK'],
+        ]
+          .filter(([, isShown]) => isShown)
+          .map(([line]) => line)
+          .join('\n');
+
         const result: CommandResult<TRoomType> = {
-          commandDescription: `You continue fishing...
-        ${transition === 'NONE' ? '... but nothing happens' : ''}
-        ${transition === 'CATCH' ? '... and you catch a fish!' : ''}
-        ${
-          transition === 'BREAK'
-            ? '.. but the knot was improperly tied and your line breaks away!'
-            : ''
-        }`,
+          commandDescription,
           roomState: {
             ...roomState,
             playerState: transition === 'NONE' ? 'Fishing' : 'AtEntrance',
