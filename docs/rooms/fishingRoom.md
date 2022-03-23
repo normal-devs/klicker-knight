@@ -28,6 +28,7 @@ stateDiagram-v2
   state check_rod <<choice>>
   [*] --> AtEntrance
   AtEntrance --> check_rod: fish
+  AtEntrance --> AtEntrance: fix
   check_rod --> AtEntrance: isRodBroken
   check_rod --> Fishing: !isRodBroken
   AtEntrance --> [*]: leave
