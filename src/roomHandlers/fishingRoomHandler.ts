@@ -74,23 +74,31 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
       continue: (roomState) => {
         const randomNumber = Math.floor(Math.random() * 3);
 
+        const transition = (
+          {
+            0: 'NONE',
+            1: 'CATCH',
+            2: 'BREAK',
+          } as const
+        )[randomNumber as 0 | 1 | 2];
+
         const result: CommandResult<TRoomType> = {
           commandDescription: `You continue fishing...
-        ${randomNumber === 0 ? '... but nothing happens' : ''}
-        ${randomNumber === 1 ? '... and you catch a fish!' : ''}
+        ${transition === 'NONE' ? '... but nothing happens' : ''}
+        ${transition === 'CATCH' ? '... and you catch a fish!' : ''}
         ${
-          randomNumber === 2
+          transition === 'BREAK'
             ? '.. but the knot was improperly tied and your line breaks away!'
             : ''
         }`,
           roomState: {
             ...roomState,
-            playerState: randomNumber === 0 ? 'Fishing' : 'AtEntrance',
+            playerState: transition === 'NONE' ? 'Fishing' : 'AtEntrance',
             fishCaught:
-              randomNumber === 1
+              transition === 'CATCH'
                 ? roomState.fishCaught + 1
                 : roomState.fishCaught,
-            isRodBroken: randomNumber === 2,
+            isRodBroken: transition === 'BREAK',
           },
         };
 
