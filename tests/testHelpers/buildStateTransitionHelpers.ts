@@ -24,6 +24,7 @@ type StateTransitionHelpers<TRoomType extends RoomType> = {
 type StateTransitionScenarioRegistrant<TRoomType extends RoomType> = (
   mermaidTransition: string,
   onArrange: OnArrangeAccessor<TRoomType>,
+  hookArgs?: HookArgs,
 ) => void;
 
 type OnArrangeAccessor<TRoomType extends RoomType> =
@@ -50,6 +51,13 @@ type OmitKnownKeys<TRoomType extends RoomType> = TRoomType extends
   | 'roomceptionRoom'
   ? Record<string, never>
   : Omit<NarrowedRoomState<TRoomType>, 'type' | 'playerState'>;
+
+type HookArgs = {
+  onArrange2?: SideEffectHandler;
+  onAnnihilate?: SideEffectHandler;
+};
+
+type SideEffectHandler = () => void;
 
 const getStateAssertionDescription = (
   isExitTransition: boolean,
@@ -100,7 +108,10 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
 ): StateTransitionHelpers<TRoomType> => {
   const testStateTransition: StateTransitionScenarioRegistrant<TRoomType> = (
     mermaidTransition: string,
+
+    // TODO: "onArrange" isn't actually called in "arrange" anymore so rename it, and rename onArrange2 to onArrange
     onArrange: OnArrangeAccessor<TRoomType>,
+    { onArrange2 = () => {}, onAnnihilate = () => {} } = {},
   ) => {
     const match = mermaidTransition.match(/^([^\s]*) --> ([^\s]*): ([^\s]*)$/);
 
@@ -200,7 +211,12 @@ export const buildStateTransitionHelpers = <TRoomType extends RoomType>(
           );
         }
 
+        onArrange2();
+
         return { inputRoomState, expectedResult, inputCommand: command };
+      })
+      .annihilate(() => {
+        onAnnihilate();
       })
       .act(({ inputRoomState, inputCommand }) =>
         roomHandler.run(inputRoomState, inputCommand),
