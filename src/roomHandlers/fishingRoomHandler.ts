@@ -3,6 +3,7 @@ import { RoomHandler } from './roomHandler';
 import {
   Command,
   CommandHandlersByCommandByPlayerStates,
+  CommandResult,
   DEFAULT_COMMAND,
   NarrowedRoomState,
   NullableCommandHandler,
@@ -73,7 +74,7 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
       continue: (roomState) => {
         const randomNumber = Math.floor(Math.random() * 3);
 
-        return {
+        const result: CommandResult<TRoomType> = {
           commandDescription: `You continue fishing...
         ${randomNumber === 0 ? '... but nothing happens' : ''}
         ${randomNumber === 1 ? '... and you catch a fish!' : ''}
@@ -90,10 +91,10 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
                 ? roomState.fishCaught + 1
                 : roomState.fishCaught,
             isRodBroken: randomNumber === 2,
-            // TODO: fix this line not being typechecked
-            randomNumber,
           },
         };
+
+        return result;
       },
     },
   };
