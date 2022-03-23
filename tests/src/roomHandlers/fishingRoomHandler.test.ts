@@ -29,6 +29,26 @@ testSingletonModule(
       testInvalidCommandAtEntrance();
 
       testStateTransition(
+        'AtEntrance --> AtEntrance: fix',
+        (): TArrangedTransitionData => ({
+          startingRoomState: {
+            fishCaught: 0,
+            isRodBroken: true,
+            randomNumber: 0,
+          },
+          stateAssertionDescription: 'updates the room state',
+          expectedResult: {
+            commandDescription: 'You fix your fishing line.',
+            roomState: {
+              fishCaught: 0,
+              isRodBroken: false,
+              randomNumber: 0,
+            },
+          },
+        }),
+      );
+
+      testStateTransition(
         'AtEntrance --> AtEntrance: fish',
         (): TArrangedTransitionData => ({
           startingRoomState: {
