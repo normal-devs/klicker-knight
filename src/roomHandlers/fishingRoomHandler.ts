@@ -31,7 +31,7 @@ const stateDescriptionAccessor: TStateDescriptionAccessor = {
   },
   Fishing: {
     playerStateDescription: 'Hopefully the fish are hungry today.',
-    availableCommands: ['stop', 'fish'],
+    availableCommands: ['stop', 'continue'],
   },
 };
 
@@ -70,11 +70,14 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
           playerState: 'AtEntrance',
         },
       }),
-      fish: (roomState) => ({
-        commandDescription: `You cast your fishing line. ${
-          roomState.randomNumber === 0
-            ? 'And nothing happen, maybe try again?'
-            : 'And something happen!'
+      continue: (roomState) => ({
+        commandDescription: `You continue fishing...
+        ${roomState.randomNumber === 0 ? '... but nothing happens' : ''}
+        ${roomState.randomNumber === 1 ? '... and you catch a fish!' : ''}
+        ${
+          roomState.randomNumber === 2
+            ? '.. but the knot was improperly tied and your line breaks away!'
+            : ''
         }`,
         roomState: {
           ...roomState,
