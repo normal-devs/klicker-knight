@@ -34,7 +34,6 @@ testSingletonModule(
           startingRoomState: {
             fishCaught: 0,
             isRodBroken: true,
-            randomNumber: 0,
           },
           stateAssertionDescription: 'updates the room state',
           expectedResult: {
@@ -42,7 +41,6 @@ testSingletonModule(
             roomState: {
               fishCaught: 0,
               isRodBroken: false,
-              randomNumber: 0,
             },
           },
         }),
@@ -54,7 +52,6 @@ testSingletonModule(
           startingRoomState: {
             fishCaught: 0,
             isRodBroken: true,
-            randomNumber: 0,
           },
           stateAssertionDescription: 'does not update the room state',
           expectedResult: {
@@ -63,7 +60,6 @@ testSingletonModule(
             roomState: {
               fishCaught: 0,
               isRodBroken: true,
-              randomNumber: 0,
             },
           },
         }),
@@ -75,7 +71,6 @@ testSingletonModule(
           startingRoomState: {
             fishCaught: 0,
             isRodBroken: false,
-            randomNumber: 0,
           },
           stateAssertionDescription: null,
           expectedResult: {
@@ -84,7 +79,6 @@ testSingletonModule(
             roomState: {
               fishCaught: 0,
               isRodBroken: false,
-              randomNumber: 0,
             },
           },
         }),
@@ -96,7 +90,6 @@ testSingletonModule(
           startingRoomState: {
             fishCaught: 0,
             isRodBroken: false,
-            randomNumber: 0,
           },
           stateAssertionDescription: 'does not update the room state',
           expectedResult: {
@@ -105,7 +98,6 @@ testSingletonModule(
             roomState: {
               fishCaught: 0,
               isRodBroken: false,
-              randomNumber: 0,
             },
           },
         }),
@@ -117,7 +109,6 @@ testSingletonModule(
           startingRoomState: {
             fishCaught: 0,
             isRodBroken: false,
-            randomNumber: 1,
           },
           stateAssertionDescription: null,
           expectedResult: {
@@ -126,7 +117,6 @@ testSingletonModule(
             roomState: {
               fishCaught: 1,
               isRodBroken: false,
-              randomNumber: 0,
             },
           },
         }),
@@ -138,7 +128,6 @@ testSingletonModule(
           startingRoomState: {
             fishCaught: 0,
             isRodBroken: false,
-            randomNumber: 2,
           },
           stateAssertionDescription: null,
           expectedResult: {
@@ -147,7 +136,6 @@ testSingletonModule(
             roomState: {
               fishCaught: 0,
               isRodBroken: true,
-              randomNumber: 0,
             },
           },
         }),

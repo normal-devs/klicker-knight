@@ -70,26 +70,31 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
           playerState: 'AtEntrance',
         },
       }),
-      continue: (roomState) => ({
-        commandDescription: `You continue fishing...
-        ${roomState.randomNumber === 0 ? '... but nothing happens' : ''}
-        ${roomState.randomNumber === 1 ? '... and you catch a fish!' : ''}
+      continue: (roomState) => {
+        const randomNumber = Math.floor(Math.random() * 3);
+
+        return {
+          commandDescription: `You continue fishing...
+        ${randomNumber === 0 ? '... but nothing happens' : ''}
+        ${randomNumber === 1 ? '... and you catch a fish!' : ''}
         ${
-          roomState.randomNumber === 2
+          randomNumber === 2
             ? '.. but the knot was improperly tied and your line breaks away!'
             : ''
         }`,
-        roomState: {
-          ...roomState,
-          playerState: roomState.randomNumber === 0 ? 'Fishing' : 'AtEntrance',
-          fishCaught:
-            roomState.randomNumber === 1
-              ? roomState.fishCaught + 1
-              : roomState.fishCaught,
-          isRodBroken: roomState.randomNumber === 2,
-          randomNumber: Math.floor(Math.random() * 3),
-        },
-      }),
+          roomState: {
+            ...roomState,
+            playerState: randomNumber === 0 ? 'Fishing' : 'AtEntrance',
+            fishCaught:
+              randomNumber === 1
+                ? roomState.fishCaught + 1
+                : roomState.fishCaught,
+            isRodBroken: randomNumber === 2,
+            // TODO: fix this line not being typechecked
+            randomNumber,
+          },
+        };
+      },
     },
   };
 
@@ -104,7 +109,6 @@ export class FishingRoomHandler extends RoomHandler<TRoomType> {
       playerState: 'AtEntrance',
       isRodBroken: false,
       fishCaught: 0,
-      randomNumber: Math.floor(Math.random() * 3),
     };
   }
 
