@@ -91,7 +91,7 @@ testSingletonModule(
       );
 
       testStateTransition(
-        'Fishing --> Fishing: fish',
+        'Fishing --> Fishing: continue',
         (): TArrangedTransitionData => ({
           startingRoomState: {
             fishCaught: 0,
@@ -101,7 +101,7 @@ testSingletonModule(
           stateAssertionDescription: 'does not update the room state',
           expectedResult: {
             commandDescription:
-              'You cast your fishing line. And nothing happen, maybe try again?',
+              'You continue fishing...\n        ... but nothing happens\n        \n        ',
             roomState: {
               fishCaught: 0,
               isRodBroken: false,
@@ -112,7 +112,7 @@ testSingletonModule(
       );
 
       testStateTransition(
-        'Fishing --> AtEntrance: fish',
+        'Fishing --> AtEntrance: continue',
         (): TArrangedTransitionData => ({
           startingRoomState: {
             fishCaught: 0,
@@ -122,7 +122,7 @@ testSingletonModule(
           stateAssertionDescription: null,
           expectedResult: {
             commandDescription:
-              'You cast your fishing line. And something happen!',
+              'You continue fishing...\n        \n        ... and you catch a fish!\n        ',
             roomState: {
               fishCaught: 1,
               isRodBroken: false,
@@ -133,7 +133,7 @@ testSingletonModule(
       );
 
       testStateTransition(
-        'Fishing --> AtEntrance: fish',
+        'Fishing --> AtEntrance: continue',
         (): TArrangedTransitionData => ({
           startingRoomState: {
             fishCaught: 0,
@@ -143,7 +143,7 @@ testSingletonModule(
           stateAssertionDescription: null,
           expectedResult: {
             commandDescription:
-              'You cast your fishing line. And something happen!',
+              'You continue fishing...\n        \n        \n        .. but the knot was improperly tied and your line breaks away!',
             roomState: {
               fishCaught: 0,
               isRodBroken: true,
