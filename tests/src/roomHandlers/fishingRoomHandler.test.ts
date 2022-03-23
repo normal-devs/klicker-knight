@@ -36,7 +36,7 @@ testSingletonModule(
             isRodBroken: true,
             randomNumber: 0,
           },
-          stateAssertionDescription: 'You can not fish with a broken rod',
+          stateAssertionDescription: 'does not update the room state',
           expectedResult: {
             commandDescription:
               'You sit down and start to get ready to fish. But your rod is broken and you have to fix it.',
@@ -78,8 +78,7 @@ testSingletonModule(
             isRodBroken: false,
             randomNumber: 0,
           },
-          stateAssertionDescription:
-            'Did not catch any fish and your pole is still working',
+          stateAssertionDescription: 'does not update the room state',
           expectedResult: {
             commandDescription:
               'You cast your fishing line. And nothing happen, maybe try again?',
