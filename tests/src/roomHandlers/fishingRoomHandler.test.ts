@@ -1,3 +1,4 @@
+import sinon from 'sinon';
 import { testSingletonModule } from '../../testHelpers/semanticMocha';
 import { FishingRoomHandler } from '../../../src/roomHandlers/fishingRoomHandler';
 import {
@@ -101,6 +102,14 @@ testSingletonModule(
             },
           },
         }),
+        {
+          onArrange2: () => {
+            sinon.stub(Math, 'random').returns(0);
+          },
+          onAnnihilate: () => {
+            sinon.restore();
+          },
+        },
       );
 
       testStateTransition(
@@ -120,6 +129,14 @@ testSingletonModule(
             },
           },
         }),
+        {
+          onArrange2: () => {
+            sinon.stub(Math, 'random').returns(0.34);
+          },
+          onAnnihilate: () => {
+            sinon.restore();
+          },
+        },
       );
 
       testStateTransition(
@@ -139,6 +156,14 @@ testSingletonModule(
             },
           },
         }),
+        {
+          onArrange2: () => {
+            sinon.stub(Math, 'random').returns(0.67);
+          },
+          onAnnihilate: () => {
+            sinon.restore();
+          },
+        },
       );
     });
   },
