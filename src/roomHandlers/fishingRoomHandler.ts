@@ -3,6 +3,7 @@ import { RoomHandler } from './roomHandler';
 import {
   Command,
   CommandHandlersByCommandByPlayerStates,
+  CommandResult,
   DEFAULT_COMMAND,
   NarrowedRoomState,
   NullableCommandHandler,
@@ -70,26 +71,49 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
           playerState: 'AtEntrance',
         },
       }),
-      continue: (roomState) => ({
-        commandDescription: `You continue fishing...
-        ${roomState.randomNumber === 0 ? '... but nothing happens' : ''}
-        ${roomState.randomNumber === 1 ? '... and you catch a fish!' : ''}
-        ${
-          roomState.randomNumber === 2
-            ? '.. but the knot was improperly tied and your line breaks away!'
-            : ''
-        }`,
-        roomState: {
-          ...roomState,
-          playerState: roomState.randomNumber === 0 ? 'Fishing' : 'AtEntrance',
-          fishCaught:
-            roomState.randomNumber === 1
-              ? roomState.fishCaught + 1
-              : roomState.fishCaught,
-          isRodBroken: roomState.randomNumber === 2,
-          randomNumber: Math.floor(Math.random() * 3),
-        },
-      }),
+      continue: (roomState) => {
+        const randomNumber = Math.floor(Math.random() * 3);
+
+        const transition = (
+          {
+            0: 'NONE',
+            1: 'CATCH',
+            2: 'BREAK',
+          } as const
+        )[randomNumber as 0 | 1 | 2];
+
+        const commandDescription: string = [
+          ['You continue fishing...', true],
+          ['        ... but nothing happens', transition === 'NONE'],
+          ['        ', transition === 'NONE'],
+          ['        ', transition === 'NONE'],
+          ['        ', transition === 'CATCH'],
+          ['        ... and you catch a fish!', transition === 'CATCH'],
+          ['        ', transition === 'CATCH'],
+          ['        ', transition === 'BREAK'],
+          ['        ', transition === 'BREAK'],
+          // eslint-disable-next-line prettier/prettier
+          ['        .. but the knot was improperly tied and your line breaks away!', transition === 'BREAK'],
+        ]
+          .filter(([, isShown]) => isShown)
+          .map(([line]) => line)
+          .join('\n');
+
+        const result: CommandResult<TRoomType> = {
+          commandDescription,
+          roomState: {
+            ...roomState,
+            playerState: transition === 'NONE' ? 'Fishing' : 'AtEntrance',
+            fishCaught:
+              transition === 'CATCH'
+                ? roomState.fishCaught + 1
+                : roomState.fishCaught,
+            isRodBroken: transition === 'BREAK',
+          },
+        };
+
+        return result;
+      },
     },
   };
 
@@ -104,7 +128,6 @@ export class FishingRoomHandler extends RoomHandler<TRoomType> {
       playerState: 'AtEntrance',
       isRodBroken: false,
       fishCaught: 0,
-      randomNumber: Math.floor(Math.random() * 3),
     };
   }
 
