@@ -66,7 +66,9 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
         return { commandDescription, roomState: nextRoomState };
       },
       fix: (roomState) => ({
-        commandDescription: 'You fix your fishing line.',
+        commandDescription: roomState.isRodBroken
+          ? 'You fix your fishing line.'
+          : 'Your fishing line is fine, you do not need to fix it.',
         roomState: {
           ...roomState,
           playerState: 'AtEntrance',
