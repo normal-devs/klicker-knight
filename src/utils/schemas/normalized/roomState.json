@@ -7,6 +7,7 @@
     { "$ref": "./exampleRoom1.json" },
     { "$ref": "./exampleRoom2.json" },
     { "$ref": "./exampleRoom3.json" },
+    { "$ref": "./fishingRoom.json" },
     { "$ref": "./roomceptionRoom.json" }
   ]
 }

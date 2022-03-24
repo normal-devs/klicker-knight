@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FishingRoom",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "fishingRoom"
+    }
+  },
+  "required": ["type"],
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "fishingRoom"
+        },
+        "playerState": {
+          "enum": [
+            "AtEntrance"
+          ]
+        },
+        "fishCaught": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "isRodBroken": {
+          "type": "boolean"
+        }
+      },
+      "required": ["type", "playerState", "isRodBroken", "fishCaught"],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "fishingRoom"
+        },
+        "playerState": {
+          "enum": [
+            "Fishing"
+          ]
+        },
+        "fishCaught": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "isRodBroken": {
+          "const": false
+        }
+      },
+      "required": ["type", "playerState", "isRodBroken", "fishCaught"],
+      "additionalProperties": false
+    }
+  ]
+}
