@@ -95,7 +95,7 @@ testSingletonModule(
           stateAssertionDescription: 'does not update the room state',
           expectedResult: {
             commandDescription:
-              'You continue fishing...\n        ... but nothing happens\n        \n        ',
+              'You continue fishing...\n... but nothing happens',
             roomState: {
               fishCaught: 0,
               isRodBroken: false,
@@ -121,8 +121,7 @@ testSingletonModule(
           },
           stateAssertionDescription: null,
           expectedResult: {
-            commandDescription:
-              'You continue fishing...\n        \n        ... and you catch a fish!\n        ',
+            commandDescription: `You continue fishing...\n... and you catch a fish!`,
             roomState: {
               fishCaught: 1,
               isRodBroken: false,
@@ -149,7 +148,7 @@ testSingletonModule(
           stateAssertionDescription: null,
           expectedResult: {
             commandDescription:
-              'You continue fishing...\n        \n        \n        .. but the knot was improperly tied and your line breaks away!',
+              'You continue fishing...\n... but the knot was improperly tied and your line breaks away!',
             roomState: {
               fishCaught: 0,
               isRodBroken: true,

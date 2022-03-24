@@ -86,16 +86,10 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
 
         const commandDescription: string = [
           ['You continue fishing...', true],
-          ['        ... but nothing happens', transition === 'NONE'],
-          ['        ', transition === 'NONE'],
-          ['        ', transition === 'NONE'],
-          ['        ', transition === 'CATCH'],
-          ['        ... and you catch a fish!', transition === 'CATCH'],
-          ['        ', transition === 'CATCH'],
-          ['        ', transition === 'BREAK'],
-          ['        ', transition === 'BREAK'],
+          ['... but nothing happens', transition === 'NONE'],
+          ['... and you catch a fish!', transition === 'CATCH'],
           // eslint-disable-next-line prettier/prettier
-          ['        .. but the knot was improperly tied and your line breaks away!', transition === 'BREAK'],
+          ['... but the knot was improperly tied and your line breaks away!', transition === 'BREAK'],
         ]
           .filter(([, isShown]) => isShown)
           .map(([line]) => line)
