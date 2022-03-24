@@ -4,7 +4,6 @@ import {
   AvailableCommands,
   Command,
   CommandHandlersByCommandByPlayerStates,
-  CommandResult,
   DEFAULT_COMMAND,
   NarrowedRoomState,
   NullableCommandHandler,
@@ -41,17 +40,31 @@ const stateDescriptionAccessor: TStateDescriptionAccessor = {
 const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerStates =
   {
     AtEntrance: {
-      fish: (roomState) => ({
-        commandDescription: `You sit down and start to get ready to fish. ${
+      fish: (roomState) => {
+        const commandDescription = `You sit down and start to get ready to fish. ${
           roomState.isRodBroken
             ? 'But your rod is broken and you have to fix it.'
             : 'This is going to be alot of fun!'
-        }`,
-        roomState: {
-          ...roomState,
-          playerState: roomState.isRodBroken ? 'AtEntrance' : 'Fishing',
-        },
-      }),
+        }`;
+        const playerState = roomState.isRodBroken ? 'AtEntrance' : 'Fishing';
+
+        let nextRoomState: TRoomState;
+        if (playerState === 'Fishing') {
+          nextRoomState = {
+            ...roomState,
+            isRodBroken: false,
+            playerState: 'Fishing',
+          };
+        } else {
+          nextRoomState = {
+            ...roomState,
+            isRodBroken: true,
+            playerState: 'AtEntrance',
+          };
+        }
+
+        return { commandDescription, roomState: nextRoomState };
+      },
       fix: (roomState) => ({
         commandDescription: 'You fix your fishing line.',
         roomState: {
@@ -95,20 +108,31 @@ const commandHandlersByCommandByPlayerState: TCommandHandlersByCommandByPlayerSt
           .map(([line]) => line)
           .join('\n');
 
-        const result: CommandResult<TRoomType> = {
-          commandDescription,
-          roomState: {
+        const playerState = transition === 'NONE' ? 'Fishing' : 'AtEntrance';
+
+        let nextRoomState: TRoomState;
+        if (playerState === 'Fishing') {
+          nextRoomState = {
             ...roomState,
-            playerState: transition === 'NONE' ? 'Fishing' : 'AtEntrance',
+            playerState,
+            isRodBroken: false,
+          };
+        } else {
+          nextRoomState = {
+            ...roomState,
+            playerState,
             fishCaught:
               transition === 'CATCH'
                 ? roomState.fishCaught + 1
                 : roomState.fishCaught,
             isRodBroken: transition === 'BREAK',
-          },
-        };
+          };
+        }
 
-        return result;
+        return {
+          commandDescription,
+          roomState: nextRoomState,
+        };
       },
     },
   };
