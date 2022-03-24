@@ -32,7 +32,8 @@ const stateDescriptionAccessor: TStateDescriptionAccessor = {
     };
   },
   Fishing: {
-    playerStateDescription: 'Hopefully the fish are hungry today.',
+    playerStateDescription:
+      'Your line is cast, hopefully the fish are hungry today.',
     availableCommands: ['stop', 'continue'],
   },
 };
