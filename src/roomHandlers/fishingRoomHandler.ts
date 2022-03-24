@@ -1,6 +1,7 @@
 import { RoomHandler } from './roomHandler';
 
 import {
+  AvailableCommands,
   Command,
   CommandHandlersByCommandByPlayerStates,
   CommandResult,
@@ -22,7 +23,7 @@ const stateDescriptionAccessor: TStateDescriptionAccessor = {
   AtEntrance: ({ fishCaught, isRodBroken }) => {
     const poleText = isRodBroken ? 'broken' : 'working';
 
-    const availableCommands: [string, ...string[]] = ['fish', 'leave'];
+    const availableCommands: AvailableCommands = ['fish', 'leave'];
     if (isRodBroken) availableCommands.push('fix');
 
     return {
